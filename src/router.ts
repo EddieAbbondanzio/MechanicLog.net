@@ -12,16 +12,6 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/features',
-      name: 'features',
-      component: () => import('./views/public/features.vue'),
-    },
-    {
-      path: '/pricing',
-      name: 'pricing',
-      component: () => import('./views/public/pricing.vue'),
-    },
-    {
       path: '/login',
       name: 'login',
       component: () => import('./views/public/login.vue'),

@@ -19,7 +19,7 @@
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <!-- Icon and Name -->
         <a class="navbar-brand" href="#">
-          <img alt="MechanicLog logo" class="logo" src="../../assets/logo.png">
+          <img alt="MechanicLog logo" class="logo" src="../../../assets/logo.png">
           {{ brand }}
         </a>
 
@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import NavBarButton from '@/components/nav-bar/nav-bar-button.vue';
+import NavBarButton from '@/components/shared/nav-bar/nav-bar-button.vue';
 
 @Component({
   name: 'nav-bar',
