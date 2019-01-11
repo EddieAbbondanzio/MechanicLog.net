@@ -1,11 +1,15 @@
 <style scoped>
 .row {
   background-color: #232323;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
 }
 </style>
 
 <template>
-  <div class="row py-5">
+  <div class="row">
     <div class="col-12 text-center">
       <span class="text-light">© {{ year }} Eddie Abbondanzio</span>
     </div>

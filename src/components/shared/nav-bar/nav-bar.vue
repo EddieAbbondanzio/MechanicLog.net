@@ -18,7 +18,7 @@
     <div class="col-12">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <!-- Icon and Name -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <img alt="MechanicLog logo" class="logo" src="../../../assets/logo.png">
           {{ brand }}
         </a>
