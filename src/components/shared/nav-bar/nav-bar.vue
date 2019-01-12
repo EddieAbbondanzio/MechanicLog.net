@@ -65,7 +65,5 @@ export default class NavBar extends Vue {
    * The name of the product in the nav bar
    */
   public brand: string = 'MechanicLog';
-
-  public test: string = '/about';
 }
 </script>

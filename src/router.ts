@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: '/',
-      component: () => import ('./views/public/home.vue'),
+      component: () => import('./views/public/home.vue'),
     },
     {
       path: '/login',
@@ -19,6 +19,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: () => import('./views/public/register.vue'),
+    },
+    {
+      path: '/forgot',
+      name: 'forgot',
+      component: () => import('./views/public/forgot.vue'),
     },
   ],
 });
