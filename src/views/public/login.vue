@@ -1,34 +1,53 @@
 <template>
   <master-page>
-    <div class="row my-5" style="min-height: 100%;">
-      <div class="col-4 offset-4">
-        <h3>Login</h3>
+    <div class="row my-5">
+      <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+        <form class="px-3" ref="form">
+          <form-header title="Login"/>
 
-        <form>
           <div class="form-group">
             <input
               v-model="email"
               type="email"
               class="form-control"
-              id="email-text-box"
+              id="emailTB"
               placeholder="Email@domain.com"
+              @change="validateEmail"
+              required
             >
+            <div
+              class="invalid-feedback"
+            >{{ email.length == 0 ? 'Email is required' : 'Invalid email'}}</div>
           </div>
           <div class="form-group mb-5">
             <input
               v-model="password"
               type="password"
               class="form-control mb-1"
-              id="password-text-box"
+              id="passwordTB"
               placeholder="Password"
+              @change="validatePassword"
+              required
             >
+            <div class="invalid-feedback">Password is required</div>
             <router-link class="info-link" to="/forgot">I forgot my password</router-link>
           </div>
-          <div class="form-group form-check">
-            <input v-model="rememberMe" type="checkbox" class="form-check-input" id="remember-me-check-box">
+
+          <button
+            type="submit"
+            class="btn btn-primary d-inline-block"
+            id="login-button"
+            @click="login"
+          >Login</button>
+          <div class="form-group form-check d-inline-block ml-3">
+            <input
+              v-model="rememberMe"
+              type="checkbox"
+              class="form-check-input"
+              id="remember-me-check-box"
+            >
             <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
           </div>
-          <button type="submit" class="btn btn-primary" id="login-button" @click="login">Login</button>
         </form>
       </div>
     </div>
@@ -37,11 +56,18 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Form } from '@/components/shared/form/form';
 import MasterPage from '@/components/shared/master-page.vue';
+import FormHeader from '@/components/shared/form/form-header.vue';
+import { mixins } from 'vue-class-component';
 
+/**
+ * Login page to log in a user
+ */
 @Component({
   components: {
     MasterPage,
+    FormHeader,
   },
 })
 export default class Login extends Vue {
@@ -63,8 +89,41 @@ export default class Login extends Vue {
   /**
    * Attempt to log in the user
    */
-  public login(): void {
-    alert('Finish implementing this you dummy');
+  public async login(): Promise<void> {
+    // alert(this.backendUrl);
+    const form: HTMLFormElement = this.$refs.form as HTMLFormElement;
+
+    const emailTB: HTMLInputElement = form.querySelector('#emailTB') as HTMLInputElement;
+    const passwordTB: HTMLInputElement = form.querySelector('#passwordTB') as HTMLInputElement;
+
+    // const isEmailValid: boolean = this.validateControl(emailTB);
+    // const isPasswordValid: boolean = this.validateControl(passwordTB);
+
+    // const loginService: LoginService = new LoginService();
+    // const r: ApiResponse<string> = await loginService.login('me@eddieabbondanz.io', 'password2');
+
+    // alert(r.value);
+
+    // if (isEmailValid && isPasswordValid) {
+    // console.log((this as any).backendUrl);
+    // alert('Finish implementing this you dummy');
+    // }
+  }
+
+  /**
+   * Validate the email input from the textbox.
+   */
+  public validateEmail(element: any): boolean {
+    return false;
+    // return this.validateControl(element.target);
+  }
+
+  /**
+   * Validate the password input from the textbox.
+   */
+  public validatePassword(element: any): boolean {
+    return false;
+    // return this.validateControl(element.target);
   }
 }
 </script>

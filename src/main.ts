@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import App from './app.vue';
 import router from './router';
-import store from './store';
+import store from './store/store';
 
 Vue.config.productionTip = false;
 
-new Vue({
+const v: Vue = new Vue({
   router,
   store,
   render: (h) => h(App),
