@@ -60,6 +60,8 @@ import { Form } from '@/components/shared/form/form';
 import MasterPage from '@/components/shared/master-page.vue';
 import FormHeader from '@/components/shared/form/form-header.vue';
 import { mixins } from 'vue-class-component';
+import { AuthService } from '@/services/auth-service';
+import { ApiResponse } from '@/services/api-response';
 
 /**
  * Login page to log in a user
@@ -99,9 +101,10 @@ export default class Login extends Vue {
     // const isEmailValid: boolean = this.validateControl(emailTB);
     // const isPasswordValid: boolean = this.validateControl(passwordTB);
 
-    // const loginService: LoginService = new LoginService();
-    // const r: ApiResponse<string> = await loginService.login('me@eddieabbondanz.io', 'password2');
+    const loginService: AuthService = new AuthService('https://localhost:3117');
+    const r: ApiResponse<string> = await loginService.login('me@eddieabbondanz.io', 'password2');
 
+    console.log(r);
     // alert(r.value);
 
     // if (isEmailValid && isPasswordValid) {
