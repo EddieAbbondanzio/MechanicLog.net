@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { StoreState } from './store-state';
 import { config } from './config';
-import { user } from './user';
+import { user } from '@/user-system/store/user/index';
 
 Vue.use(Vuex);
 
