@@ -30,7 +30,7 @@ export class HttpClient {
         if (authToken != null) {
             return this._axios.get(url, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
         } else {
@@ -48,7 +48,7 @@ export class HttpClient {
         if (authToken != null) {
             return this._axios.head(url, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
         } else {
@@ -59,54 +59,57 @@ export class HttpClient {
     /**
      * Execute a PUT request on the specified resource.
      * @param url The URL to send the request to.
+     * @param body The body of the request.
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
     public async put<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
         if (authToken != null) {
-            return this._axios.put(url, {
+            return this._axios.put(url, body, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
         } else {
-            return this._axios.put(url);
+            return this._axios.put(url, body);
         }
     }
 
     /**
      * Execute a POST request on the specified resource.
      * @param url The URL to send the request to.
+     * @param body The body of the request.
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
     public async post<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
         if (authToken != null) {
-            return this._axios.post(url, {
+            return this._axios.post(url, body, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
         } else {
-            return this._axios.post(url);
+            return this._axios.post(url, body);
         }
     }
 
     /**
      * Execute a PATCH request on the specified resource.
      * @param url The URL to send the request to.
+     * @param body The body of the request.
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
     public async patch<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
         if (authToken != null) {
-            return this._axios.patch(url, {
+            return this._axios.patch(url, body, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
         } else {
-            return this._axios.patch(url);
+            return this._axios.patch(url, body);
         }
     }
 
@@ -116,11 +119,11 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async delete<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
+    public async delete<T>(url: string, authToken?: string): Promise<HttpResponse<T>> {
         if (authToken != null) {
             return this._axios.delete(url, {
                 headers: {
-                    Authorization: `Bearer ${authToken}`
+                    Authorization: `Bearer ${authToken}`,
                 },
             });
         } else {

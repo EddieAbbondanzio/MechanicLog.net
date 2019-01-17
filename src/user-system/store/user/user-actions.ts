@@ -1,7 +1,7 @@
 import { ActionTree, ActionContext } from 'vuex';
 import { UserState } from './user-state';
 import { StoreState } from '@/core/store/store-state';
-import { UserCredentials } from '@/user-system/entities/user-credentials';
+import { UserCredentials } from '@/user-system/services/auth/user-credentials';
 
 /**
  * Actions related to the user state.
