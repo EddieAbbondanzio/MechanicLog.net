@@ -7,5 +7,5 @@ export interface UserState {
     /**
      * The currently logged in user.
      */
-    current: User | null;
+    currentUser: User | null;
 }

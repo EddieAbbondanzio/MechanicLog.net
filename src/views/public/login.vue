@@ -61,6 +61,13 @@ import MasterPage from '@/components/shared/master-page.vue';
 import FormHeader from '@/components/shared/form/form-header.vue';
 import { mixins } from 'vue-class-component';
 import { AuthService } from '@/user-system/services/auth/auth-service';
+import {
+  State,
+  Getter,
+  Action,
+  Mutation,
+  namespace,
+} from 'vuex-class';
 
 /**
  * Login page to log in a user
@@ -87,6 +94,7 @@ export default class Login extends Vue {
    */
   public rememberMe: boolean = true;
 
+
   /**
    * Attempt to log in the user
    */
@@ -97,11 +105,9 @@ export default class Login extends Vue {
     const emailTB: HTMLInputElement = form.querySelector('#emailTB') as HTMLInputElement;
     const passwordTB: HTMLInputElement = form.querySelector('#passwordTB') as HTMLInputElement;
 
-    // const isEmailValid: boolean = this.validateControl(emailTB);
-    // const isPasswordValid: boolean = this.validateControl(passwordTB);
 
-    const loginService: AuthService = new AuthService('https://localhost:3117');
-    const r: string = await loginService.login('me@eddieabbondanz.io', 'password22');
+
+
 
     // alert(r.value);
 

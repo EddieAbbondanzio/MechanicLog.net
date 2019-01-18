@@ -1,5 +1,6 @@
 import { ApiService } from '@/core/services/api-service';
 import { User } from '@/user-system/entities/user';
+import { HttpResponse } from '@/core/http/http-response';
 
 /**
  * Service for everything related to users.
@@ -11,7 +12,12 @@ export class UserService extends ApiService {
      * @returns The user who owns the token.
      */
     public async getUserFromToken(authToken: string): Promise<User> {
-        throw new Error('Not implemented');
+        try {
+            const response: HttpResponse<User> = await this._httpClient.get('/user', authToken);
+            return response.data;
+        } catch (error) {
+            throw new Error(error.response.data.errorMsg);
+        }
     }
 
     /**
@@ -20,7 +26,13 @@ export class UserService extends ApiService {
      * @param newName Their new full name.
      */
     public async updateName(user: User, newName: string): Promise<void> {
-
+        try {
+            const response: HttpResponse<void> = await this._httpClient.patch('/user/name', {
+                name: user.name,
+            }, user.authToken);
+        } catch (error) {
+            throw new Error(error.response.data.errorMsg);
+        }
     }
 
     /**
@@ -29,6 +41,12 @@ export class UserService extends ApiService {
      * @param newEmail Their new email.
      */
     public async updateEmail(user: User, newEmail: string): Promise<void> {
-
+        try {
+            const response: HttpResponse<void> = await this._httpClient.patch('/user/name', {
+                email: user.email,
+            }, user.authToken);
+        } catch (error) {
+            throw new Error(error.response.data.errorMsg);
+        }
     }
 }

@@ -9,7 +9,7 @@ import { userActions } from './user-actions';
  * Starting state of the user store.
  */
 const state: UserState = {
-    current: null,
+    currentUser: null,
 };
 
 /**

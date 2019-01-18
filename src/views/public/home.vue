@@ -29,6 +29,7 @@ export default class Home extends Vue {
   public backendUrl!: string;
 
   public fuckme() {
+    this.$store.dispatch('user/logIn');
     // alert(this.backendUrl);
   }
 }

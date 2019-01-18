@@ -12,6 +12,6 @@ export const userGetters: GetterTree<UserState, StoreState> = {
      * @param state The active store state.
      */
     current(state: UserState): User | null {
-        return state.current;
+        return state.currentUser;
     },
 };
