@@ -61,6 +61,7 @@ import MasterPage from '@/components/shared/master-page.vue';
 import FormHeader from '@/components/shared/form/form-header.vue';
 import { mixins } from 'vue-class-component';
 import { AuthService } from '@/user-system/services/auth/auth-service';
+import { LoginMixin } from '@/user-system/mixins/login-mixin';
 import {
   State,
   Getter,
@@ -78,7 +79,7 @@ import {
     FormHeader,
   },
 })
-export default class Login extends Vue {
+export default class Login extends mixins(LoginMixin) {
   /**
    * The user's email
    */
@@ -105,7 +106,7 @@ export default class Login extends Vue {
     const emailTB: HTMLInputElement = form.querySelector('#emailTB') as HTMLInputElement;
     const passwordTB: HTMLInputElement = form.querySelector('#passwordTB') as HTMLInputElement;
 
-
+    await this.loginUser(this.email, this.password, this.rememberMe);
 
 
 

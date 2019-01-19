@@ -6,6 +6,11 @@ import { ConfigState } from './config/config-state';
  */
 export interface StoreState {
     /**
+     * The base URL of the site.
+     */
+    baseUrl: string;
+
+    /**
      * The version of the front end.
      */
     version: string;
