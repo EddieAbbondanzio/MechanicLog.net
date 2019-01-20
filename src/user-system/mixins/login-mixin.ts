@@ -3,6 +3,7 @@ import Component from 'vue-class-component';
 import { User } from '../entities/user';
 import { Action } from 'vuex-class';
 import { UserCredentials } from '../services/auth/user-credentials';
+import { CookieStorage } from '@/core/cookie-storage';
 
 /**
  * Logic wrapper for handling logging in using a user's email
@@ -32,7 +33,7 @@ export class LoginMixin extends Vue {
 
         // Do we need to save a cookie?
         if (rememberMe) {
-            this.$cookies.set('user', user.authToken, '30d', undefined, undefined, false);
+            CookieStorage.set('user', user.authToken, '30d');
         }
 
         return user;
