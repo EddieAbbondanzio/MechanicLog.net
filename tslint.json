@@ -17,6 +17,7 @@
     "no-consecutive-blank-lines": false,
     "member-ordering": false,
     "variable-name": ["allow-leading-underscore"],
-    "array-type": [true, "array"]
+    "array-type": [true, "array"],
+    "only-arrow-functions": false
   }
 }

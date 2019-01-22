@@ -1,10 +1,10 @@
 import { EventHandler } from './event-handler';
-import { IEventDispatcher } from './i-event-dispatcher';
+import { Event } from './event';
 
 /**
  * Dispatcher that can propogate events to subscribers.
  */
-export class EventDispatcher<E> implements IEventDispatcher<E> {
+export class EventDispatcher<E> implements Event<E> {
     /**
      * The handlers that want to be notified when an event occurs.
      */

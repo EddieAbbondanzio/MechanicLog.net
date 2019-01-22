@@ -4,12 +4,15 @@
 <template>
   <div class="row my-5">
     <div class="col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-      <form class="px-3" ref="form">
+      <form class="px-3">
         <form-header title="Login"/>
 
-        <div class="alert-danger mb-2 p-1">
-            Unable to log in. Invalid email and/or password
-        </div>
+        <alert-message type="Success">
+          Uh oh.
+        </alert-message>
+
+        <!-- Errors from the server -->
+        <div class="alert-danger mb-2 p-1" v-if="errorMessage.length > 0">{{ errorMessage }}</div>
 
         <div class="form-group">
           <input
@@ -18,11 +21,10 @@
             class="form-control"
             id="emailTB"
             placeholder="Email@domain.com"
-            required
+            name="email"
+            v-validate="'required|email'"
           >
-          <div
-            class="invalid-feedback"
-          >{{ email.length == 0 ? 'Email is required' : 'Invalid email'}}</div>
+          <div class="invalid-feedback">{{ errors.first('email')}}</div>
         </div>
         <div class="form-group mb-5">
           <input
@@ -31,14 +33,15 @@
             class="form-control mb-1"
             id="passwordTB"
             placeholder="Password"
-            required
+            name="password"
+            v-validate="'required'"
           >
-          <div class="invalid-feedback">Password is required</div>
+          <div class="invalid-feedback">{{ errors.first('password')}}</div>
           <router-link class="info-link" to="/forgot">I forgot my password</router-link>
         </div>
 
         <button
-          type="submit"
+          type="button"
           class="btn btn-primary d-inline-block"
           id="login-button"
           @click="onLoginButtonClicked"
@@ -62,9 +65,10 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { LoginMixin } from '@/user-system/mixins/login-mixin';
 import { EventDispatcher } from '@/core/events/event-dispatcher';
-import { IEventDispatcher } from '@/core/events/i-event-dispatcher';
+import { Event } from '@/core/events/event';
 import { User } from '@/user-system/entities/user';
 import FormHeader from '@/components/shared/form/form-header.vue';
+import AlertMessage from '@/core/components/alert-message.vue';
 
 /**
  * Login form to allow a user to sign in.
@@ -73,72 +77,78 @@ import FormHeader from '@/components/shared/form/form-header.vue';
   name: 'login-form',
   components: {
     FormHeader,
+    AlertMessage,
   },
 })
 export default class LoginForm extends LoginMixin {
   /**
    * The email of the user.
    */
-  public email: string = '';
+  public email!: string;
 
   /**
    * The password of the user.
    */
-  public password: string = '';
+  public password!: string;
 
   /**
    * If the user wants to save their login for re-use
    * next time they visit the site.
    */
-  public rememberMe: boolean = false;
+  public rememberMe!: boolean;
+
+  /**
+   * Error from the server on a failed login.
+   */
+  public errorMessage!: string;
 
   /**
    * On user login event.
    */
-  get onLogin(): IEventDispatcher<User> {
-    return this._onLoginDispatcher as IEventDispatcher<User>;
+  get onLogin(): Event<User> {
+    return this._onLoginDispatcher as Event<User>;
   }
 
   /**
    * Event handler for when the user logs in.
    */
-  private readonly _onLoginDispatcher: EventDispatcher<User> = new EventDispatcher<User>();
+  private _onLoginDispatcher!: EventDispatcher<User>;
+
+  /**
+   * Properties are assigned in created to prevent weird undefined errors.
+   */
+  public created(): void {
+    this.email = '';
+    this.password = '';
+    this.rememberMe = false;
+    this.errorMessage = '';
+    this._onLoginDispatcher = new EventDispatcher<User>();
+  }
 
   /**
    * User wants to log in. Validate the email, and password
    * inputs first, then send off a request to the back end.
    */
-  public async onLoginButtonClicked(): Promise<void> {
-    // Double check everything's valid first.
-    if (this.isEmailValid() && this.isPasswordValid()) {
-      try {
-        const u: User | null = await this.loginUser(this.email, this.password, this.rememberMe);
-
-        // If the login was successful, fire off the event.
-        if (u != null) {
-          this._onLoginDispatcher.dispatch(u);
-        }
-      } catch {
-        // Alert the user of the failed login.
-      }
+  public async onLoginButtonClicked(event: any): Promise<void> {
+    // Validate first.
+    if (!(await this.$validator.validate())) {
+      return;
     }
-  }
 
-  /**
-   * Check if the email in the email textbox is valid.
-   * @returns True if the email is valid.
-   */
-  public isEmailValid(): boolean {
-    return false;
-  }
+    try {
+      const u: User | null = await this.loginUser(this.email, this.password, this.rememberMe);
 
-  /**
-   * Checks if the password in the password textbox is
-   * valid.
-   * @returns True if the email is not empty.
-   */
-  public isPasswordValid(): boolean {
-    return false;
+      // If the login was successful, fire off the event.
+      if (u != null) {
+        this.errorMessage = '';
+        this._onLoginDispatcher.dispatch(u);
+      } else {
+        this.errorMessage = 'Invalid email and/or password';
+      }
+    } catch (error) {
+      // Alert the user of what went wrong
+      this.errorMessage = error.message;
+    }
   }
 }
 </script>
