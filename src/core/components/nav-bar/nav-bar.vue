@@ -18,10 +18,10 @@
     <div class="col-12">
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <!-- Icon and Name -->
-        <a class="navbar-brand" href="/">
+        <router-link class="nav-link navbar-brand" to="/">
           <img alt="MechanicLog logo" class="logo" src="../../../assets/logo.png">
           {{ brand }}
-        </a>
+        </router-link>
 
         <!-- Toggle Button -->
         <button
@@ -36,14 +36,30 @@
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menu Options -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Menu options for non-users-->
+        <div class="collapse navbar-collapse" v-if="$currentUser == null">
           <ul class="navbar-nav ml-auto">
             <nav-bar-button name="Features" route="/features"/>
             <nav-bar-button name="Pricing" route="/pricing"/>
             <nav-bar-button name="Login" route="/login"/>
             <nav-bar-button name="Sign Up" route="/register"/>
           </ul>
+        </div>
+        <!-- Menu options for users -->
+        <div class="navbar-nav ml-auto text-light" v-else>
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+              <i class="material-icons icon-lg pr-2" style="vertical-align: middle" title="Logged in as">person</i>
+              <span class="d-inline-block pr-2" style="height: 32px;">{{ $currentUser.name.indexOf(' ') != -1 ? $currentUser.name.split(' ')[0] : $currentUser.name }}</span>
+            </a>
+
+            <div class="dropdown-menu">
+              <span class="dropdown-item">Dashboard</span>
+              <span class="dropdown-item">Settings</span>
+              <span class="dropdown-item">Log Out</span>
+            </div>
+            <!-- <i class="material-icons icon-md" title="Settings">settings</i> -->
+          </div>
         </div>
       </nav>
     </div>
@@ -53,6 +69,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import NavBarButton from '@/core/components/nav-bar/nav-bar-button.vue';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 
 @Component({
   name: 'nav-bar',
@@ -60,7 +77,7 @@ import NavBarButton from '@/core/components/nav-bar/nav-bar-button.vue';
     NavBarButton,
   },
 })
-export default class NavBar extends Vue {
+export default class NavBar extends UserMixin {
   /**
    * The name of the product in the nav bar
    */

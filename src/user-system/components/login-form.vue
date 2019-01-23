@@ -130,6 +130,8 @@ export default class LoginForm extends UserMixin {
       if (u != null) {
         this.errorMessage = '';
         this.successMessage = 'Success. Redirecting...';
+
+        // Propogate the event to the parent (page)
         this.$emit('login', u);
       } else {
         this.errorMessage = 'Invalid email and/or password';
