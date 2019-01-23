@@ -69,6 +69,9 @@ export class UserMixin extends Vue {
     @Action('updatePassword', { namespace: 'user' })
     protected $updatePassword!: (passwordUpdate: UserPasswordUpdate) => Promise<void>;
 
+    @Getter('authTokenLifeSpan', { namespace: 'config' })
+    private _tokenLifeSpan!: string;
+
     @Action('logIn', { namespace: 'user' })
     private _loginUserAction!: (creds: UserCredentials) => Promise<User | null>;
 
@@ -95,7 +98,7 @@ export class UserMixin extends Vue {
 
         // Do we need to save a cookie?
         if (rememberMe) {
-            CookieStorage.set('user', user.authToken, '30d');
+            CookieStorage.set('user', user.authToken, this._tokenLifeSpan);
         }
 
         return user;
