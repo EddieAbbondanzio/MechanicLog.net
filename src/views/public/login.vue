@@ -1,13 +1,12 @@
 <template>
   <master-page>
-    <login-form ref="loginForm"/>
+    <login-form ref="loginForm" @login="onLogin"/>
   </master-page>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Form } from '@/components/shared/form/form';
-import MasterPage from '@/components/shared/master-page.vue';
+import MasterPage from '@/core/components/master-page.vue';
 import { AuthService } from '@/user-system/services/auth/auth-service';
 import { User } from '@/user-system/entities/user';
 import LoginForm from '@/user-system/components/login-form.vue';
@@ -22,13 +21,11 @@ import LoginForm from '@/user-system/components/login-form.vue';
   },
 })
 export default class Login extends Vue {
-  public mounted(): void {
-    const loginForm: LoginForm = this.$refs.loginForm as LoginForm;
-
-    // Event handler for when a user successfully logs in.
-    loginForm.onLogin.register((user: User) => {
-      this.$router.push({ name: 'home' });
-    });
+  /**
+   * On a successful login, redirect to the dashboard.
+   */
+  public onLogin(e: any): void {
+    this.$router.push({ name: 'dashboard' });
   }
 }
 </script>

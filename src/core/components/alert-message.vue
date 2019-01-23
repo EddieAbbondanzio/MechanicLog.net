@@ -12,15 +12,7 @@ import { Prop } from 'vue-property-decorator';
 /**
  * Available color schemes of the alert.
  */
-export type AlertType =
-  'Primary' |
-  'Secondary' |
-  'Success' |
-  'Danger' |
-  'Warning' |
-  'Info' |
-  'Light' |
-  'Dark';
+export type AlertType = 'Primary' | 'Secondary' | 'Success' | 'Danger' | 'Warning' | 'Info' | 'Light' | 'Dark';
 
 /**
  * Component for displaying a text message to the screen in a colorful

@@ -7,12 +7,9 @@
       <form class="px-3">
         <form-header title="Login"/>
 
-        <alert-message type="Success">
-          Uh oh.
-        </alert-message>
+        <alert-message type="Success" v-if="successMessage.length > 0">{{ successMessage }}</alert-message>
 
-        <!-- Errors from the server -->
-        <div class="alert-danger mb-2 p-1" v-if="errorMessage.length > 0">{{ errorMessage }}</div>
+        <alert-message type="Danger" v-if="errorMessage.length > 0">{{ errorMessage }}</alert-message>
 
         <div class="form-group">
           <input
@@ -63,11 +60,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { LoginMixin } from '@/user-system/mixins/login-mixin';
-import { EventDispatcher } from '@/core/events/event-dispatcher';
-import { Event } from '@/core/events/event';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { User } from '@/user-system/entities/user';
-import FormHeader from '@/components/shared/form/form-header.vue';
+import FormHeader from '@/core/components/form/form-header.vue';
 import AlertMessage from '@/core/components/alert-message.vue';
 
 /**
@@ -80,7 +75,7 @@ import AlertMessage from '@/core/components/alert-message.vue';
     AlertMessage,
   },
 })
-export default class LoginForm extends LoginMixin {
+export default class LoginForm extends UserMixin {
   /**
    * The email of the user.
    */
@@ -103,16 +98,9 @@ export default class LoginForm extends LoginMixin {
   public errorMessage!: string;
 
   /**
-   * On user login event.
+   * Success message for when a login succeeds.
    */
-  get onLogin(): Event<User> {
-    return this._onLoginDispatcher as Event<User>;
-  }
-
-  /**
-   * Event handler for when the user logs in.
-   */
-  private _onLoginDispatcher!: EventDispatcher<User>;
+  public successMessage!: string;
 
   /**
    * Properties are assigned in created to prevent weird undefined errors.
@@ -122,7 +110,7 @@ export default class LoginForm extends LoginMixin {
     this.password = '';
     this.rememberMe = false;
     this.errorMessage = '';
-    this._onLoginDispatcher = new EventDispatcher<User>();
+    this.successMessage = '';
   }
 
   /**
@@ -136,18 +124,20 @@ export default class LoginForm extends LoginMixin {
     }
 
     try {
-      const u: User | null = await this.loginUser(this.email, this.password, this.rememberMe);
+      const u: User | null = await this.$login(this.email, this.password, this.rememberMe);
 
       // If the login was successful, fire off the event.
       if (u != null) {
         this.errorMessage = '';
-        this._onLoginDispatcher.dispatch(u);
+        this.successMessage = 'Success. Redirecting...';
+        this.$emit('login', u);
       } else {
         this.errorMessage = 'Invalid email and/or password';
       }
     } catch (error) {
       // Alert the user of what went wrong
       this.errorMessage = error.message;
+      this.successMessage = '';
     }
   }
 }

@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import NavBarButton from '@/components/shared/nav-bar/nav-bar-button.vue';
+import NavBarButton from '@/core/components/nav-bar/nav-bar-button.vue';
 
 @Component({
   name: 'nav-bar',

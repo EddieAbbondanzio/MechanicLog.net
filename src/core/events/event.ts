@@ -1,5 +1,8 @@
 import { EventHandler } from './event-handler';
 
+/**
+ * Event that can be subscribed to.
+ */
 export interface Event<E> {
     /**
      * Register a new handler with the dispatcher. Any time the event is

@@ -17,6 +17,15 @@ export class CookieStorage {
     }
 
     /**
+     * Check if a key exists in the cookie vault.
+     * @param key The key to check for.
+     * @returns True if the key is in use.
+     */
+    public static exists(key: string): boolean {
+        return (window as any).$cookies.isKey(key);
+    }
+
+    /**
      * Store a cookie on the user's browser.
      * @param key The key to store the cookie under.
      * @param value The value to store in the cookie.

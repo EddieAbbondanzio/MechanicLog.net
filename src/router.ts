@@ -11,6 +11,11 @@ export default new Router({
       component: () => import('./views/public/home.vue'),
     },
     {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('./views/private/dashboard.vue'),
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('./views/public/login.vue'),
@@ -19,11 +24,6 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: () => import('./views/public/register.vue'),
-    },
-    {
-      path: '/forgot',
-      name: 'forgot',
-      component: () => import('./views/public/forgot.vue'),
     },
   ],
 });

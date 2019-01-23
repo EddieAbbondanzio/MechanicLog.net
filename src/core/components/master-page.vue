@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import NavBar from '@/components/shared/nav-bar/nav-bar.vue';
-import PageFooter from '@/components/shared/page-footer.vue';
+import NavBar from '@/core/components/nav-bar/nav-bar.vue';
+import PageFooter from '@/core/components/page-footer.vue';
 
 @Component({
   components: {
