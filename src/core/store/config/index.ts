@@ -9,6 +9,7 @@ export const config: Module<ConfigState, StoreState> = {
     namespaced: true,
     state: {
         apiUrl: 'https://localhost:3117',
+        baseUrl: 'http://localhost:8080',
         authTokenLifeSpan: '30d',
     },
     getters: {

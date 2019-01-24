@@ -49,14 +49,21 @@
         <div class="navbar-nav ml-auto text-light" v-else>
           <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-              <i class="material-icons icon-lg pr-2" style="vertical-align: middle" title="Logged in as">person</i>
-              <span class="d-inline-block pr-2" style="height: 32px;">{{ $currentUser.name.indexOf(' ') != -1 ? $currentUser.name.split(' ')[0] : $currentUser.name }}</span>
+              <i
+                class="material-icons icon-lg pr-2"
+                style="vertical-align: middle"
+                title="Logged in as"
+              >person</i>
+              <span
+                class="d-inline-block pr-2"
+                style="height: 32px;"
+              >{{ $currentUser.name.indexOf(' ') != -1 ? $currentUser.name.split(' ')[0] : $currentUser.name }}</span>
             </a>
 
             <div class="dropdown-menu">
-              <span class="dropdown-item">Dashboard</span>
-              <span class="dropdown-item">Settings</span>
-              <span class="dropdown-item">Log Out</span>
+              <a class="dropdown-item" href="#">Dashboard</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="#" @click="$logOut">Log Out</a>
             </div>
             <!-- <i class="material-icons icon-md" title="Settings">settings</i> -->
           </div>
@@ -82,5 +89,15 @@ export default class NavBar extends UserMixin {
    * The name of the product in the nav bar
    */
   public brand: string = 'MechanicLog';
+
+  /**
+   * When the page loads, check if we need to fire off a login
+   * request to the backend.
+   */
+  public async created(): Promise<void> {
+    if (this.$hasAuthToken() && this.$currentUser == null) {
+      await this.$relogin();
+    }
+  }
 }
 </script>

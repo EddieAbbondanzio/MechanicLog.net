@@ -14,6 +14,11 @@ import { CookieStorage } from '@/core/cookie-storage';
 @Component
 export class UserMixin extends Vue {
     /**
+     * The key to use to store cookies under.
+     */
+    private static COOKIE_KEY: string = 'user';
+
+    /**
      * The currently logged in user.
      */
     @Getter('current', { namespace: 'user' })
@@ -98,7 +103,7 @@ export class UserMixin extends Vue {
 
         // Do we need to save a cookie?
         if (rememberMe) {
-            CookieStorage.set('user', user.authToken, this._tokenLifeSpan);
+            CookieStorage.set(UserMixin.COOKIE_KEY, user.authToken, this._tokenLifeSpan);
         }
 
         return user;
@@ -122,7 +127,8 @@ export class UserMixin extends Vue {
      * Log out the existing user.
      */
     protected async $logOut(): Promise<void> {
-        return this._logOutAction();
+        await this._logOutAction();
+        CookieStorage.clear(UserMixin.COOKIE_KEY);
     }
 
     /**
@@ -130,7 +136,7 @@ export class UserMixin extends Vue {
      * @returns True if there is an auth cookie from previously.
      */
     protected $hasAuthToken(): boolean {
-        return CookieStorage.exists('user');
+        return CookieStorage.exists(UserMixin.COOKIE_KEY);
     }
 
     /**
@@ -138,6 +144,6 @@ export class UserMixin extends Vue {
      * @returns The token, or null.
      */
     protected $getAuthToken(): string | null {
-        return CookieStorage.get('user');
+        return CookieStorage.get(UserMixin.COOKIE_KEY);
     }
 }

@@ -23,7 +23,7 @@ export default new Router({
     {
       path: '/register',
       name: 'register',
-      component: () => import('./views/public/register.vue'),
+      component: () => import('./views/public/sign-up.vue'),
     },
   ],
 });

@@ -1,6 +1,6 @@
 <template>
   <master-page>
-    <login-form ref="loginForm" @login="onLogin"/>
+    <login-form @login="onLogin"/>
   </master-page>
 </template>
 

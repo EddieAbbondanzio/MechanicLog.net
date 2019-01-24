@@ -9,6 +9,11 @@ export interface ConfigState {
     apiUrl: string;
 
     /**
+     * The base URL of the site.
+     */
+    baseUrl: string;
+
+    /**
      * How long auth tokens are saved in the CookieVault
      * before they are discarded.
      */

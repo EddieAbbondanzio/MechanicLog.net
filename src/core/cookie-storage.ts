@@ -26,12 +26,21 @@ export class CookieStorage {
     }
 
     /**
+     * Remove an existing cookie.
+     * @param key The key of the cookie to remove.
+     */
+    public static clear(key: string): void {
+        return (window as any).$cookies.remove(key);
+    }
+
+    /**
      * Store a cookie on the user's browser.
      * @param key The key to store the cookie under.
      * @param value The value to store in the cookie.
      * @param expiration How long the cookie should be kept for.
      */
     public static set(key: string, value: any, expiration: string | number | Date): void {
-        (window as any).$cookies.set(key, value, expiration, undefined, store.state.baseUrl, false);
+        const cookieUrl: string = (store.state as any).config.baseUrl;
+        (window as any).$cookies.set(key, value, expiration, null, cookieUrl);
     }
 }
