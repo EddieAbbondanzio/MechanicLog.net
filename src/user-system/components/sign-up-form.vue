@@ -2,27 +2,32 @@
   <div class="row my-5">
     <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-4">
       <form class="px-3">
-        <form-header title="Sign Up"/>
+        <form-header
+          title="Sign Up"
+          description="Sign up now to start your free 60 day trial with MechanicLog. No commitment or financial details needed."
+        />
 
         <alert-message type="Success" v-if="successMessage.length > 0">{{ successMessage }}</alert-message>
-        <alert-message type="Danger" v-if="errorMessage.length > 0">{{ errorMessage }}</alert-message>
+        <alert-message type="Danger"  v-if="errorMessage.length > 0">{{ errorMessage }}</alert-message>
 
         <!-- Real Name -->
         <div class="form-group">
+          <label class="required" for="name-textbox">Full Name</label>
           <input
             v-model="name"
-            type="email"
+            type="name"
             class="form-control"
-            id="email-textbox"
+            id="name-textbox"
             placeholder="John Smith"
-            name="email"
-            v-validate="'required'"
+            name="name"
+            v-validate="'required|max:64'"
+            data-vv-validate-on="blur"
           >
-          <div class="invalid-feedback">{{ errors.first('name')}}</div>
         </div>
 
         <!-- Email Address -->
         <div class="form-group">
+          <label class="required" for="email-textbox">Email</label>
           <input
             v-model="email"
             type="email"
@@ -30,45 +35,69 @@
             id="email-textbox"
             placeholder="Email@domain.com"
             name="email"
-            v-validate="'required|email'"
+            v-validate="'required|email|max:64'"
+            data-vv-validate-on="blur"
           >
-          <div class="invalid-feedback">{{ errors.first('email')}}</div>
+          <small class="form-text text-muted">We promise to never share your email with anyone.</small>
         </div>
         <div class="form-group">
+          <label class="required" for="password-textbox">Password</label>
           <input
             v-model="password"
+            ref="password"
             type="password"
             class="form-control mb-1"
             id="password-textbox"
-            placeholder="Password"
+            placeholder="********"
             name="password"
-            v-validate="'required'"
+            v-validate="'required|min:8'"
+            data-vv-validate-on="blur"
           >
-          <div class="invalid-feedback">{{ errors.first('password')}}</div>
+          <small class="form-text text-muted">Passwords must be at least 8 characters long.</small>
         </div>
 
-        <div class="form-group mb-">
+        <div class="form-group">
+          <label class="required" for="password-confirm-textbox">Confirm Password</label>
           <input
             v-model="confirmPassword"
             type="password"
             class="form-control mb-1"
-            id="password-textbox"
-            placeholder="Confirm Password"
-            name="password"
-            v-validate="'required'"
+            id="password-confirm-textbox"
+            placeholder="********"
+            name="confirmPassword"
+            v-validate="'required|confirmed:password'"
+            data-vv-validate-on="blur"
           >
-          <div class="invalid-feedback">{{ errors.first('confirmPassword')}}</div>
         </div>
 
-        <button
-          type="button"
-          class="btn btn-primary d-inline-block"
-          id="login-button"
-          @click="onSignUpButtonClicked"
-        >Sign Up</button>
-        <div class="form-group form-check d-inline-block ml-3">
-          <input v-model="iAgree" type="checkbox" class="form-check-input" id="i-agree-checkbox">
-          <label class="form-check-label" for="i-agree-checkbox">I agree to the Terms of Use</label>
+        <!-- Error Summary -->
+        <form-error-list/>
+
+        <div class="pt-5">
+          <!-- Sign Up Button -->
+          <button
+            type="button"
+            class="btn btn-primary d-inline-block"
+            id="login-button"
+            @click="onSignUpButtonClicked"
+          >Sign Up</button>
+
+          <!-- I Agree checkbox -->
+          <div class="form-group form-check d-inline-block ml-3">
+            <input
+              v-model="iAgree"
+              type="checkbox"
+              class="form-check-input"
+              id="i-agree-checkbox"
+              name="iAgree"
+              v-validate="'required'"
+              data-vv-validate-on="blur"
+            >
+            <label
+              class="form-check-label required"
+              for="i-agree-checkbox"
+            >I agree to the Terms of Use</label>
+          </div>
         </div>
       </form>
     </div>
@@ -81,6 +110,7 @@ import { Component } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { User } from '@/user-system/entities/user';
 import FormHeader from '@/core/components/form/form-header.vue';
+import FormErrorList from '@/core/components/form/form-error-list.vue';
 import AlertMessage from '@/core/components/alert-message.vue';
 
 /**
@@ -90,6 +120,7 @@ import AlertMessage from '@/core/components/alert-message.vue';
   name: 'sign-up-form',
   components: {
     FormHeader,
+    FormErrorList,
     AlertMessage,
   },
 })
@@ -118,8 +149,26 @@ export default class SignUpForm extends UserMixin {
    * Properties are assigned in created to prevent weird undefined errors.
    */
   public created(): void {
+    this.name = '';
+    this.email = '';
+    this.password = '';
+    this.confirmPassword = '';
+    this.iAgree = false;
     this.errorMessage = '';
     this.successMessage = '';
+
+    // Custom error messages.
+    this.$validator.localize('en', {
+      custom: {
+        confirmPassword: {
+          required: 'The password confirmation field is required.',
+          confirmed: 'Confirm password does not match password.',
+        },
+        iAgree: {
+          required: 'The Terms of Use must be agreed to.',
+        },
+      },
+    });
   }
 
   /**
@@ -131,13 +180,29 @@ export default class SignUpForm extends UserMixin {
     if (!(await this.$validator.validate())) {
       return;
     }
-    try {
 
+    try {
+      const u: User | null = await this.$register({ email: this.email, name: this.name, password: this.password });
+      console.log(u);
+      // If the registration was successful, fire off the event.
+      if (u != null) {
+        this.errorMessage = '';
+        this.successMessage = 'Success. Redirecting...';
+
+        // Propogate the event to the parent (page)
+        this.$emit('registered', u);
+      } else {
+        this.errorMessage = 'Failed to register. Please try again later';
+      }
+
+      // Hi
     } catch (error) {
       // Alert the user of what went wrong
       this.errorMessage = error.message;
       this.successMessage = '';
     }
+
+    this.$forceUpdate();
   }
 }
 </script>

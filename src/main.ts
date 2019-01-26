@@ -13,6 +13,7 @@ Vue.use(VeeValidate, {
     valid: 'is-valid',
     invalid: 'is-invalid',
   },
+  events: 'input',
 });
 
 const v: Vue = new Vue({

@@ -8,11 +8,12 @@
         <alert-message type="Danger" v-if="errorMessage.length > 0">{{ errorMessage }}</alert-message>
 
         <div class="form-group">
+          <label for="email-textbox">Email</label>
           <input
             v-model="email"
             type="email"
             class="form-control"
-            id="emailTB"
+            id="email-textbox"
             placeholder="Email@domain.com"
             name="email"
             v-validate="'required|email'"
@@ -20,12 +21,13 @@
           <div class="invalid-feedback">{{ errors.first('email')}}</div>
         </div>
         <div class="form-group mb-5">
+          <label for="email-textbox">Password</label>
           <input
             v-model="password"
             type="password"
             class="form-control mb-1"
-            id="passwordTB"
-            placeholder="Password"
+            id="password-textbox"
+            placeholder="********"
             name="password"
             v-validate="'required'"
           >

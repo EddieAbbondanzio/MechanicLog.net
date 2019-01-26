@@ -1,6 +1,7 @@
 <template>
   <div class="pb-3">
     <h1>{{ title }}</h1>
+    <hr>
     <p class="text-muted" v-if="description != null">{{ description }}</p>
   </div>
 </template>
