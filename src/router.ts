@@ -1,9 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from './core/store/store';
 
 Vue.use(Router);
 
-export default new Router({
+const router: Router = new Router({
   routes: [
     {
       path: '/',
@@ -14,6 +15,9 @@ export default new Router({
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('./views/private/dashboard.vue'),
+      meta: {
+        authRequired: true,
+      },
     },
     {
       path: '/login',
@@ -25,5 +29,29 @@ export default new Router({
       name: 'register',
       component: () => import('./views/public/sign-up.vue'),
     },
+    {
+      path: '/forgot',
+      name: 'forgot',
+      component: () => import ('./views/public/forgot.vue'),
+    },
   ],
 });
+
+// Route guard for logged in users.
+router.beforeEach((to, from, next) => {
+  // Skip over routes that don't require auth.
+  if (!to.meta.authRequired) {
+    next();
+    return;
+  }
+
+  if ((store.state as any).user.currentUser != null) {
+    next();
+  } else {
+    next({
+      path: '/login',
+    });
+  }
+});
+
+export default router;

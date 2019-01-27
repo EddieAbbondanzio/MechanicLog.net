@@ -4,6 +4,7 @@ import { StoreState } from '@/core/store/store-state';
 import { userGetters } from './user-getters';
 import { userMutations } from './user-mutations';
 import { userActions } from './user-actions';
+import store from '@/core/store/store';
 
 /**
  * Starting state of the user store.

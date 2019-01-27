@@ -9,6 +9,9 @@ import { Component, Vue } from 'vue-property-decorator';
 import MasterPage from '@/core/components/master-page.vue';
 import SignUpForm from '@/user-system/components/sign-up-form.vue';
 
+/**
+ * Registration page that allows new users to sign up with the site.
+ */
 @Component({
   components: {
     MasterPage,
