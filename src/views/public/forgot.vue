@@ -18,17 +18,12 @@ import { UserMixin } from '@/user-system/mixins/user-mixin';
     ForgotPasswordForm,
   },
 })
-export default class Forgot extends UserMixin {
+export default class Forgot extends Vue {
   /**
    * Event handler for when the form is submitted.
    */
   public async onFormSubmit(email: string): Promise<void> {
-    try {
-      await this.$requestPasswordReset(email);
-    }
-    catch (error) {
-
-    }
+    this.$router.push({ name: 'reset' });
   }
 }
 </script>

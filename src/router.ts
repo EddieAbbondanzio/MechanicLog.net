@@ -34,6 +34,11 @@ const router: Router = new Router({
       name: 'forgot',
       component: () => import ('./views/public/forgot.vue'),
     },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: () => import('./views/public/reset.vue'),
+    },
   ],
 });
 
