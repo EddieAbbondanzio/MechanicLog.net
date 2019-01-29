@@ -34,12 +34,8 @@
     <form-error-list :form="this"/>
 
     <div class="form-group mt-5">
-      <button
-        type="button"
-        class="btn btn-primary d-inline-block"
-        id="login-button"
-        @click="onLoginButtonClicked"
-      >Login</button>
+      <form-submit-button text="Login" @click="onLoginButtonClicked" ref="submitButton"/>
+
       <div class="form-check d-inline-block ml-3">
         <input
           v-model="rememberMe"
@@ -61,6 +57,7 @@ import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
 import FormContainer from '@/core/components/form/form-container.vue';
 import FormErrorList from '@/core/components/form/form-error-list.vue';
+import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 
 /**
  * Login form to allow a user to sign in.
@@ -70,6 +67,7 @@ import FormErrorList from '@/core/components/form/form-error-list.vue';
   components: {
     FormContainer,
     FormErrorList,
+    FormSubmitButton,
     AlertMessage,
   },
 })
@@ -116,28 +114,34 @@ export default class LoginForm extends UserMixin {
    * inputs first, then send off a request to the back end.
    */
   public async onLoginButtonClicked(event: any): Promise<void> {
+    const submitButton: FormSubmitButton = this.$refs.submitButton as FormSubmitButton;
+
     // Validate first.
     if (!(await this.$validator.validate())) {
+      submitButton.reset();
       return;
     }
 
     try {
       const u: User | null = await this.$login(this.email, this.password, this.rememberMe);
-
       // If the login was successful, fire off the event.
       if (u != null) {
         this.errorMessage = '';
         this.successMessage = 'Success. Redirecting...';
+        this.$forceUpdate();
 
         // Propogate the event to the parent (page)
         this.$emit('login', u);
       } else {
         this.errorMessage = 'Invalid email and/or password';
+        submitButton.reset();
       }
     } catch (error) {
       // Alert the user of what went wrong
       this.errorMessage = error.message;
       this.successMessage = '';
+      this.$forceUpdate();
+      submitButton.reset();
     }
   }
 }

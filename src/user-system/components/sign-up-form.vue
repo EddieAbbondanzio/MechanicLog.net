@@ -71,12 +71,7 @@
 
     <div class="pt-5">
       <!-- Sign Up Button -->
-      <button
-        type="button"
-        class="btn btn-primary d-inline-block"
-        id="login-button"
-        @click="onSignUpButtonClicked"
-      >Sign Up</button>
+      <form-submit-button text="Sign Up" @click="onSignUpButtonClicked" />
 
       <!-- I Agree checkbox -->
       <div class="form-group form-check d-inline-block ml-3">
@@ -103,6 +98,7 @@ import { User } from '@/user-system/entities/user';
 import FormErrorList from '@/core/components/form/form-error-list.vue';
 import AlertMessage from '@/core/components/alert-message.vue';
 import FormContainer from '@/core/components/form/form-container.vue';
+import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 
 /**
  * Sign up form to allow new users to register.
@@ -112,6 +108,7 @@ import FormContainer from '@/core/components/form/form-container.vue';
   components: {
     FormContainer,
     FormErrorList,
+    FormSubmitButton,
     AlertMessage,
   },
 })

@@ -3,7 +3,6 @@
     title="Password Recovery"
     description="Please enter the email address associated with your account, and we'll send you a password reset code."
   >
-
     <div class="form-group">
       <label class="required" for="email-textbox">Email</label>
       <input
@@ -22,12 +21,7 @@
     <alert-message :type="message.type" v-if="message.text.length > 0">{{ message.text }}</alert-message>
 
     <div class="form-group mt-5">
-      <button
-        type="button"
-        class="btn btn-primary d-inline-block"
-        id="email-button"
-        @click="onSendEmailButtonClick"
-      >Send Email</button>
+      <form-submit-button text="Email Me" @click="onSendEmailButtonClick" ref="submitButton"/>
     </div>
   </form-container>
 </template>
@@ -38,6 +32,7 @@ import FormContainer from '@/core/components/form/form-container.vue';
 import FormErrorList from '@/core/components/form/form-error-list.vue';
 import AlertMessage, { AlertType } from '@/core/components/alert-message.vue';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
+import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 
 /**
  * Password recovery form that will have a reset code emailed
@@ -48,6 +43,7 @@ import { UserMixin } from '@/user-system/mixins/user-mixin';
   components: {
     FormContainer,
     FormErrorList,
+    FormSubmitButton,
     AlertMessage,
   },
 })
@@ -82,6 +78,7 @@ export default class ForgotPasswordForm extends UserMixin {
   public async onSendEmailButtonClick(): Promise<void> {
     // If things aren't valid, stop.
     if (!(await this.$validator.validate())) {
+      (this.$refs.submitButton as FormSubmitButton).reset();
       return;
     }
 
@@ -89,6 +86,7 @@ export default class ForgotPasswordForm extends UserMixin {
       await this.$requestPasswordReset(this.email);
     } catch (error) {
       this.message.text = error.message;
+      (this.$refs.submitButton as FormSubmitButton).reset();
     }
 
     // Notify the parent page

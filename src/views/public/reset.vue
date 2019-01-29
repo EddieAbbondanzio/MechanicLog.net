@@ -1,6 +1,6 @@
 <template>
   <master-page>
-      <reset-password-form/>
+    <reset-password-form @submit="onFormSubmit"/>
   </master-page>
 </template>
 
@@ -19,5 +19,11 @@ import ResetPasswordForm from '@/user-system/components/reset-password-form.vue'
   },
 })
 export default class Reset extends Vue {
+  /**
+   * Event handler to process a form submission.
+   */
+  public async onFormSubmit(): Promise<void> {
+    this.$router.push({ name: 'home' });
+  }
 }
 </script>

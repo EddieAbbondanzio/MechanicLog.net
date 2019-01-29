@@ -1,7 +1,7 @@
 <template>
   <form-container
     title="Password Reset"
-    description="Please check you email for a reset code. The email may take a few moments to arrive."
+    description="Please check your email inbox for a reset code. The email may take a few moments to arrive. If it's still not coming in please be sure to check your spam folder."
   >
     <!-- Email -->
     <div class="form-group">
@@ -37,8 +37,8 @@
     <div class="form-group">
       <label class="required" for="password-textbox">Password</label>
       <input
-        v-model="password"
-        type="password"
+        v-model="newPassword"
+        type="text"
         class="form-control mb-1"
         id="password-textbox"
         placeholder="********"
@@ -54,7 +54,7 @@
       <label class="required" for="password-confirm-textbox">Confirm Password</label>
       <input
         v-model="confirmPassword"
-        type="password"
+        type="text"
         class="form-control mb-1"
         id="password-confirm-textbox"
         placeholder="********"
@@ -68,12 +68,7 @@
     <alert-message :type="message.type" v-if="message.text.length > 0">{{ message.text }}</alert-message>
 
     <div class="form-group mt-5">
-      <button
-        type="button"
-        class="btn btn-primary d-inline-block"
-        id="reset-password-button"
-        @click="onResetPasswordButtonClick"
-      >Reset Password</button>
+      <form-submit-button text="Reset Password" @click="onResetPasswordButtonClick"/>
     </div>
   </form-container>
 </template>
@@ -83,7 +78,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import FormContainer from '@/core/components/form/form-container.vue';
 import AlertMessage, { AlertType } from '@/core/components/alert-message.vue';
 import FormErrorList from '@/core/components/form/form-error-list.vue';
-
+import { UserPasswordReset } from '@/user-system/services/auth/user-password-reset';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
+import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 
 /**
  * Form to reset a user's password using the password reset
@@ -94,10 +91,11 @@ import FormErrorList from '@/core/components/form/form-error-list.vue';
   components: {
     FormContainer,
     FormErrorList,
+    FormSubmitButton,
     AlertMessage,
   },
 })
-export default class ResetPasswordForm extends Vue {
+export default class ResetPasswordForm extends UserMixin {
   /**
    * The user's email
    */
@@ -105,7 +103,7 @@ export default class ResetPasswordForm extends Vue {
 
   public resetCode!: string;
 
-  public password!: string;
+  public newPassword!: string;
 
   public confirmPassword!: string;
 
@@ -120,7 +118,7 @@ export default class ResetPasswordForm extends Vue {
   public created(): void {
     this.email = '';
     this.resetCode = '';
-    this.password = '';
+    this.newPassword = '';
     this.confirmPassword = '';
 
     this.message = {
@@ -130,7 +128,24 @@ export default class ResetPasswordForm extends Vue {
   }
 
   public async onResetPasswordButtonClick(): Promise<void> {
+    // If things aren't valid, stop.
+    if (!(await this.$validator.validate())) {
+      return;
+    }
 
+    try {
+      await this.$resetPassword({
+        email: this.email,
+        resetToken: this.resetCode,
+        newPassword: this.newPassword,
+      } as UserPasswordReset);
+
+      // Propogate the event up
+      this.$emit('submit');
+    } catch (error) {
+      this.message.type = 'Danger';
+      this.message = error.message;
+    }
   }
 }
 </script>

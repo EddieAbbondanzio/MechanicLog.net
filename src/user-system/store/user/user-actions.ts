@@ -19,15 +19,18 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @param credentials The user's credentials.
      * @returns The logged in user.
      */
-    async logIn(context: ActionContext<UserState, StoreState>, credentials: UserCredentials): Promise<User> {
+    async logIn(context: ActionContext<UserState, StoreState>, credentials: UserCredentials): Promise<User | null> {
         // Prepare the services needed.
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const authService: AuthService = new AuthService(apiUrl);
         const userService: UserService = new UserService(apiUrl);
 
+        let authToken: string;
+        let user: User;
+
         // Attempt to log in, and get the user's details.
-        const authToken: string = await authService.login(credentials.email, credentials.password);
-        const user: User = await userService.getUserFromToken(authToken);
+        authToken = await authService.login(credentials.email, credentials.password);
+        user = await userService.getUserFromToken(authToken);
 
         user.authToken = authToken;
 
