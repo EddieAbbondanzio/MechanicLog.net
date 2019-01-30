@@ -1,11 +1,17 @@
 <template>
   <div class="container-fluid" style="position: relative; min-height: 100vh;">
     <nav-bar/>
-    <slot></slot>
 
-    <!-- Egads thats gross -->
+    <!-- Content of the page -->
+    <div class="row">
+      <div class="col-12">
+        <slot></slot>
+      </div>
+    </div>
+
+    <!-- Egads thats gross. We need this to prevent overlap behind the footer -->
     <div style="height: 128px;">&nbsp;</div>
-    <page-footer style="height: 128px; line-height: 128px;"/>
+    <page-footer/>
   </div>
 </template>
 

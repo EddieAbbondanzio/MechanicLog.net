@@ -61,7 +61,7 @@
             </a>
 
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Dashboard</a>
+              <router-link class="dropdown-item" to="dashboard">Dashboard</router-link>
               <a class="dropdown-item" href="#">Settings</a>
               <a class="dropdown-item" href="#" @click="$logOut">Log Out</a>
             </div>

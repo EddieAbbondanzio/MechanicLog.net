@@ -1,6 +1,6 @@
 <template>
   <master-page>
-      Yo da real MVP
+    <side-bar/>
   </master-page>
 </template>
 
@@ -9,11 +9,13 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import MasterPage from '@/core/components/master-page.vue';
 import { Getter } from 'vuex-class';
+import SideBar from '@/dashboard/components/side-bar/side-bar.vue';
 
 @Component({
   components: {
     MasterPage,
+    SideBar,
   },
 })
-export default class Dashboard extends Vue {}
+export default class Dashboard extends Vue { }
 </script>
