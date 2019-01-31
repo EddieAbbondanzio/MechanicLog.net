@@ -1,19 +1,21 @@
 <template>
-    <private-master-page title="Dashboard">
-      
+    <private-master-page title="Garage">
     </private-master-page>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import PrivateMasterPage from '@/core/components/private/private-master-page.vue';
 
+/**
+ * Garage page.
+ */
 @Component({
+    name: 'garage',
     components: {
         PrivateMasterPage,
     },
 })
-export default class Dashboard extends Vue { }
+export default class Garage extends Vue {
+}
 </script>

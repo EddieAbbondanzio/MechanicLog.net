@@ -15,7 +15,7 @@ h2 {
         <img
             alt="MechanicLog logo"
             class="logo mx-auto"
-            src="../../../assets/logo.png"
+            src="../../../../assets/logo.png"
             style="margin-left: auto; margin-right: auto;"
         >
         <h2 class="pt-2">MechanicLog</h2>

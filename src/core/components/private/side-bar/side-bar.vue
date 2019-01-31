@@ -3,6 +3,7 @@ nav {
     height: 100vh;
     width: 256px;
     position: relative;
+    float: left;
 }
 
 .user {
@@ -23,9 +24,9 @@ nav {
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import SideBarButton from '@/dashboard/components/side-bar/side-bar-button.vue';
-import SideBarUser from '@/dashboard/components/side-bar/side-bar-user.vue';
-import SideBarIcon from '@/dashboard/components/side-bar/side-bar-icon.vue';
+import SideBarButton from '@/core/components/private/side-bar/side-bar-button.vue';
+import SideBarUser from '@/core/components/private/side-bar/side-bar-user.vue';
+import SideBarIcon from '@/core/components/private/side-bar/side-bar-icon.vue';
 
 /**
  * Side bar used on the dashboard pages.

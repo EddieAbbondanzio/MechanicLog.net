@@ -20,6 +20,14 @@ const router: Router = new Router({
       },
     },
     {
+      path: '/garage',
+      name: 'garage',
+      component: () => import ('./views/private/garage.vue'),
+      meta: {
+        authRequired: true,
+      },
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('./views/public/login.vue'),
