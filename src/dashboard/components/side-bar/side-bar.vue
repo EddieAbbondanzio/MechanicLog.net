@@ -1,22 +1,42 @@
-<style>
-  .side-bar {
-    height: calc(100vh - 128px - 80px);
-  }
+<style lang="scss">
+nav {
+    height: 100vh;
+    width: 256px;
+    position: relative;
+}
+
+.user {
+    bottom: 24px;
+    position: absolute;
+}
 </style>
+
 <template>
-  <div class="side-bar">
-    <div class="col-lg-2 bg-secondary h-100">hello world!</div>
-  </div>
+    <nav class="bg-primary">
+        <side-bar-icon class="pb-5 pt-4"/>
+        <side-bar-button name="Dashboard" icon="dashboard" route="dashboard"/>
+        <side-bar-button name="Garage" icon="time_to_leave" route="garage"/>
+
+        <side-bar-user class="user"/>
+    </nav>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import SideBarButton from '@/dashboard/components/side-bar/side-bar-button.vue';
+import SideBarUser from '@/dashboard/components/side-bar/side-bar-user.vue';
+import SideBarIcon from '@/dashboard/components/side-bar/side-bar-icon.vue';
 
 /**
  * Side bar used on the dashboard pages.
  */
 @Component({
-  name: 'side-bar',
+    name: 'side-bar',
+    components: {
+        SideBarButton,
+        SideBarIcon,
+        SideBarUser,
+    },
 })
 export default class SideBar extends Vue {
 }

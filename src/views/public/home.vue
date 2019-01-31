@@ -1,23 +1,23 @@
 <template>
-  <master-page>
+  <public-master-page>
     <hero />
     <membership-plans />
-  </master-page>
+  </public-master-page>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
+import PublicMasterPage from '@/core/components/public/public-master-page.vue';
 import Hero from '@/components/public/home/hero.vue';
 import MembershipPlans from '@/components/public/home/membership-plans.vue';
-import MasterPage from '@/core/components/master-page.vue';
 import { Getter } from 'vuex-class';
 
 @Component({
   components: {
     Hero,
     MembershipPlans,
-    MasterPage,
+    PublicMasterPage,
   },
 })
 export default class Home extends Vue {}

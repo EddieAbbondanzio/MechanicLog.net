@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import FormContainer from '@/core/components/form/form-container.vue';
+import FormContainer from '@/core/components/shared/form/form-container.vue';
 
 /**
  * List of errors wrong with the parent form.

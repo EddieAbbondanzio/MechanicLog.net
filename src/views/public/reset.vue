@@ -1,12 +1,12 @@
 <template>
-  <master-page>
+  <public-master-page>
     <reset-password-form @submit="onFormSubmit"/>
-  </master-page>
+  </public-master-page>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import MasterPage from '@/core/components/master-page.vue';
+import PublicMasterPage from '@/core/components/public/public-master-page.vue';
 import ResetPasswordForm from '@/user-system/components/reset-password-form.vue';
 
 /**
@@ -14,7 +14,7 @@ import ResetPasswordForm from '@/user-system/components/reset-password-form.vue'
  */
 @Component({
   components: {
-    MasterPage,
+    PublicMasterPage,
     ResetPasswordForm,
   },
 })

@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import FormHeader from '@/core/components/form/form-header.vue';
+import FormHeader from '@/core/components/shared/form/form-header.vue';
 
 /**
  * Wrapper for commonizing functionality of page forms.

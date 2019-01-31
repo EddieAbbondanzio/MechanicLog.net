@@ -1,13 +1,13 @@
 <template>
-  <master-page>
+  <public-master-page>
     <login-form @login="onLogin"/>
-  </master-page>
+  </public-master-page>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MasterPage from '@/core/components/master-page.vue';
 import { AuthService } from '@/user-system/services/auth/auth-service';
+import PublicMasterPage from '@/core/components/public/public-master-page.vue';
 import { User } from '@/user-system/entities/user';
 import LoginForm from '@/user-system/components/login-form.vue';
 
@@ -16,7 +16,7 @@ import LoginForm from '@/user-system/components/login-form.vue';
  */
 @Component({
   components: {
-    MasterPage,
+    PublicMasterPage,
     LoginForm,
   },
 })

@@ -95,10 +95,10 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { User } from '@/user-system/entities/user';
-import FormErrorList from '@/core/components/form/form-error-list.vue';
-import AlertMessage from '@/core/components/alert-message.vue';
-import FormContainer from '@/core/components/form/form-container.vue';
-import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
+import FormErrorList from '@/core/components/shared/form/form-error-list.vue';
+import AlertMessage from '@/core/components/shared/alert-message.vue';
+import FormContainer from '@/core/components/shared/form/form-container.vue';
+import FormSubmitButton from '@/core/components/shared/form/form-submit-button.vue';
 
 /**
  * Sign up form to allow new users to register.

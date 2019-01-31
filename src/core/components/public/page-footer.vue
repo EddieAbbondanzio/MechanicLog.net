@@ -19,6 +19,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
+/**
+ * Footer to put at the bottom of the page.
+ */
 @Component({
   name: 'page-foot',
 })

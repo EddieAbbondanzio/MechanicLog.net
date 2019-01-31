@@ -27,8 +27,9 @@
         name="password"
         v-validate="'required'"
         data-vv-validate-on="blur"
+        @keyup.enter="onLoginButtonClicked"
       >
-      <router-link class="info-link" to="/forgot">I forgot my password</router-link>
+      <router-link class="info-link" to="/forgot" tabindex="-1">I forgot my password</router-link>
     </div>
 
     <form-error-list :form="this"/>
@@ -54,10 +55,10 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { User } from '@/user-system/entities/user';
-import AlertMessage from '@/core/components/alert-message.vue';
-import FormContainer from '@/core/components/form/form-container.vue';
-import FormErrorList from '@/core/components/form/form-error-list.vue';
-import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
+import AlertMessage from '@/core/components/shared/alert-message.vue';
+import FormContainer from '@/core/components/shared/form/form-container.vue';
+import FormErrorList from '@/core/components/shared/form/form-error-list.vue';
+import FormSubmitButton from '@/core/components/shared/form/form-submit-button.vue';
 
 /**
  * Login form to allow a user to sign in.

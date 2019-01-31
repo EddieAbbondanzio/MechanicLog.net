@@ -1,3 +1,7 @@
+<style lang="scss">
+
+</style>
+
 <template>
   <div class="container-fluid" style="position: relative; min-height: 100vh;">
     <nav-bar/>
@@ -17,8 +21,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import NavBar from '@/core/components/nav-bar/nav-bar.vue';
-import PageFooter from '@/core/components/page-footer.vue';
+import NavBar from '@/core/components/public/nav-bar/nav-bar.vue';
+import PageFooter from '@/core/components/public/page-footer.vue';
 
 @Component({
   components: {
@@ -26,5 +30,5 @@ import PageFooter from '@/core/components/page-footer.vue';
     PageFooter,
   },
 })
-export default class MasterPage extends Vue { }
+export default class PublicMasterPage extends Vue { }
 </script>

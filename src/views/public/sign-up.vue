@@ -1,12 +1,12 @@
 <template>
-  <master-page>
+  <public-master-page>
     <sign-up-form @registered="onRegistered"/>
-  </master-page>
+  </public-master-page>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import MasterPage from '@/core/components/master-page.vue';
+import PublicMasterPage from '@/core/components/public/public-master-page.vue';
 import SignUpForm from '@/user-system/components/sign-up-form.vue';
 
 /**
@@ -14,7 +14,7 @@ import SignUpForm from '@/user-system/components/sign-up-form.vue';
  */
 @Component({
   components: {
-    MasterPage,
+    PublicMasterPage,
     SignUpForm,
   },
 })

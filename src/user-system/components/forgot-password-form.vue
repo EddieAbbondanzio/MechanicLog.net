@@ -28,11 +28,11 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import FormContainer from '@/core/components/form/form-container.vue';
-import FormErrorList from '@/core/components/form/form-error-list.vue';
-import AlertMessage, { AlertType } from '@/core/components/alert-message.vue';
+import FormContainer from '@/core/components/shared/form/form-container.vue';
+import FormErrorList from '@/core/components/shared/form/form-error-list.vue';
+import AlertMessage, { AlertType } from '@/core/components/shared/alert-message.vue';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
-import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
+import FormSubmitButton from '@/core/components/shared/form/form-submit-button.vue';
 
 /**
  * Password recovery form that will have a reset code emailed
