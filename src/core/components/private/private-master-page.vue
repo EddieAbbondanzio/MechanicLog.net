@@ -1,19 +1,34 @@
+<style lang="scss">
+.page-content {
+    width: auto;
+    overflow: hidden;
+    height: 100vh;
+}
+</style>
+
+
 <template>
-    <div>
+    <div class="bg-gray-200 text-dark">
         <!-- Side Bar -->
         <side-bar/>
 
         <!-- Content -->
-        <main class="p-4" style="width: auto; overflow: hidden;">
-            <!-- Header -->
-            <div v-if="title != null">
-                <h1>{{ title }}</h1>
-                <hr>
+        <div class="container-fluid page-content p-4">
+            <div class="row">
+                <!-- Header -->
+                <div class="col-12">
+                    <header class="bg-light rounded px-4 py-2 mb-4">
+                        <slot name="header"></slot>
+                    </header>
+                </div>
             </div>
 
-            <!-- Child Content -->
-            <slot></slot>
-        </main>
+            <div class="row">
+                <div class="col-12">
+                    <slot></slot>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -31,7 +46,5 @@ import SideBar from '@/core/components/private/side-bar/side-bar.vue';
     },
 })
 export default class PrivateMasterPage extends Vue {
-    @Prop()
-    public title!: string;
 }
 </script>

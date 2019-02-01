@@ -6,4 +6,7 @@
 
 <style lang="scss">
 @import "./public/styles.scss";
+@import "./public/bootstrap/bootstrap.scss";
+@import "./public/bootstrap/bootstrap-reboot.scss";
+@import "./public/bootstrap/bootstrap-grid.scss";
 </style>

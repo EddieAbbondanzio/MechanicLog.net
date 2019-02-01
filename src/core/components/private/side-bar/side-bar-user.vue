@@ -13,7 +13,7 @@
 <template>
     <div class="user-profile text-light">
         <!-- User Drop Down -->
-        <div class="dropdown">
+        <div class="dropdown dropright">
             <a
                 class="btn btn-primary dropdown-toggle btn-block user-name"
                 href="#"
