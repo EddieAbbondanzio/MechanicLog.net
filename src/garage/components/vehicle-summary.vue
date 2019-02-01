@@ -1,14 +1,28 @@
 <style lang="scss">
-@import './public/bootstrap/_functions.scss';
-@import './public/bootstrap/_variables.scss';
+@import "./public/bootstrap/_functions.scss";
+@import "./public/bootstrap/_variables.scss";
+
+.maintenace-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.maintenace-link a {
+    font-size: 1.5rem;
+}
+
+.maintennace-link i {
+    vertical-align: middle;
+}
 
 .vehicle-options-button {
     height: 150px;
     line-height: 150px;
     width: 74px;
     vertical-align: super;
-    border-top-left-radius: 0px!important;
-    border-bottom-left-radius: 0px!important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
 }
 
 .vehicle-options-button:hover {
@@ -24,11 +38,11 @@
 
 
 <template>
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-lg-12" v-if="vehicle != null">
             <div class="bg-light rounded" style="height: 150px;">
                 <!-- Vehicle Details -->
-                <div class="px-4 py-3 clearfix d-inline-block" style="width: calc(100% - 74px);">
+                <div class="px-4 py-3 clearfix d-inline-block" style="height: 150px; width: calc(100% - 74px);">
                     <div class="d-inline-block">
                         <h3 class="text-left text-dark d-inline-block">{{ vehicle.name }}</h3>
 
@@ -43,7 +57,18 @@
                     </div>
 
                     <!-- Maintenace Link -->
-                    <div class="float-right">hi</div>
+                    <div class="float-right maintenace-link h-100">
+                        <div>
+                            <a class="link-info" href="#">
+                                <i class="material-icons">settings</i> Maintenance
+                            </a>
+                            <br>
+                            <!-- <span
+                                class="text-muted"
+                                v-if="vehicle.lastMaintenaceDate != null"
+                            >Last maintenance on: {{ toDisplayDate(vehicle.lastMaintenaceDate) }}</span> -->
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Options Button -->
@@ -57,7 +82,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Vehicle } from '../../entities/vehicle';
+import { Vehicle } from '../entities/vehicle';
 
 /**
  * Component that summarizes the details of a vehicle.
@@ -69,6 +94,14 @@ export default class VehicleSummary extends Vue {
     /**
      * The vehicle being rendered.
      */
-    public vehicle: Vehicle = new Vehicle('Daily Driver', 1999, 'Acura', '3.5RL', 149995);
+    @Prop()
+    public vehicle!: Vehicle;
+
+    /**
+     * Convert the date into a print friendly string.
+     */
+    public toDisplayDate(date: Date): string {
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    }
 }
 </script>

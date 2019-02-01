@@ -29,6 +29,11 @@ export class Vehicle {
     public mileage: number;
 
     /**
+     * The last day maintenace was performed on it.
+     */
+    public lastMaintenaceDate?: Date;
+
+    /**
      * Create a new vehicle.
      * @param name The nickname of the car.
      * @param year The model year of the car.

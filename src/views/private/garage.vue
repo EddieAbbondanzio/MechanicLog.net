@@ -24,7 +24,11 @@
                             for="inputGroupSelect01"
                         >Order By:</label>
                     </div>
-                    <select class="custom-select border-0 bg-white" id="inputGroupSelect01">
+                    <select
+                        class="custom-select border-0 bg-white"
+                        id="inputGroupSelect01"
+                        @change="onOrderByChanged"
+                    >
                         <option selected>Name</option>
                         <option value="Year">Year</option>
                         <option value="Make">Make</option>
@@ -35,14 +39,15 @@
         </div>
 
         <!-- Vehicles -->
-        <vehicle-list/>
+        <vehicle-summary v-for="vehicle in vehicles" :vehicle="vehicle" :key="vehicle.name"/>
     </private-master-page>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import PrivateMasterPage from '@/core/components/private/private-master-page.vue';
-import VehicleList from '@/garage/components/vehicle-list/vehicle-list.vue';
+import { Vehicle } from '@/garage/entities/vehicle';
+import VehicleSummary from '@/garage/components/vehicle-summary.vue';
 
 /**
  * Garage page.
@@ -51,9 +56,37 @@ import VehicleList from '@/garage/components/vehicle-list/vehicle-list.vue';
     name: 'garage',
     components: {
         PrivateMasterPage,
-        VehicleList,
+        VehicleSummary,
     },
 })
 export default class Garage extends Vue {
+    public vehicles: Vehicle[] = [
+        new Vehicle('Daily Driver', 1993, 'Honda', 'Civic', 122000),
+        new Vehicle('Winter Beater', 2000, 'Jeep', 'Cherokee', 165769),
+    ];
+
+    /**
+     * Event handler to process when the user wants to change how their ordering
+     * their vehicles by.
+     */
+    public onOrderByChanged(event: any): void {
+        switch (event.target.value) {
+            case 'Name':
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.name.localeCompare(b.name));
+                break;
+
+            case 'Year':
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.year > b.year ? -1 : 1);
+                break;
+
+            case 'Make':
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.make.localeCompare(b.make));
+                break;
+
+            case 'Mileage':
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.mileage > b.mileage ? -1 : 1);
+                break;
+        }
+    }
 }
 </script>
