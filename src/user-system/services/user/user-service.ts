@@ -13,8 +13,14 @@ export class UserService extends ApiService {
      */
     public async getUserFromToken(authToken: string): Promise<User> {
         try {
-            const response: HttpResponse<User> = await this._httpClient.get('/user', authToken);
-            return response.data;
+            const response: HttpResponse = await this._httpClient.get('/user', authToken);
+
+            return {
+                authToken: response.data.authToken,
+                name: response.data.name,
+                email: response.data.email,
+                isVerified: response.data.isVerified,
+            };
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
         }
@@ -27,7 +33,7 @@ export class UserService extends ApiService {
      */
     public async updateName(user: User, newName: string): Promise<void> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.patch('/user/name', {
+            await this._httpClient.patch('/user/name', {
                 name: user.name,
             }, user.authToken);
         } catch (error) {
@@ -42,7 +48,7 @@ export class UserService extends ApiService {
      */
     public async updateEmail(user: User, newEmail: string): Promise<void> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.patch('/user/name', {
+            await this._httpClient.patch('/user/name', {
                 email: user.email,
             }, user.authToken);
         } catch (error) {

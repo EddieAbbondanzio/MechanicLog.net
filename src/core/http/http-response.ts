@@ -2,7 +2,7 @@
 /**
  * Response from an HTTP request.
  */
-export interface HttpResponse<T> {
+export interface HttpResponse {
     /**
      * The HTTP status code.
      */
@@ -16,5 +16,5 @@ export interface HttpResponse<T> {
     /**
      * The body of the response.
      */
-    data: T;
+    data: any;
 }

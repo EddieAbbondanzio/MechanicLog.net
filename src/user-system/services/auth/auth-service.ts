@@ -18,7 +18,7 @@ export class AuthService extends ApiService {
      */
     public async login(email: string, password: string): Promise<string> {
         try {
-            const response: HttpResponse<{ token: string }> = await this._httpClient.post('/auth/login', {
+            const response: HttpResponse = await this._httpClient.post('/auth/login', {
                 email,
                 password,
             });
@@ -36,7 +36,7 @@ export class AuthService extends ApiService {
      */
     public async relogin(authToken: string): Promise<string> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.patch('/auth/login', {}, authToken);
+            await this._httpClient.patch('/auth/login', {}, authToken);
             return authToken;
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
@@ -50,7 +50,7 @@ export class AuthService extends ApiService {
      */
     public async register(userReg: UserRegistration): Promise<string> {
         try {
-            const response: HttpResponse<{ token: string }> = await this._httpClient.post('/auth/register', userReg);
+            const response: HttpResponse = await this._httpClient.post('/auth/register', userReg);
             return response.data.token;
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
@@ -64,7 +64,7 @@ export class AuthService extends ApiService {
      */
     public async verifyEmail(user: User, emailToken: string): Promise<void> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.post('/auth/verify', {
+            await this._httpClient.post('/auth/verify', {
                 emailToken,
             }, user.authToken);
         } catch (error) {
@@ -79,7 +79,7 @@ export class AuthService extends ApiService {
      */
     public async requestPasswordReset(email: string): Promise<void> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.post('/auth/password', {
+            await this._httpClient.post('/auth/password', {
                 email,
             });
         } catch (error) {
@@ -93,7 +93,7 @@ export class AuthService extends ApiService {
      */
     public async resetPassword(passwordReset: UserPasswordReset): Promise<void> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.put('/auth/password', passwordReset);
+            await this._httpClient.put('/auth/password', passwordReset);
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
         }
@@ -106,8 +106,7 @@ export class AuthService extends ApiService {
      */
     public async updatePassword(user: User, passwordUpdate: UserPasswordUpdate): Promise<void> {
         try {
-            const response: HttpResponse<void> = await this._httpClient.patch('/auth/password',
-                passwordUpdate, user.authToken);
+            await this._httpClient.patch('/auth/password', passwordUpdate, user.authToken);
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
         }

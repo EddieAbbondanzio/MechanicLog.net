@@ -26,7 +26,7 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async get<T>(url: string, authToken?: string): Promise<HttpResponse<T>> {
+    public async get<T>(url: string, authToken?: string): Promise<HttpResponse> {
         if (authToken != null) {
             return this._axios.get(url, {
                 headers: {
@@ -44,7 +44,7 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async head<T>(url: string, authToken?: string): Promise<HttpResponse<T>> {
+    public async head<T>(url: string, authToken?: string): Promise<HttpResponse> {
         if (authToken != null) {
             return this._axios.head(url, {
                 headers: {
@@ -63,7 +63,7 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async put<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
+    public async put<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse> {
         if (authToken != null) {
             return this._axios.put(url, body, {
                 headers: {
@@ -82,7 +82,7 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async post<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
+    public async post<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse> {
         if (authToken != null) {
             return this._axios.post(url, body, {
                 headers: {
@@ -101,7 +101,7 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async patch<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse<T>> {
+    public async patch<T>(url: string, body?: any, authToken?: string): Promise<HttpResponse> {
         if (authToken != null) {
             return this._axios.patch(url, body, {
                 headers: {
@@ -119,7 +119,7 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async delete<T>(url: string, authToken?: string): Promise<HttpResponse<T>> {
+    public async delete<T>(url: string, authToken?: string): Promise<HttpResponse> {
         if (authToken != null) {
             return this._axios.delete(url, {
                 headers: {

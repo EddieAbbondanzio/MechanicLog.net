@@ -4,6 +4,11 @@
  */
 export class Vehicle {
     /**
+     * The unique ID of the vehicle.
+     */
+    public id: number;
+
+    /**
      * The nickname of the car.
      */
     public name: string;
@@ -42,10 +47,23 @@ export class Vehicle {
      * @param mileage The current mileage.
      */
     constructor(name: string, year: number, make: string, model: string, mileage: number) {
+        this.id = 0;
         this.name = name;
         this.year = year;
         this.make = make;
         this.model = model;
         this.mileage = mileage;
+    }
+
+    /**
+     * Rebuild a vehicle entity from it's raw object counterpart. Useful
+     * for recreating them from API responses.
+     * @param raw The raw object to pull the vehicle details from.
+     */
+    public static fromRaw(raw: any): Vehicle {
+        const v: Vehicle = new Vehicle(raw.name, raw.year, raw.make, raw.model, raw.mileage);
+        v.id = raw.id;
+
+        return v;
     }
 }
