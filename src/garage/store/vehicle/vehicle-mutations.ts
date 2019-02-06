@@ -40,67 +40,15 @@ export const vehicleMutations: MutationTree<VehicleState> = {
     },
 
     /**
-     * Update the nick name of a vehicle.
+     * Update a vehicle.
      * @param state The current state.
-     * @param updateInfo The info to use to update.
+     * @param vehicle The vehicle to update.
      */
-    updateVehicleName(state: VehicleState, updateInfo: { vehicleId: number, name: string }): void {
-        const vehicle: Vehicle | undefined = state.vehicles.find((v) => v.id === updateInfo.vehicleId);
+    updateVehicle(state: VehicleState, vehicle: Vehicle): void {
+        const index: number = state.vehicles.findIndex((v) => v.id === vehicle.id);
 
-        if (vehicle != null) {
-            vehicle.name = updateInfo.name;
-        }
-    },
-
-    /**
-     * Update the year of a vehicle.
-     * @param state The current state.
-     * @param updateInfo The info to use to update.
-     */
-    updateVehicleYear(state: VehicleState, updateInfo: { vehicleId: number, year: number }): void {
-        const vehicle: Vehicle | undefined = state.vehicles.find((v) => v.id === updateInfo.vehicleId);
-
-        if (vehicle != null) {
-            vehicle.year = updateInfo.year;
-        }
-    },
-
-    /**
-     * Update the make of a vehicle.
-     * @param state The current state.
-     * @param updateInfo The info to use to update.
-     */
-    updateVehicleMake(state: VehicleState, updateInfo: { vehicleId: number, make: string }): void {
-        const vehicle: Vehicle | undefined = state.vehicles.find((v) => v.id === updateInfo.vehicleId);
-
-        if (vehicle != null) {
-            vehicle.make = updateInfo.make;
-        }
-    },
-
-    /**
-     * Update the model of a vehicle.
-     * @param state The current state.
-     * @param updateInfo The info to use to update.
-     */
-    updateVehicleModel(state: VehicleState, updateInfo: { vehicleId: number, model: string }): void {
-        const vehicle: Vehicle | undefined = state.vehicles.find((v) => v.id === updateInfo.vehicleId);
-
-        if (vehicle != null) {
-            vehicle.model = updateInfo.model;
-        }
-    },
-
-    /**
-     * Update the mileage of a vehicle.
-     * @param state The current state.
-     * @param updateInfo The info to use to update.
-     */
-    updateVehicleMileage(state: VehicleState, updateInfo: { vehicleId: number, mileage: number }): void {
-        const vehicle: Vehicle | undefined = state.vehicles.find((v) => v.id === updateInfo.vehicleId);
-
-        if (vehicle != null) {
-            vehicle.mileage = updateInfo.mileage;
+        if (index >= 0) {
+            state.vehicles[index] = vehicle;
         }
     },
 };

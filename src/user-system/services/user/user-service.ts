@@ -31,26 +31,9 @@ export class UserService extends ApiService {
      * @param user The user to update.
      * @param newName Their new full name.
      */
-    public async updateName(user: User, newName: string): Promise<void> {
+    public async update(user: User): Promise<void> {
         try {
-            await this._httpClient.patch('/user/name', {
-                name: user.name,
-            }, user.authToken);
-        } catch (error) {
-            throw new Error(error.response.data.errorMsg);
-        }
-    }
-
-    /**
-     * Update a user's email.
-     * @param user The user to update.
-     * @param newEmail Their new email.
-     */
-    public async updateEmail(user: User, newEmail: string): Promise<void> {
-        try {
-            await this._httpClient.patch('/user/name', {
-                email: user.email,
-            }, user.authToken);
+            await this._httpClient.patch('/user/name', { name: user.name, email: user.email }, user.authToken);
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
         }

@@ -121,7 +121,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
         const user: User | null = context.rootGetters['user/current'];
 
         if (user != null) {
-            await userService.updateName(user, name);
+            await userService.update(user);
             context.commit('updateName', name);
         }
     },
@@ -139,7 +139,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
         const user: User | null = context.rootGetters['user/current'];
 
         if (user != null) {
-            await userService.updateEmail(user, email);
+            await userService.update(user);
             context.commit('updateEmail', email);
         }
     },
