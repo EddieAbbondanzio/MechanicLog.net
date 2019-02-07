@@ -30,7 +30,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import FormContainer from '@/core/components/shared/form/form-container.vue';
 import FormErrorList from '@/core/components/shared/form/form-error-list.vue';
-import AlertMessage, { AlertType } from '@/core/components/shared/alert-message.vue';
+import AlertMessage from '@/core/components/shared/alert-message.vue';
+import { ThemeColor } from '@/core/components/shared/theme-color';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
 import FormSubmitButton from '@/core/components/shared/form/form-submit-button.vue';
 
@@ -58,7 +59,7 @@ export default class ForgotPasswordForm extends UserMixin {
    */
   public message!: {
     text: string,
-    type: AlertType,
+    color: ThemeColor,
   };
 
   /**
@@ -68,7 +69,7 @@ export default class ForgotPasswordForm extends UserMixin {
     this.email = '';
     this.message = {
       text: '',
-      type: 'Danger',
+      color: 'danger',
     };
   }
 

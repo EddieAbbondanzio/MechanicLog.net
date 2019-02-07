@@ -65,7 +65,7 @@
     </div>
 
     <form-error-list :form="this"/>
-    <alert-message :type="message.type" v-if="message.text.length > 0">{{ message.text }}</alert-message>
+    <alert-message :color="message.color" v-if="message.text.length > 0">{{ message.text }}</alert-message>
 
     <div class="form-group mt-5">
       <form-submit-button text="Reset Password" @click="onResetPasswordButtonClick"/>
@@ -76,7 +76,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import FormContainer from '@/core/components/shared/form/form-container.vue';
-import AlertMessage, { AlertType } from '@/core/components/shared/alert-message.vue';
+import { ThemeColor } from '@/core/components/shared/theme-color';
+import AlertMessage from '@/core/components/shared/alert-message.vue';
 import FormErrorList from '@/core/components/shared/form/form-error-list.vue';
 import { UserPasswordReset } from '@/user-system/services/auth/user-password-reset';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
@@ -112,7 +113,7 @@ export default class ResetPasswordForm extends UserMixin {
    */
   public message!: {
     text: string,
-    type: AlertType,
+    color: ThemeColor,
   };
 
   public created(): void {
@@ -123,7 +124,7 @@ export default class ResetPasswordForm extends UserMixin {
 
     this.message = {
       text: '',
-      type: 'Danger',
+      color: 'danger',
     };
   }
 
@@ -143,7 +144,7 @@ export default class ResetPasswordForm extends UserMixin {
       // Propogate the event up
       this.$emit('submit');
     } catch (error) {
-      this.message.type = 'Danger';
+      this.message.color = 'danger';
       this.message = error.message;
     }
   }

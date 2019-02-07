@@ -80,5 +80,5 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         await vehicleService.updateVehicle(user, vehicle);
 
         context.commit('updateVehicle', vehicle);
-    }
+    },
 };

@@ -7,12 +7,8 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { ThemeColor } from './theme-color';
 import { Prop } from 'vue-property-decorator';
-
-/**
- * Available color schemes of the alert.
- */
-export type AlertType = 'Primary' | 'Secondary' | 'Success' | 'Danger' | 'Warning' | 'Info' | 'Light' | 'Dark';
 
 /**
  * Component for displaying a text message to the screen in a colorful
@@ -26,7 +22,7 @@ export default class AlertMessage extends Vue {
    * Color scheme of the alert message.
    */
   @Prop({ default: 'Primary' })
-  public type!: AlertType;
+  public color!: ThemeColor;
 
   /**
    * Get the Bootstrap CSS class to apply for it's special coloring.
@@ -34,14 +30,14 @@ export default class AlertMessage extends Vue {
   public getCssClass(): {} {
     return {
       'alert': true,
-      'alert-primary': this.type === 'Primary',
-      'alert-secondary': this.type === 'Secondary',
-      'alert-success': this.type === 'Success',
-      'alert-danger': this.type === 'Danger',
-      'alert-warning': this.type === 'Warning',
-      'alert-info': this.type === 'Info',
-      'alert-light': this.type === 'Light',
-      'alert-dark': this.type === 'Dark',
+      'alert-primary': this.color === 'primary',
+      'alert-secondary': this.color === 'secondary',
+      'alert-success': this.color === 'success',
+      'alert-danger': this.color === 'danger',
+      'alert-warning': this.color === 'warning',
+      'alert-info': this.color === 'info',
+      'alert-light': this.color === 'light',
+      'alert-dark': this.color === 'dark',
     };
   }
 }
