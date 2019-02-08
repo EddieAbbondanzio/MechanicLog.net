@@ -26,7 +26,7 @@
                 <div class="form-group">
                     <label class="required" for="make-textbox">Make</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="make-textbox"
                         placeholder="Honda"
@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <label class="required" for="model-textbox">Model</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="model-textbox"
                         placeholder="Civic"
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label class="required" for="mileage-textbox">Mileage</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="mileage-textbox"
                         placeholder="123000"
@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <label for="color-textbox">Color</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="color-textbox"
                         placeholder="Red"
@@ -82,7 +82,7 @@
                 <div class="form-group">
                     <label for="license-plate-textbox">License Plate</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="license-plate-textbox"
                         placeholder="3232 XJ"
@@ -96,7 +96,7 @@
                 <div class="form-group">
                     <label for="vin-textbox">VIN</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="vin-textbox"
                         placeholder="1FTFW1EF1BFC16841"
@@ -110,7 +110,7 @@
                 <div class="form-group">
                     <label for="name-textbox">Name</label>
                     <input
-                        type="string"
+                        type="text"
                         class="form-control"
                         id="name-textbox"
                         placeholder="Daily Driver"

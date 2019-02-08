@@ -11,7 +11,7 @@
       <label class="required" for="name-textbox">Full Name</label>
       <input
         v-model="name"
-        type="name"
+        type="text"
         class="form-control"
         id="name-textbox"
         placeholder="John Smith"

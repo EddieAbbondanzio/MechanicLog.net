@@ -2,14 +2,13 @@
     <private-master-page>
         <!-- Header -->
         <div class="row" slot="header">
-
             <div class="col-md-6 col-lg-2 my-auto">
                 <h1 class="d-inline-block">My Vehicles</h1>
             </div>
 
             <div class="col-md-1 my-auto">
                 <!-- Add Vehicle Button -->
-                <add-vehicle-form />
+                <add-vehicle-form/>
             </div>
 
             <div class="offset-md-1 offset-lg-6 col-md-4 col-lg-3 my-auto">

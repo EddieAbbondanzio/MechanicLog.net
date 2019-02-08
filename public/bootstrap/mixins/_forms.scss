@@ -68,6 +68,18 @@
     }
   }
 
+  input[type=text].form-control,
+  input[type=email].form-control,
+  input[type=password].form-control,
+  input[type=number].form-control {
+    &.is-#{$state} {
+      border-left: 12px solid $color;
+      border-right: 1px solid $gray-400;
+      border-top: 1px solid $gray-400;
+      border-bottom: 1px solid $gray-400;
+    }
+  }
+
   .form-check-input {
     .was-validated &:#{$state},
     &.is-#{$state} {
