@@ -2,9 +2,6 @@
     <private-master-page>
         <!-- Header -->
         <div class="row" slot="header">
-            <modal-popup id="fuck" title="Add New Vehicle">
-                REEEE
-            </modal-popup>
 
             <div class="col-md-6 col-lg-2 my-auto">
                 <h1 class="d-inline-block">My Vehicles</h1>
@@ -12,10 +9,7 @@
 
             <div class="col-md-1 my-auto">
                 <!-- Add Vehicle Button -->
-                <modal-trigger-button color="success" target="fuck">
-                    <material-icon icon="add" size="md" />
-                    Add Vehicle
-                </modal-trigger-button>
+                <add-vehicle-form />
             </div>
 
             <div class="offset-md-1 offset-lg-6 col-md-4 col-lg-3 my-auto">
@@ -50,9 +44,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import PrivateMasterPage from '@/core/components/private/private-master-page.vue';
 import { Vehicle } from '@/garage/entities/vehicle';
 import VehicleSummary from '@/garage/components/vehicle-summary.vue';
-import ModalTriggerButton from '@/core/components/shared/modal/modal-trigger-button.vue';
-import ModalPopup from '@/core/components/shared/modal/modal-popup.vue';
 import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import AddVehicleForm from '@/garage/components/add-vehicle-form.vue';
 
 /**
  * Garage page.
@@ -62,9 +55,8 @@ import MaterialIcon from '@/core/components/shared/material-icon.vue';
     components: {
         PrivateMasterPage,
         VehicleSummary,
-        ModalPopup,
-        ModalTriggerButton,
         MaterialIcon,
+        AddVehicleForm,
     },
 })
 export default class Garage extends Vue {

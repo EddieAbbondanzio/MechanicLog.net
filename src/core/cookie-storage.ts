@@ -41,6 +41,6 @@ export class CookieStorage {
      */
     public static set(key: string, value: any, expiration: string | number | Date): void {
         const cookieUrl: string = (store.state as any).config.baseUrl;
-        (window as any).$cookies.set(key, value, expiration, null, cookieUrl);
+        (window as any).$cookies.set(key, value, expiration, '/', cookieUrl);
     }
 }

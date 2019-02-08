@@ -10,7 +10,7 @@ Vue.use(VueCookies);
 Vue.use(VeeValidate, {
   classes: true,
   classNames: {
-    valid: 'is-valid',
+    // valid: 'is-valid', // This doesn't look good.
     invalid: 'is-invalid',
   },
   events: 'input',

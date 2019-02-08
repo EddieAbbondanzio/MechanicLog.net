@@ -3,7 +3,7 @@
 </style>
 
 <template>
-  <div class="container-fluid" style="position: relative; min-height: 100vh;">
+  <div class="container-fluid mx-0 px-0" style="position: relative; min-height: 100vh;">
     <nav-bar/>
 
     <!-- Content of the page -->
