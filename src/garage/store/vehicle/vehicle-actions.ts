@@ -78,6 +78,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
 
         const user: User = context.rootGetters('user/current') as User;
         await vehicleService.updateVehicle(user, vehicle);
+        console.log('Sent off request');
 
         context.commit('updateVehicle', vehicle);
     },

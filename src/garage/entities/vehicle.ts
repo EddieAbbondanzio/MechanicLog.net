@@ -9,11 +9,6 @@ export class Vehicle {
     public id: number;
 
     /**
-     * The nickname of the car.
-     */
-    public name: string;
-
-    /**
      * The model year of the car.
      */
     public year: number;
@@ -34,9 +29,24 @@ export class Vehicle {
     public mileage: number;
 
     /**
-     * The last day maintenace was performed on it.
+     * The nickname of the car.
      */
-    public lastMaintenaceDate?: Date;
+    public name?: string;
+
+    /**
+     * The paint color.
+     */
+    public color?: string;
+
+    /**
+     * The license plate number.
+     */
+    public licensePlate?: string;
+
+    /**
+     * The VIN of the vehicle.
+     */
+    public vin?: string;
 
     /**
      * Create a new vehicle.
@@ -46,9 +56,8 @@ export class Vehicle {
      * @param model The model of the car.
      * @param mileage The current mileage.
      */
-    constructor(name: string, year: number, make: string, model: string, mileage: number) {
+    constructor(year: number, make: string, model: string, mileage: number) {
         this.id = 0;
-        this.name = name;
         this.year = year;
         this.make = make;
         this.model = model;
@@ -61,8 +70,12 @@ export class Vehicle {
      * @param raw The raw object to pull the vehicle details from.
      */
     public static fromRaw(raw: any): Vehicle {
-        const v: Vehicle = new Vehicle(raw.name, raw.year, raw.make, raw.model, raw.mileage);
+        const v: Vehicle = new Vehicle(raw.year, raw.make, raw.model, raw.mileage);
         v.id = raw.id;
+        v.name = raw.name;
+        v.color = raw.color;
+        v.licensePlate = raw.licensePlate;
+        v.vin = raw.vin;
 
         return v;
     }

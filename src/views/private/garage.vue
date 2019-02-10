@@ -60,8 +60,8 @@ import AddVehicleForm from '@/garage/components/add-vehicle-form.vue';
 })
 export default class Garage extends Vue {
     public vehicles: Vehicle[] = [
-        new Vehicle('Daily Driver', 1993, 'Honda', 'Civic', 122000),
-        new Vehicle('Winter Beater', 2000, 'Jeep', 'Cherokee', 165769),
+        new Vehicle(1993, 'Honda', 'Civic', 122000),
+        new Vehicle(2000, 'Jeep', 'Cherokee', 165769),
     ];
 
     /**
@@ -71,7 +71,12 @@ export default class Garage extends Vue {
     public onOrderByChanged(event: any): void {
         switch (event.target.value) {
             case 'Name':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.name.localeCompare(b.name));
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => {
+                    const aName: string = a.name || '';
+                    const bName: string = b.name || '';
+
+                    return aName.localeCompare(bName);
+                });
                 break;
 
             case 'Year':

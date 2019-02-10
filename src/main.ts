@@ -4,17 +4,18 @@ import router from './router';
 import store from './core/store/store';
 import * as VueCookies from 'vue-cookies';
 import VeeValidate from 'vee-validate';
+import BootstrapVue from 'bootstrap-vue';
 
 Vue.config.productionTip = false;
 Vue.use(VueCookies);
 Vue.use(VeeValidate, {
   classes: true,
   classNames: {
-    // valid: 'is-valid', // This doesn't look good.
     invalid: 'is-invalid',
   },
-  events: 'input',
+  events: 'blur',
 });
+Vue.use(BootstrapVue);
 
 const v: Vue = new Vue({
   router,
