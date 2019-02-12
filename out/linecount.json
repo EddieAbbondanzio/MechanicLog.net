@@ -1,0 +1,465 @@
+{
+    "extension": "linecount",
+    "version": "0.1.7",
+    "workspace": "c:\\Users\\Eddie\\Development\\mechaniclog.net\\mechaniclog-site",
+    "linecount": [
+        {
+            "version": "0.1.7",
+            "counttime": "2019-02-12 07:39:15",
+            "filesum": 74,
+            "codesum": 2368,
+            "commentsum": 894,
+            "blanksum": 386,
+            "filelist": [
+                {
+                    "blank": 1,
+                    "code": 11,
+                    "comment": 0,
+                    "filename": "src\\app.vue"
+                },
+                {
+                    "filename": "src\\assets\\hero.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\hero_orig.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\logo-with-name.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src\\assets\\logo.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 1,
+                    "code": 12,
+                    "comment": 0,
+                    "filename": "src\\components\\public\\home\\hero.vue"
+                },
+                {
+                    "blank": 7,
+                    "code": 104,
+                    "comment": 0,
+                    "filename": "src\\components\\public\\home\\membership-plans.vue"
+                },
+                {
+                    "blank": 6,
+                    "code": 41,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\private\\private-master-page.vue"
+                },
+                {
+                    "blank": 8,
+                    "code": 40,
+                    "comment": 15,
+                    "filename": "src\\core\\components\\private\\side-bar\\side-bar-button.vue"
+                },
+                {
+                    "blank": 5,
+                    "code": 28,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\private\\side-bar\\side-bar-icon.vue"
+                },
+                {
+                    "blank": 6,
+                    "code": 58,
+                    "comment": 8,
+                    "filename": "src\\core\\components\\private\\side-bar\\side-bar-user.vue"
+                },
+                {
+                    "blank": 5,
+                    "code": 36,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\private\\side-bar\\side-bar.vue"
+                },
+                {
+                    "blank": 3,
+                    "code": 17,
+                    "comment": 9,
+                    "filename": "src\\core\\components\\public\\nav-bar\\nav-bar-button.vue"
+                },
+                {
+                    "blank": 8,
+                    "code": 60,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\public\\nav-bar\\nav-bar.vue"
+                },
+                {
+                    "blank": 3,
+                    "code": 25,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\public\\page-footer.vue"
+                },
+                {
+                    "blank": 6,
+                    "code": 28,
+                    "comment": 0,
+                    "filename": "src\\core\\components\\public\\public-master-page.vue"
+                },
+                {
+                    "blank": 4,
+                    "code": 31,
+                    "comment": 10,
+                    "filename": "src\\core\\components\\shared\\alert-message.vue"
+                },
+                {
+                    "blank": 3,
+                    "code": 26,
+                    "comment": 9,
+                    "filename": "src\\core\\components\\shared\\form\\form-container.vue"
+                },
+                {
+                    "blank": 3,
+                    "code": 22,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\shared\\form\\form-error-list.vue"
+                },
+                {
+                    "blank": 3,
+                    "code": 19,
+                    "comment": 9,
+                    "filename": "src\\core\\components\\shared\\form\\form-header.vue"
+                },
+                {
+                    "blank": 7,
+                    "code": 40,
+                    "comment": 20,
+                    "filename": "src\\core\\components\\shared\\form\\form-submit-button.vue"
+                },
+                {
+                    "blank": 6,
+                    "code": 23,
+                    "comment": 18,
+                    "filename": "src\\core\\components\\shared\\material-icon.vue"
+                },
+                {
+                    "blank": 1,
+                    "code": 1,
+                    "comment": 3,
+                    "filename": "src\\core\\components\\shared\\theme-color.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 4,
+                    "comment": 11,
+                    "filename": "src\\core\\components\\shared\\themeable.ts"
+                },
+                {
+                    "blank": 4,
+                    "code": 16,
+                    "comment": 26,
+                    "filename": "src\\core\\cookie-storage.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 23,
+                    "comment": 22,
+                    "filename": "src\\core\\events\\event-dispatcher.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 1,
+                    "comment": 3,
+                    "filename": "src\\core\\events\\event-handler.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 12,
+                    "filename": "src\\core\\events\\event.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 76,
+                    "comment": 49,
+                    "filename": "src\\core\\http\\http-client.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 5,
+                    "comment": 12,
+                    "filename": "src\\core\\http\\http-response.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 7,
+                    "comment": 10,
+                    "filename": "src\\core\\services\\api-service.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 5,
+                    "comment": 13,
+                    "filename": "src\\core\\store\\config\\config-state.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 19,
+                    "comment": 11,
+                    "filename": "src\\core\\store\\config\\index.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 5,
+                    "comment": 6,
+                    "filename": "src\\core\\store\\store-state.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 18,
+                    "comment": 0,
+                    "filename": "src\\core\\store\\store.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 10,
+                    "comment": 2,
+                    "filename": "src\\core\\typings\\shims-tsx.d.ts"
+                },
+                {
+                    "blank": 0,
+                    "code": 4,
+                    "comment": 0,
+                    "filename": "src\\core\\typings\\shims-vue.d.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 6,
+                    "comment": 3,
+                    "filename": "src\\core\\typings\\window.d.ts"
+                },
+                {
+                    "blank": 22,
+                    "code": 199,
+                    "comment": 20,
+                    "filename": "src\\garage\\components\\add-vehicle-form.vue"
+                },
+                {
+                    "blank": 15,
+                    "code": 87,
+                    "comment": 12,
+                    "filename": "src\\garage\\components\\vehicle-summary.vue"
+                },
+                {
+                    "blank": 12,
+                    "code": 27,
+                    "comment": 43,
+                    "filename": "src\\garage\\entities\\vehicle.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 17,
+                    "comment": 18,
+                    "filename": "src\\garage\\mixins\\vehicle-mixin.ts"
+                },
+                {
+                    "blank": 7,
+                    "code": 45,
+                    "comment": 26,
+                    "filename": "src\\garage\\services\\vehicle\\vehicle-service.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 17,
+                    "comment": 6,
+                    "filename": "src\\garage\\store\\vehicle\\index.ts"
+                },
+                {
+                    "blank": 14,
+                    "code": 43,
+                    "comment": 27,
+                    "filename": "src\\garage\\store\\vehicle\\vehicle-actions.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 7,
+                    "filename": "src\\garage\\store\\vehicle\\vehicle-getters.ts"
+                },
+                {
+                    "blank": 6,
+                    "code": 25,
+                    "comment": 23,
+                    "filename": "src\\garage\\store\\vehicle\\vehicle-mutations.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 4,
+                    "comment": 6,
+                    "filename": "src\\garage\\store\\vehicle\\vehicle-state.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src\\main.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 63,
+                    "comment": 2,
+                    "filename": "src\\router.ts"
+                },
+                {
+                    "blank": 9,
+                    "code": 70,
+                    "comment": 18,
+                    "filename": "src\\user-system\\components\\forgot-password-form.vue"
+                },
+                {
+                    "blank": 15,
+                    "code": 104,
+                    "comment": 30,
+                    "filename": "src\\user-system\\components\\login-form.vue"
+                },
+                {
+                    "blank": 16,
+                    "code": 124,
+                    "comment": 12,
+                    "filename": "src\\user-system\\components\\reset-password-form.vue"
+                },
+                {
+                    "blank": 22,
+                    "code": 152,
+                    "comment": 22,
+                    "filename": "src\\user-system\\components\\sign-up-form.vue"
+                },
+                {
+                    "blank": 4,
+                    "code": 6,
+                    "comment": 15,
+                    "filename": "src\\user-system\\entities\\user.ts"
+                },
+                {
+                    "blank": 22,
+                    "code": 64,
+                    "comment": 63,
+                    "filename": "src\\user-system\\mixins\\user-mixin.ts"
+                },
+                {
+                    "blank": 8,
+                    "code": 68,
+                    "comment": 38,
+                    "filename": "src\\user-system\\services\\auth\\auth-service.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 4,
+                    "comment": 9,
+                    "filename": "src\\user-system\\services\\auth\\user-credentials.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 5,
+                    "comment": 12,
+                    "filename": "src\\user-system\\services\\auth\\user-password-reset.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 4,
+                    "comment": 9,
+                    "filename": "src\\user-system\\services\\auth\\user-password-update.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 12,
+                    "filename": "src\\user-system\\services\\auth\\user-registration.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 25,
+                    "comment": 13,
+                    "filename": "src\\user-system\\services\\user\\user-service.ts"
+                },
+                {
+                    "blank": 2,
+                    "code": 17,
+                    "comment": 6,
+                    "filename": "src\\user-system\\store\\user\\index.ts"
+                },
+                {
+                    "blank": 28,
+                    "code": 90,
+                    "comment": 75,
+                    "filename": "src\\user-system\\store\\user\\user-actions.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 9,
+                    "comment": 7,
+                    "filename": "src\\user-system\\store\\user\\user-getters.ts"
+                },
+                {
+                    "blank": 5,
+                    "code": 26,
+                    "comment": 26,
+                    "filename": "src\\user-system\\store\\user\\user-mutations.ts"
+                },
+                {
+                    "blank": 1,
+                    "code": 4,
+                    "comment": 6,
+                    "filename": "src\\user-system\\store\\user\\user-state.ts"
+                },
+                {
+                    "blank": 3,
+                    "code": 16,
+                    "comment": 3,
+                    "filename": "src\\views\\private\\dashboard.vue"
+                },
+                {
+                    "blank": 11,
+                    "code": 80,
+                    "comment": 7,
+                    "filename": "src\\views\\private\\garage.vue"
+                },
+                {
+                    "blank": 2,
+                    "code": 24,
+                    "comment": 3,
+                    "filename": "src\\views\\public\\forgot.vue"
+                },
+                {
+                    "blank": 2,
+                    "code": 22,
+                    "comment": 0,
+                    "filename": "src\\views\\public\\home.vue"
+                },
+                {
+                    "blank": 2,
+                    "code": 23,
+                    "comment": 6,
+                    "filename": "src\\views\\public\\login.vue"
+                },
+                {
+                    "blank": 2,
+                    "code": 21,
+                    "comment": 6,
+                    "filename": "src\\views\\public\\reset.vue"
+                },
+                {
+                    "blank": 2,
+                    "code": 21,
+                    "comment": 7,
+                    "filename": "src\\views\\public\\sign-up.vue"
+                }
+            ]
+        }
+    ]
+}

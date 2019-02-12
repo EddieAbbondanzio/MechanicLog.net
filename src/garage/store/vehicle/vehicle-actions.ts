@@ -17,7 +17,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const vehicleService: VehicleService = new VehicleService(apiUrl);
 
-        const user: User = context.rootGetters('user/current') as User;
+        const user: User = context.rootGetters['user/current'] as User;
         const vehicles: Vehicle[] = await vehicleService.getAllVehiclesForUser(user);
 
         context.commit('setVehicles', vehicles);
@@ -33,7 +33,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const vehicleService: VehicleService = new VehicleService(apiUrl);
 
-        const vehicles: Vehicle[] = context.getters('vehicles') as Vehicle[];
+        const vehicles: Vehicle[] = context.getters['vehicles'] as Vehicle[];
         return vehicles.find((v) => v.id === id);
     },
 
@@ -46,7 +46,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const vehicleService: VehicleService = new VehicleService(apiUrl);
 
-        const user: User = context.rootGetters('user/current') as User;
+        const user: User = context.rootGetters['user/current'] as User;
         await vehicleService.addVehicle(user, vehicle);
 
         context.commit('addVehicle', vehicle);
@@ -61,7 +61,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const vehicleService: VehicleService = new VehicleService(apiUrl);
 
-        const user: User = context.rootGetters('user/current') as User;
+        const user: User = context.rootGetters['user/current'] as User;
         await vehicleService.deleteVehicle(user, vehicle);
 
         context.commit('deleteVehicle', vehicle);
@@ -76,9 +76,8 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const vehicleService: VehicleService = new VehicleService(apiUrl);
 
-        const user: User = context.rootGetters('user/current') as User;
+        const user: User = context.rootGetters['user/current'] as User;
         await vehicleService.updateVehicle(user, vehicle);
-        console.log('Sent off request');
 
         context.commit('updateVehicle', vehicle);
     },

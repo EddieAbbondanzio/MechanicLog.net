@@ -17,25 +17,13 @@ export class VehicleMixin extends Vue {
     /**
      * Get the vehicles of the user from the backend.
      */
-    @Action('getVehicles', { namespace: 'vehicle ' })
-    private _getVehicles!: () => Promise<Vehicle[]>;
-
-    /**
-     * Get the active vehicles for the user.
-     */
-    protected async $getVehicles(): Promise<Vehicle[]> {
-        // If we have none cached, pull them in from the back end.
-        if (this._vehicles == null) {
-            this._vehicles = await this._getVehicles();
-        }
-
-        return this._vehicles;
-    }
+    @Action('getVehicles', { namespace: 'vehicle' })
+    public $getVehicles!: () => Promise<Vehicle[]>;
 
     /**
      * Add a new vehicle to the backend for the user.
      */
-    @Action('addVehicle', { namespace: 'vehicle ' })
+    @Action('addVehicle', { namespace: 'vehicle' })
     protected $addVehicle!: (vehicle: Vehicle) => Promise<void>;
 
     /**

@@ -1,0 +1,86 @@
+===============================================================================
+EXTENSION NAME : linecount
+EXTENSION VERSION : 0.1.7
+-------------------------------------------------------------------------------
+count time : 2019-02-12 07:39:15
+count workspace : c:\Users\Eddie\Development\mechaniclog.net\mechaniclog-site
+total files : 74
+total code lines : 2368
+total comment lines : 894
+total blank lines : 386
+
+src\app.vue, code is 11, comment is 0, blank is 1.
+src\assets\hero.png, it is a binary file.
+src\assets\hero_orig.png, it is a binary file.
+src\assets\logo-with-name.png, it is a binary file.
+src\assets\logo.png, it is a binary file.
+src\components\public\home\hero.vue, code is 12, comment is 0, blank is 1.
+src\components\public\home\membership-plans.vue, code is 104, comment is 0, blank is 7.
+src\core\components\private\private-master-page.vue, code is 41, comment is 3, blank is 6.
+src\core\components\private\side-bar\side-bar-button.vue, code is 40, comment is 15, blank is 8.
+src\core\components\private\side-bar\side-bar-icon.vue, code is 28, comment is 3, blank is 5.
+src\core\components\private\side-bar\side-bar-user.vue, code is 58, comment is 8, blank is 6.
+src\core\components\private\side-bar\side-bar.vue, code is 36, comment is 3, blank is 5.
+src\core\components\public\nav-bar\nav-bar-button.vue, code is 17, comment is 9, blank is 3.
+src\core\components\public\nav-bar\nav-bar.vue, code is 60, comment is 3, blank is 8.
+src\core\components\public\page-footer.vue, code is 25, comment is 3, blank is 3.
+src\core\components\public\public-master-page.vue, code is 28, comment is 0, blank is 6.
+src\core\components\shared\alert-message.vue, code is 31, comment is 10, blank is 4.
+src\core\components\shared\form\form-container.vue, code is 26, comment is 9, blank is 3.
+src\core\components\shared\form\form-error-list.vue, code is 22, comment is 3, blank is 3.
+src\core\components\shared\form\form-header.vue, code is 19, comment is 9, blank is 3.
+src\core\components\shared\form\form-submit-button.vue, code is 40, comment is 20, blank is 7.
+src\core\components\shared\material-icon.vue, code is 23, comment is 18, blank is 6.
+src\core\components\shared\theme-color.ts, code is 1, comment is 3, blank is 1.
+src\core\components\shared\themeable.ts, code is 4, comment is 11, blank is 2.
+src\core\cookie-storage.ts, code is 16, comment is 26, blank is 4.
+src\core\events\event-dispatcher.ts, code is 23, comment is 22, blank is 5.
+src\core\events\event-handler.ts, code is 1, comment is 3, blank is 1.
+src\core\events\event.ts, code is 5, comment is 12, blank is 2.
+src\core\http\http-client.ts, code is 76, comment is 49, blank is 8.
+src\core\http\http-response.ts, code is 5, comment is 12, blank is 3.
+src\core\services\api-service.ts, code is 7, comment is 10, blank is 2.
+src\core\store\config\config-state.ts, code is 5, comment is 13, blank is 3.
+src\core\store\config\index.ts, code is 19, comment is 11, blank is 2.
+src\core\store\store-state.ts, code is 5, comment is 6, blank is 1.
+src\core\store\store.ts, code is 18, comment is 0, blank is 3.
+src\core\typings\shims-tsx.d.ts, code is 10, comment is 2, blank is 1.
+src\core\typings\shims-vue.d.ts, code is 4, comment is 0, blank is 0.
+src\core\typings\window.d.ts, code is 6, comment is 3, blank is 1.
+src\garage\components\add-vehicle-form.vue, code is 199, comment is 20, blank is 22.
+src\garage\components\vehicle-summary.vue, code is 87, comment is 12, blank is 15.
+src\garage\entities\vehicle.ts, code is 27, comment is 43, blank is 12.
+src\garage\mixins\vehicle-mixin.ts, code is 17, comment is 18, blank is 5.
+src\garage\services\vehicle\vehicle-service.ts, code is 45, comment is 26, blank is 7.
+src\garage\store\vehicle\index.ts, code is 17, comment is 6, blank is 2.
+src\garage\store\vehicle\vehicle-actions.ts, code is 43, comment is 27, blank is 14.
+src\garage\store\vehicle\vehicle-getters.ts, code is 9, comment is 7, blank is 1.
+src\garage\store\vehicle\vehicle-mutations.ts, code is 25, comment is 23, blank is 6.
+src\garage\store\vehicle\vehicle-state.ts, code is 4, comment is 6, blank is 1.
+src\main.ts, code is 22, comment is 0, blank is 3.
+src\router.ts, code is 63, comment is 2, blank is 5.
+src\user-system\components\forgot-password-form.vue, code is 70, comment is 18, blank is 9.
+src\user-system\components\login-form.vue, code is 104, comment is 30, blank is 15.
+src\user-system\components\reset-password-form.vue, code is 124, comment is 12, blank is 16.
+src\user-system\components\sign-up-form.vue, code is 152, comment is 22, blank is 22.
+src\user-system\entities\user.ts, code is 6, comment is 15, blank is 4.
+src\user-system\mixins\user-mixin.ts, code is 64, comment is 63, blank is 22.
+src\user-system\services\auth\auth-service.ts, code is 68, comment is 38, blank is 8.
+src\user-system\services\auth\user-credentials.ts, code is 4, comment is 9, blank is 2.
+src\user-system\services\auth\user-password-reset.ts, code is 5, comment is 12, blank is 3.
+src\user-system\services\auth\user-password-update.ts, code is 4, comment is 9, blank is 2.
+src\user-system\services\auth\user-registration.ts, code is 5, comment is 12, blank is 2.
+src\user-system\services\user\user-service.ts, code is 25, comment is 13, blank is 3.
+src\user-system\store\user\index.ts, code is 17, comment is 6, blank is 2.
+src\user-system\store\user\user-actions.ts, code is 90, comment is 75, blank is 28.
+src\user-system\store\user\user-getters.ts, code is 9, comment is 7, blank is 1.
+src\user-system\store\user\user-mutations.ts, code is 26, comment is 26, blank is 5.
+src\user-system\store\user\user-state.ts, code is 4, comment is 6, blank is 1.
+src\views\private\dashboard.vue, code is 16, comment is 3, blank is 3.
+src\views\private\garage.vue, code is 80, comment is 7, blank is 11.
+src\views\public\forgot.vue, code is 24, comment is 3, blank is 2.
+src\views\public\home.vue, code is 22, comment is 0, blank is 2.
+src\views\public\login.vue, code is 23, comment is 6, blank is 2.
+src\views\public\reset.vue, code is 21, comment is 6, blank is 2.
+src\views\public\sign-up.vue, code is 21, comment is 7, blank is 2.
+===============================================================================

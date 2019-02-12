@@ -13,41 +13,45 @@
 <template>
     <div class="user-profile text-light">
         <!-- User Drop Down -->
-        <div class="dropdown dropright">
-            <a
-                class="btn btn-primary dropdown-toggle btn-block user-name"
-                href="#"
-                role="button"
-                id="user-drop-down"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-            >
-                <i
-                    class="material-icons icon-xl pr-2 d-block"
-                    style="vertical-align: middle"
-                    title="Logged in as"
-                >person</i>
-                {{ $currentUser.name.indexOf(' ') != -1 ? $currentUser.name.split(' ')[0] : $currentUser.name }}
-            </a>
-
-            <div class="dropdown-menu" aria-labelledby="user-drop-down">
-                <a class="dropdown-item" href="#">Settings</a>
-                <a class="dropdown-item" href="#" @click="logOutUser">Log Out</a>
+        <b-dropdown id="user-dropdown" variant="link" class="dropright" no-caret>
+            <div slot="button-content">
+                <a
+                    class="btn btn-primary dropdown-toggle btn-block user-name"
+                    href="#"
+                    role="button"
+                    id="user-drop-down"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                >
+                    <material-icon
+                        icon="person"
+                        size="xl"
+                        class="d-block pr-2"
+                        title="Logged in as"
+                    />
+                    {{ $currentUser.name.indexOf(' ') != -1 ? $currentUser.name.split(' ')[0] : $currentUser.name }}
+                </a>
             </div>
-        </div>
+            <b-dropdown-item href="#">Settings</b-dropdown-item>
+            <b-dropdown-item href="#" @click="logOutUser">Log Out</b-dropdown-item>
+        </b-dropdown>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/mixins/user-mixin';
+import MaterialIcon from '@/core/components/shared/material-icon.vue';
 
 /**
  * User component that shows the name of the active user.
  */
 @Component({
     name: 'side-bar-user',
+    components: {
+        MaterialIcon,
+    },
 })
 export default class SideBarUser extends UserMixin {
     /**

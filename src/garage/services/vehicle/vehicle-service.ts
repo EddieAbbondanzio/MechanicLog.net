@@ -43,7 +43,6 @@ export class VehicleService extends ApiService {
      */
     public async addVehicle(user: User, vehicle: Vehicle): Promise<void> {
         try {
-            console.log(vehicle);
             const response: HttpResponse = await this._httpClient.post('/vehicle', vehicle, user.authToken);
             vehicle.id = response.data.id;
         } catch (error) {

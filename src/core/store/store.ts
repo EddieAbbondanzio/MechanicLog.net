@@ -3,6 +3,7 @@ import Vuex, { StoreOptions } from 'vuex';
 import { StoreState } from './store-state';
 import { config } from './config';
 import { user } from '@/user-system/store/user/index';
+import { vehicle } from '@/garage/store/vehicle/index';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ const storeOpts: StoreOptions<StoreState> = {
     modules: {
         config,
         user,
+        vehicle,
     },
 };
 

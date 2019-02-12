@@ -45,6 +45,7 @@ import { Vehicle } from '@/garage/entities/vehicle';
 import VehicleSummary from '@/garage/components/vehicle-summary.vue';
 import MaterialIcon from '@/core/components/shared/material-icon.vue';
 import AddVehicleForm from '@/garage/components/add-vehicle-form.vue';
+import { VehicleMixin } from '@/garage/mixins/vehicle-mixin';
 
 /**
  * Garage page.
@@ -58,11 +59,12 @@ import AddVehicleForm from '@/garage/components/add-vehicle-form.vue';
         AddVehicleForm,
     },
 })
-export default class Garage extends Vue {
-    public vehicles: Vehicle[] = [
-        new Vehicle(1993, 'Honda', 'Civic', 122000),
-        new Vehicle(2000, 'Jeep', 'Cherokee', 165769),
-    ];
+export default class Garage extends VehicleMixin {
+    public vehicles: Vehicle[] = [];
+
+    public async mounted(): Promise<void> {
+        this.vehicles = await this.$getVehicles();
+    }
 
     /**
      * Event handler to process when the user wants to change how their ordering

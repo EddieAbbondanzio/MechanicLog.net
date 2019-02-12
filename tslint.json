@@ -18,6 +18,7 @@
     "member-ordering": false,
     "variable-name": ["allow-leading-underscore"],
     "array-type": [true, "array"],
-    "only-arrow-functions": false
+    "only-arrow-functions": false,
+    "no-string-literal": false
   }
 }

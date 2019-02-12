@@ -42,13 +42,18 @@
         <div class="col-lg-12" v-if="vehicle != null">
             <div class="bg-light rounded" style="height: 150px;">
                 <!-- Vehicle Details -->
-                <div class="px-4 py-3 clearfix d-inline-block" style="height: 150px; width: calc(100% - 74px);">
+                <div
+                    class="px-4 py-3 clearfix d-inline-block"
+                    style="height: 150px; width: calc(100% - 74px);"
+                >
                     <div class="d-inline-block">
-                        <h3 class="text-left text-dark d-inline-block">{{ vehicle.name }}</h3>
+                        <h3
+                            class="text-left text-dark d-inline-block"
+                        >{{ vehicle.name || vehicleYearMakeModel }}</h3>
 
                         <ul class="list-unstyled text-muted">
                             <li>
-                                <h5>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h5>
+                                <h5>{{ vehicleYearMakeModel }}</h5>
                             </li>
                             <li>
                                 <h5>Mileage: {{ vehicle.mileage.toLocaleString() }}</h5>
@@ -62,18 +67,20 @@
                             <a class="link-info" href="#">
                                 <i class="material-icons">settings</i> Maintenance
                             </a>
-                            <br>
-                            <!-- <span
-                                class="text-muted"
-                                v-if="vehicle.lastMaintenaceDate != null"
-                            >Last maintenance on: {{ toDisplayDate(vehicle.lastMaintenaceDate) }}</span> -->
                         </div>
                     </div>
                 </div>
 
                 <!-- Options Button -->
-                <div class="float-right btn vehicle-options-button text-center py-0">
-                    <i class="material-icons icon-md">more_vert</i>
+                <div class="float-right text-center py-0" style="text-align: center; vertical-align: middle; height: 150px;">
+                    <b-dropdown variant="link" no-caret>
+                        <div slot="button-content" style="margin-top: 55px;">
+                            <material-icon icon="more_vert" size="md" color="dark"/>
+                        </div>
+
+                        <b-dropdown-item href="#">Edit</b-dropdown-item>
+                        <b-dropdown-item href="#" class="text-danger">Delete</b-dropdown-item>
+                    </b-dropdown>
                 </div>
             </div>
         </div>
@@ -83,12 +90,16 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Vehicle } from '../entities/vehicle';
+import MaterialIcon from '@/core/components/shared/material-icon.vue';
 
 /**
  * Component that summarizes the details of a vehicle.
  */
 @Component({
     name: 'vehicle-summary',
+    components: {
+        MaterialIcon,
+    },
 })
 export default class VehicleSummary extends Vue {
     /**
@@ -96,6 +107,13 @@ export default class VehicleSummary extends Vue {
      */
     @Prop()
     public vehicle!: Vehicle;
+
+    /**
+     * The year make model of the vehicle.
+     */
+    public get vehicleYearMakeModel() {
+        return `${this.vehicle.year} ${this.vehicle.make} ${this.vehicle.model}`;
+    }
 
     /**
      * Convert the date into a print friendly string.

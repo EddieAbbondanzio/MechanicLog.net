@@ -132,14 +132,10 @@
                 </div>
             </form>
 
-            <div slot="footer">
-                <button type="button" @click="onAddButtonClick">Click Me</button>
+            <div slot="modal-footer">
+                <b-btn @click="onCancelButtonClick" class="mr-1">Cancel</b-btn>
 
-                <modal-exit-button class="mr-2" color="primary">
-                    <material-icon>add</material-icon>Add
-                </modal-exit-button>
-
-                <modal-exit-button class="ml-2" color="warning">Cancel</modal-exit-button>
+                <b-btn @click="onAddButtonClick" variant="success" class="ml-1"><material-icon icon="add" size="md" />Add</b-btn>
             </div>
         </b-modal>
     </div>
@@ -211,6 +207,10 @@ export default class AddVehicleForm extends VehicleMixin {
         );
 
         await this.$addVehicle(vehicle);
+        this.$refs.popup.hide();
+    }
+
+    public async onCancelButtonClick(): Promise<void> {
         this.$refs.popup.hide();
     }
 
