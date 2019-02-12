@@ -39,6 +39,8 @@
 
 <template>
     <div class="row mb-4">
+        <delete-vehicle-confirm-popup ref="popup" @delete="onDelete"/>
+
         <div class="col-lg-12" v-if="vehicle != null">
             <div class="bg-light rounded" style="height: 150px;">
                 <!-- Vehicle Details -->
@@ -72,14 +74,17 @@
                 </div>
 
                 <!-- Options Button -->
-                <div class="float-right text-center py-0" style="text-align: center; vertical-align: middle; height: 150px;">
+                <div
+                    class="float-right text-center py-0"
+                    style="text-align: center; vertical-align: middle; height: 150px;"
+                >
                     <b-dropdown variant="link" no-caret>
                         <div slot="button-content" style="margin-top: 55px;">
                             <material-icon icon="more_vert" size="md" color="dark"/>
                         </div>
 
                         <b-dropdown-item href="#">Edit</b-dropdown-item>
-                        <b-dropdown-item href="#" class="text-danger">Delete</b-dropdown-item>
+                        <b-dropdown-item href="#" class="text-danger" @click="onDeleteClick">Delete</b-dropdown-item>
                     </b-dropdown>
                 </div>
             </div>
@@ -91,6 +96,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Vehicle } from '../entities/vehicle';
 import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import DeleteVehicleConfirmPopup from '@/garage/components/delete-vehicle-confirm-popup.vue';
+import { VehicleMixin } from '@/garage/mixins/vehicle-mixin';
 
 /**
  * Component that summarizes the details of a vehicle.
@@ -99,9 +106,10 @@ import MaterialIcon from '@/core/components/shared/material-icon.vue';
     name: 'vehicle-summary',
     components: {
         MaterialIcon,
+        DeleteVehicleConfirmPopup,
     },
 })
-export default class VehicleSummary extends Vue {
+export default class VehicleSummary extends VehicleMixin {
     /**
      * The vehicle being rendered.
      */
@@ -120,6 +128,18 @@ export default class VehicleSummary extends Vue {
      */
     public toDisplayDate(date: Date): string {
         return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    }
+
+    public async onDeleteClick(): Promise<void> {
+        (this.$refs.popup as any).show();
+    }
+
+    /**
+     * User clicked the confirm delete of the popup. Go ahead and delete
+     * this sucker.
+     */
+    protected async onDelete(): Promise<void> {
+        await this.$deleteVehicle(this.vehicle);
     }
 }
 </script>

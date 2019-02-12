@@ -1,7 +1,7 @@
 <style lang="scss">
 .page-content {
     width: auto;
-    overflow: hidden;
+    overflow-x: hidden;
     height: 100vh;
 }
 </style>
