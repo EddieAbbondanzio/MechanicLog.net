@@ -48,7 +48,9 @@ export const vehicleMutations: MutationTree<VehicleState> = {
         const index: number = state.vehicles.findIndex((v) => v.id === vehicle.id);
 
         if (index >= 0) {
-            state.vehicles[index] = vehicle;
+            //Lol, needed a way to force refresh...
+            state.vehicles.splice(index, 1);
+            state.vehicles.splice(index, 0, vehicle);
         }
     },
 };

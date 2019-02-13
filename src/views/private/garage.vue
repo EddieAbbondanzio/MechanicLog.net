@@ -1,40 +1,50 @@
+<style>
+.h-40px {
+    height: 40px;
+    vertical-align: bottom;
+}
+</style>
+
 <template>
     <private-master-page>
         <!-- Header -->
         <div class="row" slot="header">
-            <div class="col-md-6 col-lg-2 my-auto">
-                <h1 class="d-inline-block">My Vehicles</h1>
-            </div>
+            <div class="col-12" style="height: 64px;">
+                <!-- Page Title -->
+                <h1 class="d-inline-block" style="margin-top: 8px; margin-bottom: 8px;">My Vehicles</h1>
 
-            <div class="col-md-1 my-auto">
-                <!-- Add Vehicle Button -->
-                <add-vehicle-form/>
-            </div>
-
-            <div class="offset-md-1 offset-lg-6 col-md-4 col-lg-3 my-auto">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <label
-                            class="input-group-text border-0 bg-primary text-light"
-                            for="inputGroupSelect01"
-                        >Order By:</label>
+                <!-- Vehicle Controls -->
+                <div class="float-right">
+                    <div class="d-inline-block h-40px mr-2" style="margin-top: 12px;">
+                        <add-vehicle-form/>
                     </div>
-                    <select
-                        class="custom-select border-0 bg-white"
-                        id="inputGroupSelect01"
-                        @change="onOrderByChanged"
-                    >
-                        <option selected>Name</option>
-                        <option value="Year">Year</option>
-                        <option value="Make">Make</option>
-                        <option value="Mileage">Mileage</option>
-                    </select>
+
+                    <div class="d-inline-block ml-2">
+                        <div class="input-group h-40px" style="width: 320px;">
+                            <div class="input-group-prepend">
+                                <label
+                                    class="input-group-text border-0 bg-primary text-light"
+                                    for="inputGroupSelect01"
+                                >Order By:</label>
+                            </div>
+                            <select
+                                class="custom-select border-0 bg-white"
+                                id="inputGroupSelect01"
+                                @change="onOrderByChanged"
+                            >
+                                <option selected>Name</option>
+                                <option value="Year">Year</option>
+                                <option value="Make">Make</option>
+                                <option value="Mileage">Mileage</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Vehicles -->
-        <vehicle-summary v-for="vehicle in vehicles" :vehicle="vehicle" :key="vehicle.name"/>
+        <vehicle-summary v-for="vehicle in vehicles" :vehicle="vehicle"/>
     </private-master-page>
 </template>
 

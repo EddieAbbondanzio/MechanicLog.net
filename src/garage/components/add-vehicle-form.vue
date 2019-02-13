@@ -26,6 +26,7 @@
                         name="year"
                         v-validate="'required|integer|min_value:1900|max_value:' + maxModelYear"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('year') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- Make Textbox -->
@@ -40,6 +41,7 @@
                         name="make"
                         v-validate="'required|max:32'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('make') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- Model Textbox -->
@@ -54,6 +56,7 @@
                         name="model"
                         v-validate="'required|max:32'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('model') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- Mileage Textbox-->
@@ -68,6 +71,7 @@
                         name="mileage"
                         v-validate="'required|integer|min_value:0'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('mileage') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- Color Textbox-->
@@ -82,6 +86,7 @@
                         name="color"
                         v-validate="'max:16'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('color') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- License Plate Textbox-->
@@ -96,6 +101,7 @@
                         name="licensePlate"
                         v-validate="'max:10'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('licensePlate') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- Vin Textbox-->
@@ -110,6 +116,7 @@
                         name="vin"
                         v-validate="'max:17'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('vin') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- NickName Textbox -->
@@ -124,18 +131,17 @@
                         name="nickName"
                         v-validate="'max:32'"
                     >
+                    <b-form-invalid-feedback>{{ errors.first('nickName') }}</b-form-invalid-feedback>
                     <small>A nickname can be used to help identify vehicles easier.</small>
-                </div>
-
-                <div class="mx-auto d-table">
-                    <form-error-list class="d-table-cell" :form="this"/>
                 </div>
             </form>
 
             <div slot="modal-footer">
                 <b-btn @click="onCancelButtonClick" class="mr-1">Cancel</b-btn>
 
-                <b-btn @click="onAddButtonClick" variant="success" class="ml-1"><material-icon icon="add" size="md" />Add</b-btn>
+                <b-btn @click="onAddButtonClick" variant="success" class="ml-1" :disabled="this.errors.all().length > 0" :title="this.errors.all().length > 0 ? 'Please fix any errors first.' : 'Add a new vehicle.'">
+                    <material-icon icon="add" size="md"/>Add
+                </b-btn>
             </div>
         </b-modal>
     </div>
@@ -194,10 +200,6 @@ export default class AddVehicleForm extends VehicleMixin {
         const rawMake: string = this.$refs.makeField.value;
         const rawModel: string = this.$refs.modelField.value;
         const rawMileage: string = this.$refs.mileageField.value;
-        const rawColor: string = this.$refs.colorField.value;
-        const rawLicensePlate: string = this.$refs.licensePlateField.value;
-        const rawVin: string = this.$refs.vinField.value;
-        const rawName: string = this.$refs.nickNameField.value;
 
         const vehicle: Vehicle = new Vehicle(
             Number.parseInt(rawYear, 10),
@@ -205,6 +207,11 @@ export default class AddVehicleForm extends VehicleMixin {
             rawModel,
             Number.parseInt(rawMileage, 10),
         );
+
+        vehicle.color = this.$refs.colorField.value;
+        vehicle.licensePlate = this.$refs.licensePlateField.value;
+        vehicle.vin = this.$refs.vinField.value;
+        vehicle.name = this.$refs.nickNameField.value;
 
         await this.$addVehicle(vehicle);
         this.$refs.popup.hide();
