@@ -1,32 +1,22 @@
 <style lang="scss">
 nav {
-    height: 100vh;
+    height: calc(100vh - 64px);
     width: 256px;
     position: relative;
     float: left;
 }
-
-.user {
-    bottom: 24px;
-    position: absolute;
-}
 </style>
 
 <template>
-    <nav class="bg-primary">
-        <side-bar-icon class="pb-5 pt-4"/>
-        <side-bar-button name="Dashboard" icon="dashboard" route="dashboard"/>
-        <side-bar-button name="Garage" icon="time_to_leave" route="garage"/>
-
-        <side-bar-user class="user"/>
+    <nav class="bg-light border-right py-4">
+        <side-bar-button name="Dashboard" route="dashboard" icon="dashboard"/>
+        <side-bar-button name="Garage" route="garage" icon="time_to_leave" />
     </nav>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import SideBarButton from '@/core/components/private/side-bar/side-bar-button.vue';
-import SideBarUser from '@/core/components/private/side-bar/side-bar-user.vue';
-import SideBarIcon from '@/core/components/private/side-bar/side-bar-icon.vue';
 
 /**
  * Side bar used on the dashboard pages.
@@ -35,8 +25,6 @@ import SideBarIcon from '@/core/components/private/side-bar/side-bar-icon.vue';
     name: 'side-bar',
     components: {
         SideBarButton,
-        SideBarIcon,
-        SideBarUser,
     },
 })
 export default class SideBar extends Vue {

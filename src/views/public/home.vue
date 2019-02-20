@@ -20,5 +20,6 @@ import { Getter } from 'vuex-class';
     PublicMasterPage,
   },
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+}
 </script>

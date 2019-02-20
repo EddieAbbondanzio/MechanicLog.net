@@ -1,7 +1,7 @@
 <template>
-    <private-master-page >
-
-    </private-master-page>
+    <div>
+        Dashboard
+    </div>
 </template>
 
 <script lang="ts">
