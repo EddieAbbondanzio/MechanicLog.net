@@ -5,14 +5,12 @@
 </style>
 
 <template>
-    <div>
+    <div class="clearfix">
         <user-bar/>
         <side-bar/>
 
-        <div class="p-2">
-            <div class="container-fluid">
-                <router-view></router-view>
-            </div>
+        <div class="p-1">
+            <router-view></router-view>
         </div>
     </div>
 </template>

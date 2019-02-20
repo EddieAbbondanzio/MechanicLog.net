@@ -20,7 +20,7 @@
     }
 
     &:active {
-        background-color: $gray-400;
+        background-color: $gray-300;
     }
 }
 

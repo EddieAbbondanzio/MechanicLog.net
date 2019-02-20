@@ -6,119 +6,93 @@
     height: 150px;
 }
 
-.vehicle-maintenance:hover {
-    text-decoration: none;
-    background-color: $gray-300;
+.vehicle-maintenance {
     cursor: pointer;
 }
 
-.vehicle-maintenance:active {
-    text-decoration: none;
-    background-color: $gray-400;
+.vehicle-options-button {
     cursor: pointer;
-}
+    text-decoration: none !important;
 
-.vehicle-options-button:hover {
-    background-color: $gray-300;
-    cursor: pointer;
-}
-.vehicle-options-button:active {
-    background-color: $gray-400;
-    cursor: pointer;
+    &:hover {
+        background-color: $gray-200;
+    }
+    &:active {
+        background-color: $gray-300;
+    }
 }
 </style>
 
 <template>
-    <div class="row mb-4 vehicle-summary m-0 bg-light rounded">
-        <delete-vehicle-confirm-popup ref="deletePopup" @delete="onDelete"/>
-        <edit-vehicle-popup ref="editPopup" :vehicle="vehicle" @edit="onEdit" />
+    <router-link
+        class="row text-muted vehicle-maintenance py-2"
+        :to="{ name: 'maintenance', params: { vehicleId: vehicle.id }}"
+    >
+        <div class="col-1">
+            <span style="line-height: 39px;">{{ vehicle.name }}</span>
+        </div>
 
-        <!-- Background -->
-        <router-link :to="{ name: 'maintenance', params: { vehicleId: vehicle.id }}" class="col-11 vehicle-maintenance">
-            <!-- Title Row -->
-            <div class="row">
-                <div class="col-12 my-2 text-dark">
-                    <h3>{{ title }}</h3>
-                </div>
-            </div>
+        <div class="col-3">
+            <span style="line-height: 39px;">{{ vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}}</span>
+        </div>
 
-            <!-- Information -->
-            <div class="row">
-                <div class="col-11">
-                    <div class="row">
-                        <div class="col-3">
-                            <ul class="list-unstyled">
-                                <!-- Mileage -->
-                                <li>
-                                    <h5>
-                                        <span class="text-dark">Mileage:&nbsp;</span>
-                                        <span class="text-muted">{{ vehicle.mileage }}</span>
-                                    </h5>
-                                </li>
-                                <!-- Color -->
-                                <li v-if="vehicle.color != null">
-                                    <h5>
-                                        <span class="text-dark">Color:&nbsp;</span>
-                                        <span class="text-muted">{{ vehicle.color }}</span>
-                                    </h5>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-3">
-                            <ul class="list-unstyled">
-                                <!-- License Plate -->
-                                <li v-if="vehicle.licensePlate != null">
-                                    <h5>
-                                        <span class="text-dark">License Plate:&nbsp;</span>
-                                        <span class="text-muted">{{ vehicle.licensePlate }}</span>
-                                    </h5>
-                                </li>
-                                <!-- VIN -->
-                                <li v-if="vehicle.vin != null">
-                                    <h5>
-                                        <span class="text-dark">VIN:&nbsp;</span>
-                                        <span class="text-muted">{{ vehicle.vin }}</span>
-                                    </h5>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </router-link>
+        <div class="col-2">
+            <span style="line-height: 39px;">{{ vehicle.mileage.toLocaleString() }}</span>
+        </div>
 
-        <!-- Options Button -->
-        <div class="col-1 pr-0 vehicle-options-button">
-            <b-dropdown variant="link" no-caret>
-                <div slot="button-content" style="margin-top: 55px;">
-                    <material-icon icon="more_vert" size="md" color="dark"/>
+        <div class="col-2">
+            <span style="line-height: 39px;">{{ vehicle.color }}</span>
+        </div>
+
+        <div class="col-2">
+            <span style="line-height: 39px;">{{ vehicle.vin }}</span>
+        </div>
+
+        <div class="col-1">
+            <span style="line-height: 39px;">{{ vehicle.licensePlate }}</span>
+        </div>
+
+        <div class="col-1">
+            <b-dropdown variant="link" no-caret class="vehicle-options-button rounded">
+                <div slot="button-content">
+                    <material-icon icon="more_vert" size="md" color="dark" class="align-middle"/>
                 </div>
 
                 <b-dropdown-item href="#" @click="onEditClick">Edit</b-dropdown-item>
                 <b-dropdown-item href="#" class="text-danger" @click="onDeleteClick">Delete</b-dropdown-item>
             </b-dropdown>
         </div>
-    </div>
+
+        <div class="col-12 py-0 my-0 pt-2">
+            <hr style="height: 2px; border: none;" class="bg-light m-0">
+        </div>
+    </router-link>
+
+    <!-- <div class="row mb-4 vehicle-summary m-0 bg-white border rounded border-muted">
+        <delete-vehicle-confirm-popup ref="deletePopup" @delete="onDelete"/>
+        <edit-vehicle-popup ref="editPopup" :vehicle="vehicle" @edit="onEdit"/>
+
+    </div>-->
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
-import MaterialIcon from '@/core/components/shared/material-icon.vue';
-import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/delete-vehicle-confirm-popup.vue';
-import EditVehiclePopup from '@/vehicle-system/vehicle/components/edit-vehicle-popup.vue';
-import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import { Vehicle } from "@/vehicle-system/vehicle/entities/vehicle";
+import MaterialIcon from "@/core/components/shared/material-icon.vue";
+import DeleteVehicleConfirmPopup from "@/vehicle-system/vehicle/components/delete-vehicle-confirm-popup.vue";
+import EditVehiclePopup from "@/vehicle-system/vehicle/components/edit-vehicle-popup.vue";
+import { VehicleMixin } from "@/vehicle-system/vehicle/mixins/vehicle-mixin";
 
 /**
  * Component that summarizes the details of a vehicle.
  */
 @Component({
-    name: 'vehicle-summary',
+    name: "vehicle-summary",
     components: {
         MaterialIcon,
         DeleteVehicleConfirmPopup,
-        EditVehiclePopup,
-    },
+        EditVehiclePopup
+    }
 })
 export default class VehicleSummary extends VehicleMixin {
     /**
@@ -129,9 +103,13 @@ export default class VehicleSummary extends VehicleMixin {
 
     public get title() {
         if (this.vehicle.name != null) {
-            return `${this.vehicle.name} - ${this.vehicle.year} ${this.vehicle.make} ${this.vehicle.model}`;
+            return `${this.vehicle.name} - ${this.vehicle.year} ${
+                this.vehicle.make
+            } ${this.vehicle.model}`;
         } else {
-            return `${this.vehicle.year} ${this.vehicle.make} ${this.vehicle.model}`;
+            return `${this.vehicle.year} ${this.vehicle.make} ${
+                this.vehicle.model
+            }`;
         }
     }
 
