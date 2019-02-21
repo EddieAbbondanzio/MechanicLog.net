@@ -3,14 +3,15 @@ nav {
     height: calc(100vh - 64px);
     width: 256px;
     position: relative;
-    float: left;
+    top: 0px;
+    display: inline-block;
 }
 </style>
 
 <template>
     <nav class="bg-light border-right py-4">
         <side-bar-button name="Dashboard" route="dashboard" icon="dashboard"/>
-        <side-bar-button name="Garage" route="garage" icon="time_to_leave" />
+        <side-bar-button name="Garage" route="vehicles" icon="time_to_leave" />
     </nav>
 </template>
 

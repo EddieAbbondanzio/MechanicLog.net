@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div style="height: 40px;">
         <!-- Button on screen -->
-        <b-btn variant="success" v-b-modal.addVehicleModal style="height: 40px; vertical-align: bottom;">
-            <material-icon icon="add" size="md"/>Add Vehicle
+        <b-btn variant="success" v-b-modal.addVehicleModal style="height: 40px">
+            <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+            <span style="vertical-align: middle;">Add Vehicle</span>
         </b-btn>
 
         <!-- Da popup -->

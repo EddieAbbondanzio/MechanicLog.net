@@ -1,11 +1,6 @@
 <template>
-    <div>
-        <!-- Breadcrumb trail -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb bg-white">
-                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-            </ol>
-        </nav>
+    <div class="d-inline-block">
+       
     </div>
 </template>
 

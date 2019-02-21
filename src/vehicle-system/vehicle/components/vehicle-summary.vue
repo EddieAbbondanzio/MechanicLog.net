@@ -3,11 +3,16 @@
 @import "./public/bootstrap/_variables.scss";
 
 .vehicle-summary {
-    height: 150px;
-}
-
-.vehicle-maintenance {
     cursor: pointer;
+
+    &:hover {
+        background-color: $gray-200;
+        color: $gray-900 !important;
+    }
+
+    &:active {
+        background-color: $gray-300;
+    }
 }
 
 .vehicle-options-button {
@@ -24,55 +29,77 @@
 </style>
 
 <template>
-    <router-link
-        class="row text-muted vehicle-maintenance py-2"
-        :to="{ name: 'maintenance', params: { vehicleId: vehicle.id }}"
-    >
-        <div class="col-1">
-            <span style="line-height: 39px;">{{ vehicle.name }}</span>
-        </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <router-link
+                    class="text-muted vehicle-summary col-11"
+                    :to="{ name: 'maintenance', params: { vehicleId: vehicle.id }}"
+                >
+                    <!-- Columns -->
+                    <div class="row">
+                        <div class="col-2 py-2">
+                            <span style="line-height: 39px;">{{ vehicle.name }}</span>
+                        </div>
 
-        <div class="col-3">
-            <span style="line-height: 39px;">{{ vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}}</span>
-        </div>
+                        <div class="col-3 py-2">
+                            <span
+                                style="line-height: 39px;"
+                            >{{ vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}}</span>
+                        </div>
 
-        <div class="col-2">
-            <span style="line-height: 39px;">{{ vehicle.mileage.toLocaleString() }}</span>
-        </div>
+                        <div class="col-2 py-2">
+                            <span style="line-height: 39px;">{{ vehicle.mileage.toLocaleString() }}</span>
+                        </div>
 
-        <div class="col-2">
-            <span style="line-height: 39px;">{{ vehicle.color }}</span>
-        </div>
+                        <div class="col-2 py-2">
+                            <span style="line-height: 39px;">{{ vehicle.color }}</span>
+                        </div>
 
-        <div class="col-2">
-            <span style="line-height: 39px;">{{ vehicle.vin }}</span>
-        </div>
+                        <div class="col-2 py-2">
+                            <span style="line-height: 39px;">{{ vehicle.vin }}</span>
+                        </div>
 
-        <div class="col-1">
-            <span style="line-height: 39px;">{{ vehicle.licensePlate }}</span>
-        </div>
+                        <div class="col-1 py-2">
+                            <span style="line-height: 39px;">{{ vehicle.licensePlate }}</span>
+                        </div>
+                    </div>
+                </router-link>
 
-        <div class="col-1">
-            <b-dropdown variant="link" no-caret class="vehicle-options-button rounded">
-                <div slot="button-content">
-                    <material-icon icon="more_vert" size="md" color="dark" class="align-middle"/>
+                <!-- More Options Button -->
+                <div class="col-1 py-2 vehicle-options-button text-center d-table align-middle">
+                    <div class="d-table-cell">
+                        <b-dropdown variant="link" no-caret>
+                            <div slot="button-content">
+                                <material-icon
+                                    icon="more_vert"
+                                    size="md"
+                                    color="dark"
+                                    class="align-middle"
+                                />
+                            </div>
+
+                            <b-dropdown-item href="#" @click="onEditClick">Edit</b-dropdown-item>
+                            <b-dropdown-item
+                                href="#"
+                                class="text-danger"
+                                @click="onDeleteClick"
+                            >Delete</b-dropdown-item>
+                        </b-dropdown>
+                    </div>
                 </div>
+            </div>
 
-                <b-dropdown-item href="#" @click="onEditClick">Edit</b-dropdown-item>
-                <b-dropdown-item href="#" class="text-danger" @click="onDeleteClick">Delete</b-dropdown-item>
-            </b-dropdown>
+            <div class="row">
+                <div class="col-12">
+                    <hr class="my-0 py-0">
+                </div>
+            </div>
         </div>
 
-        <div class="col-12 py-0 my-0 pt-2">
-            <hr style="height: 2px; border: none;" class="bg-light m-0">
-        </div>
-    </router-link>
-
-    <!-- <div class="row mb-4 vehicle-summary m-0 bg-white border rounded border-muted">
         <delete-vehicle-confirm-popup ref="deletePopup" @delete="onDelete"/>
         <edit-vehicle-popup ref="editPopup" :vehicle="vehicle" @edit="onEdit"/>
-
-    </div>-->
+    </div>
 </template>
 
 <script lang="ts">

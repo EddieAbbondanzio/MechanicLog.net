@@ -7,30 +7,18 @@
 </style>
 
 <template>
-    <div class="container-fluid">
+    <div class="container-fluid px-0">
         <!-- Header -->
         <div class="row pt-3">
-            <div class="col-md-3 pl-0">
-                <!-- Breadcrumb trail -->
-                <nav class="col-12 h-auto breadcrumb-trail pl-0" aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-white">
-                        <li class="breadcrumb-item active" aria-current="page">Garage</li>
-                    </ol>
-                </nav>
-            </div>
-
-            <div class="col-12 col-sm-12 col-md-9">
+            <div class="col-12 col-sm-12 col-md-9 offset-md-3">
                 <div class="float-right d-inline-block">
                     <div class="d-inline-block align-middle pb-2 pb-sm-0 pr-2">
-                        <b-btn variant="success">
-                            <material-icon class="align-middle" icon="add" color="white" size="md"/>
-                            <span>Add Vehicle</span>
-                        </b-btn>
+                        <add-vehicle-form />
                     </div>
 
                     <div class="d-inline-block align-middle">
                         <!-- Sort By -->
-                        <div class="input-group" style="height: 39px;">
+                        <div class="input-group" style="height: 40px;">
                             <div class="input-group-prepend">
                                 <label
                                     class="input-group-text bg-primary text-light"
@@ -56,40 +44,44 @@
         <!-- Sexy HR -->
         <div class="row">
             <div class="col-12 pb-2">
-                <hr style="height: 4px; border: none;" class="bg-light">
+                <!-- <hr style="height: 4px; border: none;" class="bg-light"> -->
                 <span class="text-muted">VEHICLES</span>
             </div>
         </div>
 
         <div class="row pb-2">
-            <div class="col-1">
-                <span>Nickname</span>
-            </div>
+            <div class="col-11">
+                <div class="row">
+                    <div class="col-2">
+                        <span>Nickname</span>
+                    </div>
 
-            <div class="col-3">
-                <span>Year/Make/Model</span>
-            </div>
+                    <div class="col-3">
+                        <span>Year/Make/Model</span>
+                    </div>
 
-            <div class="col-2">
-                <span>Mileage</span>
-            </div>
+                    <div class="col-2">
+                        <span>Mileage</span>
+                    </div>
 
-            <div class="col-2">
-                <span>Color</span>
-            </div>
+                    <div class="col-2">
+                        <span>Color</span>
+                    </div>
 
-            <div class="col-2">
-                <span>VIN</span>
-            </div>
+                    <div class="col-2">
+                        <span>VIN</span>
+                    </div>
 
-            <div class="col-1">
-                <span>Plate</span>
+                    <div class="col-1">
+                        <span>Plate</span>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-12 py-0 my-0">
-                <hr style="height: 2px; border: none;" class="bg-light m-0">
+                <hr class="my-0 py-0 bg-secondary" style="height 4px;">
             </div>
         </div>
 
@@ -118,7 +110,7 @@ import { VehicleMixin } from "@/vehicle-system/vehicle/mixins/vehicle-mixin";
  * Garage page.
  */
 @Component({
-    name: "garage",
+    name: "vehicles",
     components: {
         PrivateMasterPage,
         VehicleSummary,
@@ -126,7 +118,7 @@ import { VehicleMixin } from "@/vehicle-system/vehicle/mixins/vehicle-mixin";
         AddVehicleForm
     }
 })
-export default class Garage extends VehicleMixin {
+export default class Vehicles extends VehicleMixin {
     public vehicles: Vehicle[] = [];
     public async mounted(): Promise<void> {
         this.vehicles = await this.$getVehicles();

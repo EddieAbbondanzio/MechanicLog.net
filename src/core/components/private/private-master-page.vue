@@ -5,11 +5,11 @@
 </style>
 
 <template>
-    <div class="clearfix">
+    <div>
         <user-bar/>
-        <side-bar/>
+        <side-bar class="align-bottom"/>
 
-        <div class="p-1">
+        <div class="p-1 d-inline-block align-top" style="width: calc(100% - 256px);">
             <router-view></router-view>
         </div>
     </div>

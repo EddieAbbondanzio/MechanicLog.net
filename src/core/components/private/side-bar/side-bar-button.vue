@@ -22,6 +22,17 @@
     &:active {
         background-color: $gray-300;
     }
+
+    .router-link-active:after {
+        content: "";
+        display: block;
+        width: 110%;
+        margin-left: -5px;
+        margin-top: 4px;
+        height: 4px;
+        background-color: $primary;
+        vertical-align: bottom;
+    }
 }
 
 .side-bar-active-indicator {
@@ -87,7 +98,15 @@ export default class SideBarButton extends Vue {
      * If this option is currently active.
      */
     public isActive(): boolean {
-        return this.$route.name === this.route;
+        // What a hack
+        if (this.route === "vehicles") {
+            return (
+                this.$route.name === "vehicles" ||
+                this.$route.name === "mechanics"
+            );
+        } else {
+            return this.$route.name === this.route;
+        }
     }
 
     /**

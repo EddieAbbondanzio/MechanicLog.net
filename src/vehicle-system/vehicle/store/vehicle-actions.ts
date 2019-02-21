@@ -33,6 +33,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
         const apiUrl: string = context.rootGetters['config/apiUrl'];
         const vehicleService: VehicleService = new VehicleService(apiUrl);
 
+        // Don't think this works...
         const vehicles: Vehicle[] = context.getters['vehicles'] as Vehicle[];
         return vehicles.find((v) => v.id === id);
     },

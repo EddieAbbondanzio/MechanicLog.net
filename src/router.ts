@@ -14,27 +14,45 @@ const router: Router = new Router({
             component: () => import("./views/public/home.vue")
         },
         {
-          path: "/",
-          component: PrivateMasterPage,
-          children: [
-              {
-                  path: "garage",
-                  name: "garage",
-                  component: () => import("./views/private/garage.vue"),
-                  meta: {
-                      authRequired: true
-                  }
-              },
-              {
-                path: "/dashboard",
-                name: "dashboard",
-                component: () => import("./views/private/dashboard.vue"),
-                meta: {
-                    authRequired: true
-                }
-            },
-          ]
-      },
+            path: "/",
+            component: PrivateMasterPage,
+            children: [
+                {
+                    name: "garage",
+                    path: "/garage",
+                    component: () =>
+                        import("./vehicle-system/components/garage-container.vue"),
+                    children: [
+                        {
+                            path: "vehicles",
+                            name: "vehicles",
+                            component: () =>
+                                import("./views/private/vehicles.vue"),
+                            meta: {
+                                authRequired: true
+                            }
+                        },
+                        {
+                            path: "mechanics",
+                            name: "mechanics",
+                            component: () =>
+                                import("./views/private/mechanics.vue"),
+                            meta: {
+                                authRequired: true
+                            }
+                        },
+                    ]
+                },
+                {
+                    path: "/dashboard",
+                    name: "dashboard",
+                    component: () => import("./views/private/dashboard.vue"),
+                    meta: {
+                        authRequired: true
+                    }
+                },
+            ]
+        },
         {
             path: "/maintenance/:vehicleId",
             name: "maintenance",
