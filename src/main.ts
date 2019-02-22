@@ -3,8 +3,13 @@ import App from './app.vue';
 import router from './router';
 import store from './core/store/store';
 import * as VueCookies from 'vue-cookies';
-import VeeValidate from 'vee-validate';
+import VeeValidate, { Validator } from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
+import { phoneNumberVeeRule } from '@/core/validation/phone-number-vee-rule';
+import { zipCodeVeeRule } from './core/validation/zip-code-vee-rule';
+
+Validator.extend('phone-number', phoneNumberVeeRule);
+Validator.extend('zip-code', zipCodeVeeRule);
 
 Vue.config.productionTip = false;
 Vue.use(VueCookies);

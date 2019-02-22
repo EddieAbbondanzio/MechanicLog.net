@@ -33,7 +33,7 @@
         <div class="col-12">
             <div class="row">
                 <router-link
-                    class="text-muted vehicle-summary col-11"
+                    class="text-muted vehicle-summary col-10 col-lg-11"
                     :to="{ name: 'maintenance', params: { vehicleId: vehicle.id }}"
                 >
                     <!-- Columns -->
@@ -42,13 +42,13 @@
                             <span style="line-height: 39px;">{{ vehicle.name }}</span>
                         </div>
 
-                        <div class="col-3 py-2">
+                        <div class="col-4 col-lg-3 py-2">
                             <span
                                 style="line-height: 39px;"
                             >{{ vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}}</span>
                         </div>
 
-                        <div class="col-2 py-2">
+                        <div class="col-3 col-lg-2 py-2">
                             <span style="line-height: 39px;">{{ vehicle.mileage.toLocaleString() }}</span>
                         </div>
 
@@ -56,18 +56,18 @@
                             <span style="line-height: 39px;">{{ vehicle.color }}</span>
                         </div>
 
-                        <div class="col-2 py-2">
+                        <div class="col-2 py-2 d-none d-lg-block">
                             <span style="line-height: 39px;">{{ vehicle.vin }}</span>
                         </div>
 
-                        <div class="col-1 py-2">
+                        <div class="col-1 py-2 d-none d-lg-block">
                             <span style="line-height: 39px;">{{ vehicle.licensePlate }}</span>
                         </div>
                     </div>
                 </router-link>
 
                 <!-- More Options Button -->
-                <div class="col-1 py-2 vehicle-options-button text-center d-table align-middle">
+                <div class="col-2 col-lg-1 py-2 vehicle-options-button text-center d-table align-middle">
                     <div class="d-table-cell">
                         <b-dropdown variant="link" no-caret>
                             <div slot="button-content">

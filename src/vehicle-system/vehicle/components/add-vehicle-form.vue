@@ -157,7 +157,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/shared/material-icon.vue';
-import FormErrorList from '@/core/components/shared/form/form-error-list.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 
@@ -168,7 +167,6 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
     name: 'add-vehicle-form',
     components: {
         MaterialIcon,
-        FormErrorList,
     },
 })
 export default class AddVehicleForm extends VehicleMixin {
@@ -176,15 +174,15 @@ export default class AddVehicleForm extends VehicleMixin {
      * Type declarations for the $refs of the component.
      */
     public $refs!: {
-        yearField: HTMLInputElement,
-        makeField: HTMLInputElement,
-        modelField: HTMLInputElement,
-        mileageField: HTMLInputElement,
-        colorField: HTMLInputElement,
-        licensePlateField: HTMLInputElement,
-        vinField: HTMLInputElement,
-        nickNameField: HTMLInputElement,
-        popup: any,
+        yearField: HTMLInputElement;
+        makeField: HTMLInputElement;
+        modelField: HTMLInputElement;
+        mileageField: HTMLInputElement;
+        colorField: HTMLInputElement;
+        licensePlateField: HTMLInputElement;
+        vinField: HTMLInputElement;
+        nickNameField: HTMLInputElement;
+        popup: any;
     };
 
     public created() {
@@ -209,7 +207,8 @@ export default class AddVehicleForm extends VehicleMixin {
                     max: 'License plate number must be 10 characters or less.',
                 },
                 vin: {
-                    max: 'Vehicle identification number (VIN) must be 17 characters or less.',
+                    max:
+                        'Vehicle identification number (VIN) must be 17 characters or less.',
                 },
                 nickName: {
                     max: 'Vehicle nickname must be 32 characters or less.',
@@ -243,7 +242,7 @@ export default class AddVehicleForm extends VehicleMixin {
             Number.parseInt(rawYear, 10),
             rawMake,
             rawModel,
-            Number.parseInt(rawMileage, 10),
+            Number.parseInt(rawMileage, 10)
         );
 
         vehicle.color = this.$refs.colorField.value;
@@ -282,7 +281,5 @@ export default class AddVehicleForm extends VehicleMixin {
     public async onShown(): Promise<void> {
         this.$refs.yearField.focus();
     }
-
-
 }
 </script>

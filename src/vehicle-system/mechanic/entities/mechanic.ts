@@ -17,25 +17,35 @@ export class Mechanic {
     /**
      * The address of the shop.
      */
-    public address: Nullable<string>;
+    public address: Nullable<string> = null;
+
+    /**
+     * The city of the address.
+     */
+    public city: Nullable<string> = null;
+
+    /**
+     * The State of the address.
+     */
+    public state: Nullable<string> = null;
+
+    /**
+     * The ZIP code of the address.
+     */
+    public zip: Nullable<string> = null;
 
     /**
      * The contact phone of the shop.
      */
-    public phone: Nullable<string>;
+    public phone: Nullable<string> = null;
 
     /**
      * Create a new mechanic.
-     * @param id The unique ID of the mechanic.
      * @param name The name of the mechanic.
-     * @param address The address of the mechanic.
-     * @param phone The phone number of the mechanic.
      */
-    constructor(id: number, name: string, address: string | null = null, phone: string | null = null) {
-        this.id = id;
+    constructor(name: string) {
+        this.id = 0;
         this.name = name;
-        this.address = address;
-        this.phone = phone;
     }
 
     /**
@@ -43,6 +53,13 @@ export class Mechanic {
      * @param raw The raw object from the backend.
      */
     public static fromRaw(raw: any): Mechanic {
-        return new Mechanic(raw.id, raw.name, raw.address, raw.phone);
+        const m = new Mechanic(raw.name);
+        m.id = raw.id;
+        m.address = raw.address;
+        m.city = raw.city;
+        m.zip = raw.zip;
+        m.phone = raw.phone;
+
+        return m;
     }
 }

@@ -1,19 +1,20 @@
 <style lang="scss">
-.breadcrumb-trail {
-    ol {
-        margin-bottom: 0px;
-    }
-}
 </style>
 
 <template>
     <div class="container-fluid px-0">
         <!-- Header -->
         <div class="row pt-3">
-            <div class="col-12 col-sm-12 col-md-9 offset-md-3">
+            <div class="col-12 col-lg-6">
+                <p class="text-muted py-2 px-4" style="font-size: 1.25em;">
+                    Vehicle records allow for tracking maintenace, and or repairs.
+                </p>
+            </div>
+
+            <div class="col-12 col-lg-6">
                 <div class="float-right d-inline-block">
-                    <div class="d-inline-block align-middle pb-2 pb-sm-0 pr-2">
-                        <add-vehicle-form />
+                    <div class="d-inline-block pb2 pb-sm-0 pr-2">
+                        <add-vehicle-form/>
                     </div>
 
                     <div class="d-inline-block align-middle">
@@ -50,17 +51,17 @@
         </div>
 
         <div class="row pb-2">
-            <div class="col-11">
+            <div class="col-10 col-lg-11">
                 <div class="row">
                     <div class="col-2">
                         <span>Nickname</span>
                     </div>
 
-                    <div class="col-3">
+                    <div class="col-4 col-lg-3">
                         <span>Year/Make/Model</span>
                     </div>
 
-                    <div class="col-2">
+                    <div class="col-3 col-lg-2">
                         <span>Mileage</span>
                     </div>
 
@@ -68,11 +69,11 @@
                         <span>Color</span>
                     </div>
 
-                    <div class="col-2">
+                    <div class="col-2 d-none d-lg-block">
                         <span>VIN</span>
                     </div>
 
-                    <div class="col-1">
+                    <div class="col-1 d-none d-lg-block">
                         <span>Plate</span>
                     </div>
                 </div>
@@ -98,25 +99,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import PrivateMasterPage from "@/core/components/private/private-master-page.vue";
-import { Vehicle } from "@/vehicle-system/vehicle/entities/vehicle";
-import VehicleSummary from "@/vehicle-system/vehicle/components/vehicle-summary.vue";
-import MaterialIcon from "@/core/components/shared/material-icon.vue";
-import AddVehicleForm from "@/vehicle-system/vehicle/components/add-vehicle-form.vue";
-import { VehicleMixin } from "@/vehicle-system/vehicle/mixins/vehicle-mixin";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import PrivateMasterPage from '@/core/components/private/private-master-page.vue';
+import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import VehicleSummary from '@/vehicle-system/vehicle/components/vehicle-summary.vue';
+import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import AddVehicleForm from '@/vehicle-system/vehicle/components/add-vehicle-form.vue';
+import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
 
 /**
  * Garage page.
  */
 @Component({
-    name: "vehicles",
+    name: 'vehicles',
     components: {
         PrivateMasterPage,
         VehicleSummary,
         MaterialIcon,
-        AddVehicleForm
-    }
+        AddVehicleForm,
+    },
 })
 export default class Vehicles extends VehicleMixin {
     public vehicles: Vehicle[] = [];
@@ -129,24 +130,24 @@ export default class Vehicles extends VehicleMixin {
      */
     public onOrderByChanged(event: any): void {
         switch (event.target.value) {
-            case "Name":
+            case 'Name':
                 this.vehicles.sort((a: Vehicle, b: Vehicle) => {
-                    const aName: string = a.name || "";
-                    const bName: string = b.name || "";
+                    const aName: string = a.name || '';
+                    const bName: string = b.name || '';
                     return aName.localeCompare(bName);
                 });
                 break;
-            case "Year":
+            case 'Year':
                 this.vehicles.sort((a: Vehicle, b: Vehicle) =>
                     a.year > b.year ? -1 : 1
                 );
                 break;
-            case "Make":
+            case 'Make':
                 this.vehicles.sort((a: Vehicle, b: Vehicle) =>
                     a.make.localeCompare(b.make)
                 );
                 break;
-            case "Mileage":
+            case 'Mileage':
                 this.vehicles.sort((a: Vehicle, b: Vehicle) =>
                     a.mileage > b.mileage ? -1 : 1
                 );
