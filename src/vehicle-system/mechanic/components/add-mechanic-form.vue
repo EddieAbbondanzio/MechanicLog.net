@@ -40,7 +40,7 @@
                         placeholder="555-123-1234"
                         ref="phoneField"
                         name="phone"
-                        v-validate="'numeric|max:16|phone-number'"
+                        v-validate="'max:16|phone-number'"
                     >
                     <b-form-invalid-feedback>{{ errors.first('phone') }}</b-form-invalid-feedback>
                 </div>
@@ -105,6 +105,20 @@
                     <b-form-invalid-feedback>{{ errors.first('zip') }}</b-form-invalid-feedback>
                 </div>
             </form>
+
+            <div slot="modal-footer">
+                <b-btn @click="onCancelButtonClick" class="mr-1">Cancel</b-btn>
+
+                <b-btn
+                    @click="onAddButtonClick"
+                    variant="success"
+                    class="ml-1"
+                    :disabled="this.errors.all().length > 0"
+                    :title="this.errors.all().length > 0 ? 'Please fix any errors first.' : 'Add a new vehicle.'"
+                >
+                    <material-icon icon="add" size="md"/>Add
+                </b-btn>
+            </div>
         </b-modal>
     </div>
 </template>
@@ -113,6 +127,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
 import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 
 /**
  * Popup form to add a new mechanic.
@@ -131,7 +146,43 @@ export default class AddMechanicForm extends MechanicMixin {
         nameField: HTMLInputElement;
         phoneField: HTMLInputElement;
         addressField: HTMLInputElement;
+        cityField: HTMLInputElement;
+        stateField: HTMLInputElement;
+        zipField: HTMLInputElement;
+        popup: any;
     };
+
+    /**
+     * User wants to submit, and create the new mechanic.
+     */
+    public async onAddButtonClick(): Promise<void> {
+        // Validate it, before we send it off to the back end.
+        if (!(await this.$validator.validate())) {
+            return;
+        }
+
+        const name: string = this.$refs.nameField.value;
+        const phone: string = this.$refs.phoneField.value;
+        const address: string = this.$refs.addressField.value;
+        const city: string = this.$refs.cityField.value;
+        const state: string = this.$refs.stateField.value;
+        const zip: string = this.$refs.zipField.value;
+
+        const mechanic: Mechanic = new Mechanic(name);
+        mechanic.phone = phone;
+        mechanic.address = address;
+        mechanic.city = city;
+        mechanic.state = state;
+        mechanic.zip = zip;
+
+        await this.$addMechanic(mechanic);
+        this.$refs.popup.hide();
+
+    }
+
+    public async onCancelButtonClick(): Promise<void> {
+        this.$refs.popup.hide();
+    }
 
     /**
      * When the popup is being prepared to be shown, reset everything back to it's

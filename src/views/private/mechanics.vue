@@ -61,18 +61,38 @@
                 <hr class="my-0 py-0 bg-secondary" style="height 4px;">
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-12">
+                <mechanic-summary
+                    v-for="mechanic in mechanics"
+                    :mechanic="mechanic"
+                    :key="mechanic.name"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import AddMechanicForm from '@/vehicle-system/mechanic/components/add-mechanic-form.vue';
+import MechanicSummary from '@/vehicle-system/mechanic/components/mechanic-summary.vue';
+import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
 
 @Component({
     name: 'new-component',
     components: {
         AddMechanicForm,
+        MechanicSummary,
     },
 })
-export default class Mechanics extends Vue {}
+export default class Mechanics extends MechanicMixin {
+    public mechanics: Mechanic[] = [];
+
+    public async mounted(): Promise<void> {
+        this.mechanics = await this.$getMechanics();
+    }
+}
 </script>
