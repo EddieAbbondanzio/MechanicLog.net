@@ -1,4 +1,3 @@
-
 /**
  * A motor vehicle.
  */
@@ -62,6 +61,17 @@ export class Vehicle {
         this.make = make;
         this.model = model;
         this.mileage = mileage;
+    }
+
+    /**
+     * Convert the vehicle into a print friendly string.
+     */
+    public toString(): string {
+        if (this.name != null) {
+            return `${this.name} - ${this.year} ${this.make} ${this.model}`;
+        } else {
+            return `${this.year} ${this.make} ${this.model}`;
+        }
     }
 
     /**

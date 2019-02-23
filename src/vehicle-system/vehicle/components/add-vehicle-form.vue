@@ -156,7 +156,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 

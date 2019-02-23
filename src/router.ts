@@ -1,96 +1,29 @@
-import Vue from "vue";
-import Router from "vue-router";
-import store from "./core/store/store";
-import Goodbye from "@/views/public/goodbye.vue";
-import PrivateMasterPage from "@/core/components/private/private-master-page.vue";
+import Vue from 'vue';
+import Router from 'vue-router';
+import store from './core/store/store';
+import Goodbye from '@/views/public/goodbye.vue';
+import PrivateMasterPage from '@/core/components/private/private-master-page.vue';
+import PublicMasterPage from '@/core/components/public/public-master-page.vue';
+import { publicRoutes } from '@/public/routes';
+import { privateRoutes } from './private/routes';
 
 Vue.use(Router);
 
+/**
+ * Main router of the app.
+ */
 const router: Router = new Router({
-    routes: [
-        {
-            path: "/",
-            name: "home",
-            component: () => import("./views/public/home.vue")
-        },
-        {
-            path: "/",
-            component: PrivateMasterPage,
-            children: [
-                {
-                    name: "garage",
-                    path: "/garage",
-                    component: () =>
-                        import("./vehicle-system/components/garage-container.vue"),
-                    children: [
-                        {
-                            path: "vehicles",
-                            name: "vehicles",
-                            component: () =>
-                                import("./views/private/vehicles.vue"),
-                            meta: {
-                                authRequired: true
-                            }
-                        },
-                        {
-                            path: "mechanics",
-                            name: "mechanics",
-                            component: () =>
-                                import("./views/private/mechanics.vue"),
-                            meta: {
-                                authRequired: true
-                            }
-                        },
-                    ]
-                },
-                {
-                    path: "/dashboard",
-                    name: "dashboard",
-                    component: () => import("./views/private/dashboard.vue"),
-                    meta: {
-                        authRequired: true
-                    }
-                },
-            ]
-        },
-        {
-            path: "/maintenance/:vehicleId",
-            name: "maintenance",
-            component: () => import("./views/private/maintenance.vue"),
-            meta: {
-                authRequired: true
-            }
-        },
-        {
-            path: "/login",
-            name: "login",
-            component: () => import("./views/public/login.vue")
-        },
-        {
-            path: "/register",
-            name: "register",
-            component: () => import("./views/public/sign-up.vue")
-        },
-        {
-            path: "/forgot",
-            name: "forgot",
-            component: () => import("./views/public/forgot.vue")
-        },
-        {
-            path: "/reset",
-            name: "reset",
-            component: () => import("./views/public/reset.vue")
-        },
-        {
-            path: "/goodbye",
-            name: "goodbye",
-            component: Goodbye
-        }
-    ]
+    routes: [publicRoutes, privateRoutes],
 });
 
 // Route guard for logged in users.
 router.beforeEach((to, from, next) => {
+    if (to.meta.disabled) {
+        next({
+            name: 'home',
+        });
+    }
+
     // Skip over routes that don't require auth.
     if (!to.meta.authRequired) {
         next();
@@ -101,7 +34,7 @@ router.beforeEach((to, from, next) => {
         next();
     } else {
         next({
-            path: "/login"
+            path: '/login',
         });
     }
 });

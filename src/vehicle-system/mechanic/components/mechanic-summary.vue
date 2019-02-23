@@ -3,19 +3,31 @@
 @import './public/bootstrap/_variables.scss';
 
 .mechanic-summary {
-    cursor: pointer;
+    // cursor: pointer;
 
-    &:hover {
-        background-color: $gray-200;
-        color: $gray-900 !important;
-    }
+    // &:hover {
+    //     background-color: $gray-200;
+    //     color: $gray-900 !important;
+    // }
 
-    &:active {
-        background-color: $gray-300;
-    }
+    // &:active {
+    //     background-color: $gray-300;
+    // }
 
     span {
         line-height: 39px;
+    }
+
+    .mechanic-options-button {
+        cursor: pointer;
+        text-decoration: none !important;
+
+        &:hover {
+            background-color: $gray-200;
+        }
+        &:active {
+            background-color: $gray-300;
+        }
     }
 }
 </style>
@@ -52,6 +64,31 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- More Options Button -->
+                    <div
+                        class="col-2 col-lg-1 py-2 vehicle-options-button text-center d-table align-middle"
+                    >
+                        <div class="d-table-cell">
+                            <b-dropdown variant="link" no-caret ref="optionsDropDown">
+                                <div slot="button-content">
+                                    <material-icon
+                                        icon="more_vert"
+                                        size="md"
+                                        color="dark"
+                                        class="align-middle"
+                                    />
+                                </div>
+
+                                <b-dropdown-item href="#" @click="onEditClick">Edit</b-dropdown-item>
+                                <b-dropdown-item
+                                    href="#"
+                                    class="text-danger"
+                                    @click="onDeleteClick"
+                                >Delete</b-dropdown-item>
+                            </b-dropdown>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,13 +98,19 @@
                 <hr class="my-0 py-0">
             </div>
         </div>
+
+        <delete-mechanic-confirm-popup ref="deletePopup" @delete="onDelete"/>
+        <edit-mechanic-popup ref="editPopup" :mechanic="mechanic" @edit="onEdit"/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
+import EditMechanicPopup from '@/vehicle-system/mechanic/components/edit-mechanic-popup.vue';
+import DeleteMechanicConfirmPopup from '@/vehicle-system/mechanic/components/delete-mechanic-confirm-popup.vue';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
 
 /**
  * Summary of a individual mechanic.
@@ -76,13 +119,31 @@ import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
     name: 'mechanic-summary',
     components: {
         MaterialIcon,
+        EditMechanicPopup,
+        DeleteMechanicConfirmPopup,
     },
 })
-export default class MechanicSummary extends Vue {
+export default class MechanicSummary extends MechanicMixin {
     /**
      * The mechanic to display.
      */
     @Prop()
     public mechanic!: Mechanic;
+
+    protected async onEditClick(): Promise<void> {
+        (this.$refs.editPopup as any).show();
+    }
+
+    protected async onDeleteClick(): Promise<void> {
+        (this.$refs.deletePopup as any).show();
+    }
+
+    protected async onEdit(newMechanic: Mechanic): Promise<void> {
+        await this.$updateMechanic(newMechanic);
+    }
+
+    protected async onDelete(): Promise<void> {
+        await this.$deleteMechanic(this.mechanic);
+    }
 }
 </script>

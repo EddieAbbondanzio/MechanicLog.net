@@ -14,17 +14,16 @@ Validator.extend('zip-code', zipCodeVeeRule);
 Vue.config.productionTip = false;
 Vue.use(VueCookies);
 Vue.use(VeeValidate, {
-  classes: true,
-  classNames: {
-    invalid: 'is-invalid',
-  },
-  events: 'blur',
+    classes: true,
+    classNames: {
+        invalid: 'is-invalid',
+    },
+    events: 'blur',
 });
 Vue.use(BootstrapVue);
 
 const v: Vue = new Vue({
-  router,
-  store,
-  render: (h) => h(App),
+    router,
+    store,
+    render: (h) => h(App),
 }).$mount('#app');
-

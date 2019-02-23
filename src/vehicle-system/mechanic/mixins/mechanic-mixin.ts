@@ -16,10 +16,21 @@ export class MechanicMixin extends Vue {
     private _mechanics!: Mechanic[];
 
     /**
-     * Get the mechanics of the user.
+     * Get the mechanics from the backend
      */
     @Action('getMechanics', { namespace: 'mechanic' })
-    public $getMechanics!: () => Promise<Mechanic[]>;
+    private _getMechanics!: () => Promise<Mechanic[]>;
+
+    /**
+     * Get the mechanics of the user.
+     */
+    public async $getMechanics(): Promise<Mechanic[]> {
+        if (this._mechanics.length === 0) {
+            return this._getMechanics();
+        } else {
+            return this._mechanics;
+        }
+    }
 
     /**
      * Add a new mechanic.

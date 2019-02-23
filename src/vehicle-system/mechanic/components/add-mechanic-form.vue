@@ -126,7 +126,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
-import MaterialIcon from '@/core/components/shared/material-icon.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 
 /**

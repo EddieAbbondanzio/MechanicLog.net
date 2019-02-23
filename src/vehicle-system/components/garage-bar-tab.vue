@@ -1,6 +1,6 @@
 <style lang="scss">
-@import "./public/bootstrap/_functions";
-@import "./public/bootstrap/_variables";
+@import './public/bootstrap/_functions';
+@import './public/bootstrap/_variables';
 
 .garage-bar-tab {
     display: inline-block;
@@ -10,17 +10,17 @@
     }
 
     .router-link-active {
-      color: $dark!important;
+        color: $dark !important;
     }
 
     .router-link-active:after {
-      content: '';
-      display: block;
-      width: 110%;
-      margin-left: -5%;
-      margin-top: 4px;
-      height: 4px;
-      background-color: $primary;
+        content: '';
+        display: block;
+        width: 110%;
+        margin-left: -5%;
+        margin-top: 4px;
+        height: 4px;
+        background-color: $primary;
     }
 }
 
@@ -30,7 +30,6 @@
     display: inline-block;
     vertical-align: bottom;
 }
-
 </style>
 
 
@@ -44,17 +43,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import MaterialIcon from "@/core/components/shared/material-icon.vue";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
  * Navigation tab of hte garage bar.
  */
 @Component({
-    name: "garage-bar-tab",
+    name: 'garage-bar-tab',
     components: {
-        MaterialIcon
-    }
+        MaterialIcon,
+    },
 })
 export default class GarageBarTab extends Vue {
     /**

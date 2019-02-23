@@ -57,6 +57,7 @@ export class Mechanic {
         m.id = raw.id;
         m.address = raw.address;
         m.city = raw.city;
+        m.state = raw.state;
         m.zip = raw.zip;
         m.phone = raw.phone;
 
