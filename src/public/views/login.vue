@@ -1,12 +1,6 @@
+
 <template>
     <div>
-        <auto-complete-textbox :options="options" 
-        name="test" 
-        v-model="foo"
-        v-validate="'required|max:3'"/>
-        <input type="button" value="click me" />
-        <span>{{ errors.first('test') }}</span>
-
         <login-form @login="onLogin" value="test"/>
     </div>
 </template>
@@ -16,7 +10,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { AuthService } from '@/user-system/services/auth/auth-service';
 import { User } from '@/user-system/entities/user';
 import LoginForm from '@/user-system/components/login-form.vue';
-import AutoCompleteTextbox from '@/core/components/inputs/auto-complete-textbox.vue';
+import popupContainer from '@/core/components/popup/popup-container.vue';
 
 /**
  * Login page to log in a user
@@ -24,14 +18,10 @@ import AutoCompleteTextbox from '@/core/components/inputs/auto-complete-textbox.
 @Component({
     components: {
         LoginForm,
-        AutoCompleteTextbox,
+        popupContainer,
     },
 })
 export default class Login extends Vue {
-    public foo: string = 'hi';
-
-    public options: string[] = ['Apple', 'Banana', 'Car'];
-
     /**
      * On a successful login, redirect to the dashboard.
      */

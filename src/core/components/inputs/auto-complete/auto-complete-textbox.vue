@@ -6,11 +6,15 @@
     position: absolute;
     z-index: 9999;
     width: 100%;
+    max-height: 408px;
+    overflow-y: scroll;
 }
 
 .auto-complete-option {
     cursor: pointer;
     background-color: $white;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
         background-color: darken($white, 7.5%);
@@ -28,19 +32,26 @@
             type="text"
             :placeholder="placeholder"
             :value="value"
+            ref="textbox"
             @focus="onFocus"
             @blur="onBlur"
-            @keyup="onTextChange($refs.textbox.value)"
-            ref="textbox"
+            @keyup="onTextChange"
         >
         <div class="auto-complete-list" v-if="isActive">
             <div
                 v-for="option in matchedOptions"
-                v-bind:key="option.name"
+                v-bind:key="option"
                 class="p-1 border auto-complete-option"
                 @click="onOptionClick(option)"
-            >{{ option }}</div>
+                :title="option"
+            >
+                <span>{{ option }}</span>
+            </div>
         </div>
+
+        <datalist v-if="$slots.default != null">
+            <slot :list="optionsList"></slot>
+        </datalist>
     </div>
 </template>
 
@@ -76,7 +87,7 @@ export default class AutoCompleteTextbox extends Vue {
      * The auto complete options.
      */
     @Prop()
-    public options!: string[];
+    public options?: string[];
 
     public $_veeValidate = {
         value() {
@@ -90,15 +101,42 @@ export default class AutoCompleteTextbox extends Vue {
     private matchedOptions: string[] = [];
 
     /**
+     * The full options list
+     */
+    private optionsList!: string[];
+
+    /**
      * If the textbox is currently active.
      */
     private isActive: boolean = false;
+
+    public created() {
+        this.optionsList = [];
+    }
+
+    /**
+     * When the DOM is created, see if we need to pull in our list.
+     */
+    public mounted(): void {
+
+        // User provided the list
+        if (this.options != null) {
+            this.optionsList = this.options;
+        }
+        // See if we can pull in them from the slots
+        else if (this.$slots.default != null) {
+            this.$slots.default.forEach((s) => {
+                // Someday I'll know a better way to get this...
+                this.optionsList.push((s.elm! as any)._value);
+            });
+        }
+    }
 
     /**
      * User is entering the textbox. Show the list.
      */
     protected onFocus() {
-        this.matchedOptions = this.options;
+        this.matchedOptions = this.optionsList;
         this.isActive = true;
         this.$emit('focus');
     }
@@ -110,11 +148,15 @@ export default class AutoCompleteTextbox extends Vue {
         setTimeout(() => {
             this.isActive = false;
             this.$emit('blur');
-        }, 100);
+        }, 150);
     }
 
-    protected onTextChange(value: string): void {
-        this.matchedOptions = this.options.filter((opt) => opt.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+    /**
+     * Event handler for when the text in the box changes.
+     */
+    protected onTextChange(): void {
+        const value: string = this.$refs.textbox.value;
+        this.matchedOptions = this.optionsList.filter((opt) => opt.toLowerCase().indexOf(value.toLowerCase()) !== -1);
         this.$emit('input', value);
     }
 
@@ -122,8 +164,8 @@ export default class AutoCompleteTextbox extends Vue {
      * User clicked an option. Save it, and show the value.
      */
     public onOptionClick(opt: string) {
-        this.$refs.textbox.value = opt;
         this.isActive = false;
+        this.$emit('input', opt);
     }
 }
 </script>

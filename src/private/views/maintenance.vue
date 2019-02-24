@@ -17,7 +17,13 @@
             <div class="col-12 col-lg-6">
                 <div class="float-right d-inline-block">
                     <div class="d-inline-block pb2 pb-sm-0 pr-2">
-                        <add-maintenance-popup />
+                        <!-- Button on screen -->
+                        <b-btn variant="success" @click="onAddClick" style="height: 40px">
+                            <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                            <span style="vertical-align: middle;">Add Maintenance</span>
+                        </b-btn>
+
+                        <add-maintenance-popup ref="addPopup"/>
                     </div>
                 </div>
             </div>
@@ -86,6 +92,13 @@ import AddMaintenancePopup from '@/vehicle-system/maintenance/components/add-mai
 })
 export default class NewComponent extends VehicleMixin {
     /**
+     * Component references
+     */
+    public $refs!: {
+        addPopup: AddMaintenancePopup
+    };
+
+    /**
      * The active vehicle being modified.
      */
     public vehicle: Nullable<Vehicle> = null;
@@ -102,6 +115,10 @@ export default class NewComponent extends VehicleMixin {
         } else {
             this.$router.go(-1);
         }
+    }
+
+    public onAddClick(): void {
+        this.$refs.addPopup.show();
     }
 }
 </script>
