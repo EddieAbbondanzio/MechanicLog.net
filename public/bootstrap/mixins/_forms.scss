@@ -72,6 +72,7 @@
   input[type=text].form-control,
   input[type=email].form-control,
   input[type=password].form-control,
+  input[type=date].form-control,
   input[type=number].form-control {
     &.is-#{$state} {
       border-left: 12px solid $color;

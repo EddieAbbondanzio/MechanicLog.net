@@ -3,6 +3,7 @@
         <b-modal
             :id="id"
             :title="title"
+            :size="size"
             ref="modal"
             @show="onShow"
             @shown="onShown"
@@ -10,6 +11,7 @@
             @hidden="onHidden"
             header-bg-variant="primary"
             header-text-variant="white"
+            footer-bg-variant="light"
         >
             <slot></slot>
         </b-modal>
@@ -39,6 +41,12 @@ export default class PopupContainer extends Vue {
      */
     @Prop()
     public id!: string;
+
+    /**
+     * The size of the popup.
+     */
+    @Prop({default: 'md'})
+    public size!: string;
 
     /**
      * The title in the top of the header
