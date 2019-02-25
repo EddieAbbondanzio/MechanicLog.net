@@ -1,15 +1,14 @@
 <template>
     <div>
         <form>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <b-form-group label="Cost Type">
                     <b-form-radio value="total" name="costType" v-model="costType" @change="updateCostTab">Total</b-form-radio>
-                    <b-form-radio value="categorized" name="costType" v-model="costType" @change="updateCostTab">Categorized</b-form-radio>
+                    <b-form-radio value="categorized" name="costType" v-model="costType" @change="updateCostTab" disabled title="Coming soon!">Categorized</b-form-radio>
                 </b-form-group>
-            </div>
-
+            </div>-->
             <!-- Total Cost Tab -->
-            <div v-if="costType == 'total'">
+            <div>
                 <div class="form-group">
                     <label class="required" for="total-cost-textbox">Total Cost</label>
                     <input
@@ -18,6 +17,7 @@
                         id="total-cost-textbox"
                         placeholder="499.99"
                         ref="totalCostField"
+                        @keyup="onChange"
                         name="totalCost"
                         v-validate="'required|numeric'"
                     >
@@ -94,12 +94,40 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 })
 export default class AddMaintenanceCostPage extends Vue {
     /**
+     * References to things
+     */
+    public $refs!: {
+        totalCostField: HTMLInputElement,
+    };
+
+    /**
      * How the cost is performed.
      */
     public costType: string = 'total';
 
+    /**
+     * The total cost.
+     */
+    @Prop()
+    public value!: number;
+
+    public mounted(): void {
+        this.$refs.totalCostField.value = this.value == null ? '' : this.value.toString();
+    }
+
     public updateCostTab(arg: string): void {
         this.costType = arg;
+    }
+
+    public onChange(): void {
+        this.$emit('input', parseInt(this.$refs.totalCostField.value, 10));
+    }
+
+    /**
+     * Validate the content of the page before proceeding.
+     */
+    public async validate(): Promise<boolean> {
+        return this.$validator.validate();
     }
 }
 </script>

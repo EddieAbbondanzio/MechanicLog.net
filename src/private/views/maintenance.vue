@@ -78,7 +78,7 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
-import AddMaintenancePopup from '@/vehicle-system/maintenance/components/add-maintenance-popup.vue';
+import AddMaintenancePopup from '@/vehicle-system/vehicle/components/add-maintenance-popup.vue';
 
 /**
  * Maintenance history page.

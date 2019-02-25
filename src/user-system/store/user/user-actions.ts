@@ -8,6 +8,8 @@ import { UserService } from '@/user-system/services/user/user-service';
 import { UserRegistration } from '@/user-system/services/auth/user-registration';
 import { UserPasswordReset } from '@/user-system/services/auth/user-password-reset';
 import { UserPasswordUpdate } from '@/user-system/services/auth/user-password-update';
+import { ServiceRegistry } from '@/core/services/service-registry';
+import { ServiceType } from '@/core/services/service-type';
 
 /**
  * Actions related to the user state.
@@ -20,10 +22,8 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @returns The logged in user.
      */
     async logIn(context: ActionContext<UserState, StoreState>, credentials: UserCredentials): Promise<User | null> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
-        const userService: UserService = new UserService(apiUrl);
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
+        const userService: UserService = ServiceRegistry.resolve<UserService>(ServiceType.User);
 
         let authToken: string;
         let user: User;
@@ -47,10 +47,8 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @returns The logged in user.
      */
     async relogIn(context: ActionContext<UserState, StoreState>, authToken: string): Promise<User> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
-        const userService: UserService = new UserService(apiUrl);
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
+        const userService: UserService = ServiceRegistry.resolve<UserService>(ServiceType.User);
 
         // Validate the token with the server, then pull in the user info.
         authToken = await authService.relogin(authToken);
@@ -76,10 +74,8 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @param registration The new user's registration info.
      */
     async register(context: ActionContext<UserState, StoreState>, registration: UserRegistration): Promise<User> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
-        const userService: UserService = new UserService(apiUrl);
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
+        const userService: UserService = ServiceRegistry.resolve<UserService>(ServiceType.User);
 
         const authToken: string = await authService.register(registration);
         const user: User = await userService.getUserFromToken(authToken);
@@ -96,9 +92,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @param emailToken The email token of the user.
      */
     async verifyEmail(context: ActionContext<UserState, StoreState>, emailToken: string): Promise<void> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
 
         const user: User | null = context.rootGetters['user/current'];
 
@@ -114,10 +108,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @param name The new name of the user.
      */
     async updateName(context: ActionContext<UserState, StoreState>, name: string): Promise<void> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const userService: UserService = new UserService(apiUrl);
-
+        const userService: UserService = ServiceRegistry.resolve<UserService>(ServiceType.User);
         const user: User | null = context.rootGetters['user/current'];
 
         if (user != null) {
@@ -132,10 +123,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @param email The new email of the user.
      */
     async updateEmail(context: ActionContext<UserState, StoreState>, email: string): Promise<void> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const userService: UserService = new UserService(apiUrl);
-
+        const userService: UserService = ServiceRegistry.resolve<UserService>(ServiceType.User);
         const user: User | null = context.rootGetters['user/current'];
 
         if (user != null) {
@@ -151,10 +139,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
      * @param email The email of the user.
      */
     async requestPasswordReset(context: ActionContext<UserState, StoreState>, email: string): Promise<void> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
-
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
         await authService.requestPasswordReset(email);
     },
 
@@ -165,10 +150,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
      */
     // tslint:disable-next-line:max-line-length
     async resetPassword(context: ActionContext<UserState, StoreState>, passwordReset: UserPasswordReset): Promise<void> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
-
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
         await authService.resetPassword(passwordReset);
     },
 
@@ -180,10 +162,7 @@ export const userActions: ActionTree<UserState, StoreState> = {
      */
     // tslint:disable-next-line:max-line-length
     async updatePassword(context: ActionContext<UserState, StoreState>, passwordUpdate: UserPasswordUpdate): Promise<void> {
-        // Prepare the services needed.
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const authService: AuthService = new AuthService(apiUrl);
-
+        const authService: AuthService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
         const user: User | null = context.rootGetters['user/current'];
 
         if (user != null) {

@@ -1,6 +1,10 @@
 <template>
     <div>
         <form>
+            <p>
+                What was the odomoter reading, and date of the maintenance, or repair when it was performed?
+            </p>
+
             <!-- Name Textbox -->
             <div class="form-group">
                 <label class="required" for="mileage-textbox">Mileage</label>

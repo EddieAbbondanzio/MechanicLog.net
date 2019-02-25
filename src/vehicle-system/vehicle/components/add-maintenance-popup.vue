@@ -1,5 +1,11 @@
 <template>
-    <popup-container id="addMaintenance" ref="popup" title="Add Maintenance" size="lg">
+    <popup-container
+        id="addMaintenance"
+        ref="popup"
+        title="Add Maintenance"
+        size="lg"
+        @ok="onCreate"
+    >
         <!-- Progress Tracker to keep the user updated on where their at. -->
         <progress-tracker :current="activePage" :max="4" class="pb-4"/>
 
@@ -11,16 +17,17 @@
         />
 
         <!-- Step 2: When -->
-        <add-maintenance-when-page 
-        ref="whenPage" 
-        v-model="whenInfo" 
-        v-if="activePage == 2"/>
+        <add-maintenance-when-page ref="whenPage" v-model="whenInfo" v-if="activePage == 2"/>
 
         <!-- Step 3: What -->
-        <add-maintenance-services-page ref="servicesPage" v-if="activePage == 3"/>
+        <add-maintenance-services-page
+            ref="servicesPage"
+            v-model="services"
+            v-if="activePage == 3"
+        />
 
         <!-- Step 4: Cost -->
-        <add-maintenance-cost-page ref="costPage" v-if="activePage == 4"/>
+        <add-maintenance-cost-page ref="costPage" v-model="cost" v-if="activePage == 4"/>
 
         <previous-next
             class="pt-5"
@@ -29,6 +36,13 @@
             :disable-previous="activePage == 1"
             :disable-next="activePage == 4"
         />
+
+        <div slot="footer">
+            <b-btn variant="primary" @click="onCreate" :disabled="activePage != 4">
+                <material-icon class="align-middle" icon="create"/>
+                <span class="align-bottom">Create</span>
+            </b-btn>
+        </div>
     </popup-container>
 </template>
 
@@ -63,7 +77,7 @@ import { Nullable } from '@/core/common/monads/nullable';
         AddMaintenanceCostPage,
     },
 })
-export default class AddMaintenancePopup extends MechanicMixin implements Popup {
+export default class AddMaintenancePopup extends Vue implements Popup {
     /**
      * Type declarations for the $refs of the component.
      */
@@ -71,6 +85,8 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
         popup: PopupContainer;
         mechanicPage: AddMaintenanceMechanicPage;
         whenPage: AddMaintenanceWhenPage;
+        servicesPage: AddMaintenanceServicesPage;
+        costPage: AddMaintenanceCostPage;
     };
 
     /**
@@ -82,6 +98,16 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
      * The date and mileage it occured at.
      */
     public whenInfo!: { mileage: Nullable<number>; date: Nullable<Date> };
+
+    /**
+     * The services performed.
+     */
+    public services!: string[];
+
+    /**
+     * The total cost of it.
+     */
+    public cost!: Nullable<number>;
 
     /**
      * The active step the user is on.
@@ -96,7 +122,9 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
     public async created(): Promise<void> {
         this.activePage = 1;
         this.mechanic = null;
-        this.whenInfo = {mileage: null, date: null };
+        this.cost = null;
+        this.whenInfo = { mileage: null, date: null };
+        this.services = [];
     }
 
     /**
@@ -123,6 +151,16 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
         }
     }
 
+    public async onCreate(): Promise<void> {
+        if (!(await this.$refs.costPage.validate())) {
+            return;
+        }
+
+        if (this.activePage === 4) {
+            alert('created');
+        }
+    }
+
     /**
      * Show the popup on screen.
      */
@@ -130,7 +168,7 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
         this.$refs.popup.show();
         this.activePage = 1;
         this.mechanic = null;
-        this.whenInfo = {mileage: null, date: null };
+        this.whenInfo = { mileage: null, date: null };
         this.$forceUpdate();
     }
 
@@ -152,10 +190,10 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
                 return this.$refs.whenPage.validate();
 
             case 3:
-                return false;
+                return this.$refs.servicesPage.validate();
 
             case 4:
-                return false;
+                return this.$refs.costPage.validate();
 
             default:
                 return false;

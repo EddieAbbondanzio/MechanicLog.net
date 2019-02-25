@@ -1,6 +1,10 @@
 <template>
     <!-- Step 1: Who -->
     <form>
+        <p>Select the mechanic that worked on the vehicle. Mechanics can be added by navigating to the
+            <router-link to="/garage/mechanics">Mechanics</router-link> page.
+        </p>
+
         <b-form-group>
             <label class="required" for="mechanic-select">Mechanic</label>
             <b-form-select

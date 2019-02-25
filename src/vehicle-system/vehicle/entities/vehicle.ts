@@ -1,3 +1,5 @@
+import { MaintenanceEvent } from './maintenance-event';
+
 /**
  * A motor vehicle.
  */
@@ -48,6 +50,11 @@ export class Vehicle {
     public vin?: string;
 
     /**
+     * The maintenance history of the vehicle.
+     */
+    public maintenance: MaintenanceEvent[];
+
+    /**
      * Create a new vehicle.
      * @param name The nickname of the car.
      * @param year The model year of the car.
@@ -61,6 +68,7 @@ export class Vehicle {
         this.make = make;
         this.model = model;
         this.mileage = mileage;
+        this.maintenance = [];
     }
 
     /**

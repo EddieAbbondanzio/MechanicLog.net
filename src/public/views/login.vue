@@ -11,6 +11,8 @@ import { AuthService } from '@/user-system/services/auth/auth-service';
 import { User } from '@/user-system/entities/user';
 import LoginForm from '@/user-system/components/login-form.vue';
 import popupContainer from '@/core/components/popup/popup-container.vue';
+import { ConfigState } from '@/core/store/config/config-state';
+import store from '@/core/store/store';
 
 /**
  * Login page to log in a user

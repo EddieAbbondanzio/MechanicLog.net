@@ -13,7 +13,16 @@
             header-text-variant="white"
             footer-bg-variant="light"
         >
-            <slot></slot>
+            <div class="px-4">
+                <slot></slot>
+            </div>
+
+            <div slot="modal-footer">
+                <div>
+                    <slot name="footer"></slot>
+                </div>
+            </div>
+
         </b-modal>
     </div>
 </template>
@@ -45,7 +54,7 @@ export default class PopupContainer extends Vue {
     /**
      * The size of the popup.
      */
-    @Prop({default: 'md'})
+    @Prop({ default: 'md' })
     public size!: string;
 
     /**

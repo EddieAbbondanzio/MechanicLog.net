@@ -1,4 +1,4 @@
-import { ApiService } from '@/core/services/api-service';
+import { Service } from '@/core/services/service';
 import { Mechanic } from '../entities/mechanic';
 import { User } from '@/user-system/entities/user';
 import { Nullable } from '@/core/common/monads/nullable';
@@ -7,7 +7,7 @@ import { HttpResponse } from '@/core/http/http-response';
 /**
  * Service for retrieving, and updating vehicles from the backend.
  */
-export class MechanicService extends ApiService {
+export class MechanicService extends Service {
     /**
      * Get all mechanics for a user.
      * @param user The user to get mechanics for.

@@ -4,6 +4,8 @@ import { StoreState } from '@/core/store/store-state';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import { VehicleService } from '@/vehicle-system/vehicle/services/vehicle-service';
 import { User } from '@/user-system/entities/user';
+import { ServiceRegistry } from '@/core/services/service-registry';
+import { ServiceType } from '@/core/services/service-type';
 
 /**
  * Actions related to the vehicle state.
@@ -14,8 +16,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
      * @param context The active context.
      */
     async getVehicles(context: ActionContext<VehicleState, StoreState>): Promise<Vehicle[]> {
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const vehicleService: VehicleService = new VehicleService(apiUrl);
+        const vehicleService: VehicleService = ServiceRegistry.resolve<VehicleService>(ServiceType.Vehicle);
 
         const user: User = context.rootGetters['user/current'] as User;
         const vehicles: Vehicle[] = await vehicleService.getAllVehiclesForUser(user);
@@ -30,8 +31,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
      * @param id The ID of the vehicle.
      */
     async getVehicle(context: ActionContext<VehicleState, StoreState>, id: number): Promise<Vehicle | undefined> {
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const vehicleService: VehicleService = new VehicleService(apiUrl);
+        const vehicleService: VehicleService = ServiceRegistry.resolve<VehicleService>(ServiceType.Vehicle);
 
         // Don't think this works...
         const vehicles: Vehicle[] = context.getters['vehicles'] as Vehicle[];
@@ -44,8 +44,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
      * @param vehicle The vehicle to add.
      */
     async addVehicle(context: ActionContext<VehicleState, StoreState>, vehicle: Vehicle): Promise<void> {
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const vehicleService: VehicleService = new VehicleService(apiUrl);
+        const vehicleService: VehicleService = ServiceRegistry.resolve<VehicleService>(ServiceType.Vehicle);
 
         const user: User = context.rootGetters['user/current'] as User;
         await vehicleService.addVehicle(user, vehicle);
@@ -59,8 +58,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
      * @param vehicle The vehicle to delete.
      */
     async deleteVehicle(context: ActionContext<VehicleState, StoreState>, vehicle: Vehicle): Promise<void> {
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const vehicleService: VehicleService = new VehicleService(apiUrl);
+        const vehicleService: VehicleService = ServiceRegistry.resolve<VehicleService>(ServiceType.Vehicle);
 
         const user: User = context.rootGetters['user/current'] as User;
         await vehicleService.deleteVehicle(user, vehicle);
@@ -74,8 +72,7 @@ export const vehicleActions: ActionTree<VehicleState, StoreState> = {
      * @param vehicle The vehicle to update.
      */
     async updateVehicle(context: ActionContext<VehicleState, StoreState>, vehicle: Vehicle): Promise<void> {
-        const apiUrl: string = context.rootGetters['config/apiUrl'];
-        const vehicleService: VehicleService = new VehicleService(apiUrl);
+        const vehicleService: VehicleService = ServiceRegistry.resolve<VehicleService>(ServiceType.Vehicle);
 
         const user: User = context.rootGetters['user/current'] as User;
         await vehicleService.updateVehicle(user, vehicle);

@@ -1,26 +1,21 @@
-import { ApiService } from "@/core/services/api-service";
-import { User } from "@/user-system/entities/user";
-import { Vehicle } from "@/vehicle-system/vehicle/entities/vehicle";
-import { HttpResponse } from "@/core/http/http-response";
-import { Nullable } from "@/core/common/monads/nullable";
+import { Service } from '@/core/services/service';
+import { User } from '@/user-system/entities/user';
+import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { HttpResponse } from '@/core/http/http-response';
+import { Nullable } from '@/core/common/monads/nullable';
 
 /**
  * Service for retrieving, and updating vehicles from the back end.
  */
-export class VehicleService extends ApiService {
+export class VehicleService extends Service {
     /**
      * Get a list of vehicles for a user.
      * @param user The user to get vehicles for.
      */
     public async getAllVehiclesForUser(user: User): Promise<Vehicle[]> {
         try {
-            const response: HttpResponse = await this._httpClient.get(
-                "/vehicle",
-                user.authToken
-            );
-            const vehicles: Vehicle[] = response.data.map((v: any) =>
-                Vehicle.fromRaw(v)
-            );
+            const response: HttpResponse = await this._httpClient.get('/vehicle', user.authToken);
+            const vehicles: Vehicle[] = response.data.map((v: any) => Vehicle.fromRaw(v));
 
             return vehicles;
         } catch (error) {
@@ -32,15 +27,9 @@ export class VehicleService extends ApiService {
      * Get a vehicle by it's unique ID.
      * @param id The ID of the vehicle.
      */
-    public async getVehicleByIdForUser(
-        user: User,
-        id: number
-    ): Promise<Nullable<Vehicle>> {
+    public async getVehicleByIdForUser(user: User, id: number): Promise<Nullable<Vehicle>> {
         try {
-            const response: HttpResponse = await this._httpClient.get(
-                `/vehicle/${id}`,
-                user.authToken
-            );
+            const response: HttpResponse = await this._httpClient.get(`/vehicle/${id}`, user.authToken);
             return Vehicle.fromRaw(response.data);
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
@@ -54,11 +43,7 @@ export class VehicleService extends ApiService {
      */
     public async addVehicle(user: User, vehicle: Vehicle): Promise<void> {
         try {
-            const response: HttpResponse = await this._httpClient.post(
-                "/vehicle",
-                vehicle,
-                user.authToken
-            );
+            const response: HttpResponse = await this._httpClient.post('/vehicle', vehicle, user.authToken);
             vehicle.id = response.data.id;
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
@@ -72,10 +57,7 @@ export class VehicleService extends ApiService {
      */
     public async deleteVehicle(user: User, vehicle: Vehicle): Promise<void> {
         try {
-            await this._httpClient.delete(
-                `/vehicle/${vehicle.id}`,
-                user.authToken
-            );
+            await this._httpClient.delete(`/vehicle/${vehicle.id}`, user.authToken);
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
         }
@@ -88,11 +70,7 @@ export class VehicleService extends ApiService {
      */
     public async updateVehicle(user: User, vehicle: Vehicle): Promise<void> {
         try {
-            await this._httpClient.patch(
-                `/vehicle/${vehicle.id}`,
-                vehicle,
-                user.authToken
-            );
+            await this._httpClient.patch(`/vehicle/${vehicle.id}`, vehicle, user.authToken);
         } catch (error) {
             throw new Error(error.response.data.errorMsg);
         }

@@ -1,11 +1,11 @@
-import { ApiService } from '@/core/services/api-service';
+import { Service } from '@/core/services/service';
 import { User } from '@/user-system/entities/user';
 import { HttpResponse } from '@/core/http/http-response';
 
 /**
  * Service for everything related to users.
  */
-export class UserService extends ApiService {
+export class UserService extends Service {
     /**
      * Get the logged in user's info from their auth token.
      * @param authToken The auth token in use.

@@ -3,13 +3,15 @@ import { UserRegistration } from './user-registration';
 import { User } from '../../entities/user';
 import { UserPasswordReset } from './user-password-reset';
 import { UserPasswordUpdate } from './user-password-update';
-import { ApiService } from '@/core/services/api-service';
+import { Service } from '@/core/services/service';
 import { HttpResponse } from '@/core/http/http-response';
+import { ServiceError } from '@/core/services/service-error';
+import { Either } from '@/core/common/monads/either';
 
 /**
  * Service to log in users with the back end.
  */
-export class AuthService extends ApiService {
+export class AuthService extends Service {
     /**
      * Log in a user using their credentials.
      * @param email The email of the user
@@ -25,7 +27,7 @@ export class AuthService extends ApiService {
 
             return response.data.token;
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 
@@ -39,7 +41,7 @@ export class AuthService extends ApiService {
             await this._httpClient.patch('/auth/login', {}, authToken);
             return authToken;
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 
@@ -53,7 +55,7 @@ export class AuthService extends ApiService {
             const response: HttpResponse = await this._httpClient.post('/auth/register', userReg);
             return response.data.token;
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 
@@ -68,7 +70,7 @@ export class AuthService extends ApiService {
                 emailToken,
             }, user.authToken);
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 
@@ -83,7 +85,7 @@ export class AuthService extends ApiService {
                 email,
             });
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 
@@ -95,7 +97,7 @@ export class AuthService extends ApiService {
         try {
             await this._httpClient.put('/auth/password', passwordReset);
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 
@@ -108,7 +110,7 @@ export class AuthService extends ApiService {
         try {
             await this._httpClient.patch('/auth/password', passwordUpdate, user.authToken);
         } catch (error) {
-            throw new Error(error.response.data.errorMsg);
+            throw new ServiceError(error.response.status, error.response.data.errorMsg);
         }
     }
 }

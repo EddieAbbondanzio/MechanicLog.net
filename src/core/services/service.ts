@@ -3,7 +3,7 @@ import { HttpClient } from '../http/http-client';
 /**
  * Service abstraction for managing api end points.
  */
-export class ApiService {
+export class Service {
     /**
      * The HTTP client for communicating with the API service.
      */
