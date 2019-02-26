@@ -98,7 +98,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
+import { UserMixin } from '@/user-system/user-mixin';
 import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
 import FormContainer from '@/core/components/form/form-container.vue';
@@ -174,25 +174,20 @@ export default class SignUpForm extends UserMixin {
         }
 
         try {
-            const u: User | null = await this.$register({
+            const u = await this.$userStore.register({
                 email: this.email,
                 name: this.name,
                 password: this.password,
             });
 
-            // If the registration was successful, fire off the event.
-            if (u != null) {
-                this.errorMessage = '';
-                this.successMessage = 'Success. Redirecting...';
-
-                // Propogate the event to the parent (page)
-                this.$emit('registered', u);
+            if (u.isRight()) {
+                this.errorMessage = u.getRight().message;
             } else {
-                this.errorMessage =
-                    'Failed to register. Please try again later';
-            }
+                this.successMessage = 'Success. Redirecting...';
+                this.errorMessage = '';
 
-            // Hi
+                this.$emit('registered', u);
+            }
         } catch (error) {
             // Alert the user of what went wrong
             this.errorMessage = error.message;

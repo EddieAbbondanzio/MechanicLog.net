@@ -10,8 +10,6 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import Hero from '@/public/components/hero.vue';
 import MembershipPlans from '@/public/components/membership-plans.vue';
-import { Getter } from 'vuex-class';
-
 @Component({
     components: {
         Hero,

@@ -48,7 +48,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import PopupContainer from '@/core/components/popup/popup-container.vue';

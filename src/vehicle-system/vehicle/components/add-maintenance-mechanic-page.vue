@@ -2,7 +2,7 @@
     <!-- Step 1: Who -->
     <form>
         <p>Select the mechanic that worked on the vehicle. Mechanics can be added by navigating to the
-            <router-link to="/garage/mechanics">Mechanics</router-link> page.
+            <router-link to="/garage/mechanics">Mechanics</router-link>page.
         </p>
 
         <b-form-group>
@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { Nullable } from '@/core/common/monads/nullable';
 import { Validatable } from '@/core/common/validatable.ts';
@@ -62,7 +62,14 @@ export default class AddMaintenanceMechanicPage extends MechanicMixin {
      */
     public async created(): Promise<void> {
         this.selectedOption = this.value == null ? null : this.value;
-        this.mechanics = await this.$getMechanics();
+
+        const result = await this.$mechanicStore.getMechanics();
+
+        if (result.isRight()) {
+            throw result.getRight();
+        }
+
+        this.mechanics = result.getLeft();
         this.options = this.mechanics.map((m) => ({ value: m, text: m.name }));
     }
 

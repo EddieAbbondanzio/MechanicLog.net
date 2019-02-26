@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
+import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Maybe } from '@/core/common/monads/maybe';
@@ -108,13 +108,13 @@ export default class NewComponent extends VehicleMixin {
      */
     public async created(): Promise<void> {
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
-        const result: Maybe<Vehicle> = await this.$getVehicle(vehicleId);
+        // const result: Maybe<Vehicle> = await this.$getVehicle(vehicleId);
 
-        if (result.hasSome()) {
-            this.vehicle = result.getSome();
-        } else {
-            this.$router.go(-1);
-        }
+        // if (result.hasSome()) {
+        //     this.vehicle = result.getSome();
+        // } else {
+        //     this.$router.go(-1);
+        // }
     }
 
     public onAddClick(): void {

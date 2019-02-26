@@ -1,11 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import store from './core/store/store';
-import Goodbye from '@/views/public/goodbye.vue';
-import PrivateMasterPage from '@/core/components/private/private-master-page.vue';
-import PublicMasterPage from '@/core/components/public/public-master-page.vue';
 import { publicRoutes } from '@/public/routes';
 import { privateRoutes } from './private/routes';
+import { User } from './user-system/entities/user';
 
 Vue.use(Router);
 
@@ -30,7 +27,7 @@ router.beforeEach((to, from, next) => {
         return;
     }
 
-    if ((store.state as any).user.currentUser != null) {
+    if (User.CURRENT != null) {
         next();
     } else {
         next({

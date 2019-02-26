@@ -1,12 +1,11 @@
 import { Service } from './service';
 import { Dictionary } from '../common/dictionary';
 import { ServiceType } from './service-type';
-import store from '../store/store';
-import { ConfigState } from '../store/config/config-state';
 import { AuthService } from '@/user-system/services/auth/auth-service';
 import { UserService } from '@/user-system/services/user/user-service';
 import { MechanicService } from '@/vehicle-system/mechanic/services/mechanic-service';
 import { VehicleService } from '@/vehicle-system/vehicle/services/vehicle-service';
+import { Store } from '../store/store';
 
 /**
  * Helper to locate, and register services for use later on.
@@ -21,12 +20,10 @@ export class ServiceRegistry {
      * Initialize the registry for use.
      */
     public static initialize(): void {
-        const apiUrl: string = ((store.state as any).config as ConfigState).apiUrl;
-
-        this.register(ServiceType.Auth, new AuthService(apiUrl));
-        this.register(ServiceType.User, new UserService(apiUrl));
-        this.register(ServiceType.Mechanic, new MechanicService(apiUrl));
-        this.register(ServiceType.Vehicle, new VehicleService(apiUrl));
+        this.register(ServiceType.Auth, new AuthService(Store.backendUrl));
+        this.register(ServiceType.User, new UserService(Store.backendUrl));
+        this.register(ServiceType.Mechanic, new MechanicService(Store.backendUrl));
+        this.register(ServiceType.Vehicle, new VehicleService(Store.backendUrl));
     }
 
     /**
@@ -34,6 +31,10 @@ export class ServiceRegistry {
      * @param type The service symbol to look for.
      */
     public static resolve<T extends Service>(type: ServiceType): T {
+        if (this._store === {}) {
+            throw new Error('Did you forget to initialize the service registry?');
+        }
+
         /*
          * Normally I'd like to return a Maybe<T> but if a service is missing
          * something went REALLY wrong, and this seems more fair.

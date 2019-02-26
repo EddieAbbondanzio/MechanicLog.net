@@ -131,7 +131,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
+import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import { Modal } from 'bootstrap-vue';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 
@@ -141,7 +141,7 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 @Component({
     name: 'edit-vehicle-popup',
 })
-export default class EditVehiclePopup extends VehicleMixin {
+export default class EditVehiclePopup extends Vue {
     /**
      * Type declarations for the $refs of the component.
      */

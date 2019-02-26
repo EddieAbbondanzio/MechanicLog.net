@@ -6,9 +6,10 @@
         <!-- Header -->
         <div class="row pt-3">
             <div class="col-12 col-lg-6">
-                <p class="text-muted py-2 px-4" style="font-size: 1.25em;">
-                    Vehicle records allow for tracking maintenace, and or repairs.
-                </p>
+                <p
+                    class="text-muted py-2 px-4"
+                    style="font-size: 1.25em;"
+                >Vehicle records allow for tracking maintenace, and or repairs.</p>
             </div>
 
             <div class="col-12 col-lg-6">
@@ -18,7 +19,6 @@
                     </div>
 
                     <div class="d-inline-block align-middle">
-
                         <!-- Sort By -->
                         <div class="input-group" style="height: 40px;">
                             <div class="input-group-prepend">
@@ -106,7 +106,7 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import VehicleSummary from '@/vehicle-system/vehicle/components/vehicle-summary.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import AddVehicleForm from '@/vehicle-system/vehicle/components/add-vehicle-form.vue';
-import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
+import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 
 /**
  * Garage page.
@@ -121,8 +121,16 @@ import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
 })
 export default class Vehicles extends VehicleMixin {
     public vehicles: Vehicle[] = [];
+
     public async mounted(): Promise<void> {
-        this.vehicles = await this.$getVehicles();
+        (await this.$vehicleStore.getVehicles()).do(
+            async (vehicles) => {
+                this.vehicles = vehicles;
+            },
+            async (error) => {
+                this.vehicles = [];
+            }
+        );
     }
     /**
      * Event handler to process when the user wants to change how their ordering
@@ -138,19 +146,13 @@ export default class Vehicles extends VehicleMixin {
                 });
                 break;
             case 'Year':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) =>
-                    a.year > b.year ? -1 : 1
-                );
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.year > b.year ? -1 : 1));
                 break;
             case 'Make':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) =>
-                    a.make.localeCompare(b.make)
-                );
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.make.localeCompare(b.make));
                 break;
             case 'Mileage':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) =>
-                    a.mileage > b.mileage ? -1 : 1
-                );
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.mileage > b.mileage ? -1 : 1));
                 break;
         }
     }

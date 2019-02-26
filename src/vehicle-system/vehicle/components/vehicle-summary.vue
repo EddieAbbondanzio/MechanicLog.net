@@ -108,7 +108,7 @@ import { Vehicle } from "@/vehicle-system/vehicle/entities/vehicle";
 import MaterialIcon from "@/core/components/material-icon.vue";
 import DeleteVehicleConfirmPopup from "@/vehicle-system/vehicle/components/delete-vehicle-confirm-popup.vue";
 import EditVehiclePopup from "@/vehicle-system/vehicle/components/edit-vehicle-popup.vue";
-import { VehicleMixin } from "@/vehicle-system/vehicle/mixins/vehicle-mixin";
+import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 
 /**
  * Component that summarizes the details of a vehicle.
@@ -166,14 +166,14 @@ export default class VehicleSummary extends VehicleMixin {
      * this sucker.
      */
     protected async onDelete(): Promise<void> {
-        await this.$deleteVehicle(this.vehicle);
+        await this.$vehicleStore.deleteVehicle(this.vehicle);
     }
 
     /**
      * Update the vehicle.
      */
     protected async onEdit(newVehicle: Vehicle): Promise<void> {
-        await this.$updateVehicle(newVehicle);
+        await this.$vehicleStore.updateVehicle(newVehicle);
     }
 }
 </script>

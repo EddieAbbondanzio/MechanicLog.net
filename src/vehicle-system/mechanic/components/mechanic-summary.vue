@@ -110,7 +110,7 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import EditMechanicPopup from '@/vehicle-system/mechanic/components/edit-mechanic-popup.vue';
 import DeleteMechanicConfirmPopup from '@/vehicle-system/mechanic/components/delete-mechanic-confirm-popup.vue';
-import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 
 /**
  * Summary of a individual mechanic.
@@ -139,11 +139,11 @@ export default class MechanicSummary extends MechanicMixin {
     }
 
     protected async onEdit(newMechanic: Mechanic): Promise<void> {
-        await this.$updateMechanic(newMechanic);
+        await this.$mechanicStore.updateMechanic(newMechanic);
     }
 
     protected async onDelete(): Promise<void> {
-        await this.$deleteMechanic(this.mechanic);
+        await this.$mechanicStore.deleteMechanic(this.mechanic);
     }
 }
 </script>

@@ -125,9 +125,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 
 /**
  * Popup form to add a new mechanic.
@@ -175,7 +175,7 @@ export default class AddMechanicForm extends MechanicMixin {
         mechanic.state = state;
         mechanic.zip = zip;
 
-        await this.$addMechanic(mechanic);
+        await this.$mechanicStore.addMechanic(mechanic);
         this.$refs.popup.hide();
 
     }

@@ -1,4 +1,4 @@
-import store from './store/store';
+import { Store } from './store/store';
 
 /**
  * Persistance storage for storing cookies on the user's browser.
@@ -40,7 +40,6 @@ export class CookieStorage {
      * @param expiration How long the cookie should be kept for.
      */
     public static set(key: string, value: any, expiration: string | number | Date): void {
-        const cookieUrl: string = (store.state as any).config.baseUrl;
-        (window as any).$cookies.set(key, value, expiration, '/', cookieUrl);
+        (window as any).$cookies.set(key, value, expiration, '/', Store.baseUrl);
     }
 }

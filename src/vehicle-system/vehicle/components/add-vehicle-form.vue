@@ -157,8 +157,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import { VehicleMixin } from '@/vehicle-system/vehicle/mixins/vehicle-mixin';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 
 /**
  * Popup to add a new vehicle.
@@ -250,7 +250,7 @@ export default class AddVehicleForm extends VehicleMixin {
         vehicle.vin = this.$refs.vinField.value;
         vehicle.name = this.$refs.nickNameField.value;
 
-        await this.$addVehicle(vehicle);
+        await this.$vehicleStore.addVehicle(vehicle);
         this.$refs.popup.hide();
     }
 

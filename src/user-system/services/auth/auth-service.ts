@@ -7,6 +7,7 @@ import { Service } from '@/core/services/service';
 import { HttpResponse } from '@/core/http/http-response';
 import { ServiceError } from '@/core/services/service-error';
 import { Either } from '@/core/common/monads/either';
+import { Maybe } from '@/core/common/monads/maybe';
 
 /**
  * Service to log in users with the back end.
@@ -16,9 +17,10 @@ export class AuthService extends Service {
      * Log in a user using their credentials.
      * @param email The email of the user
      * @param password The password of the user.
+     * @param rememberMe If the user wants to be remembered.
      * @returns The issued auth token.
      */
-    public async login(email: string, password: string): Promise<string> {
+    public async login(email: string, password: string, rememberMe: boolean = false): Promise<Either<string, ServiceError>> {
         try {
             const response: HttpResponse = await this._httpClient.post('/auth/login', {
                 email,
@@ -27,7 +29,7 @@ export class AuthService extends Service {
 
             return response.data.token;
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 
@@ -36,12 +38,12 @@ export class AuthService extends Service {
      * @param authToken The JWT of the user.
      * @returns The same auth token if valid.
      */
-    public async relogin(authToken: string): Promise<string> {
+    public async relogin(authToken: string): Promise<Either<string, ServiceError>> {
         try {
             await this._httpClient.patch('/auth/login', {}, authToken);
-            return authToken;
+            return Either.left(authToken);
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 
@@ -50,12 +52,12 @@ export class AuthService extends Service {
      * @param userReg The user's details
      * @returns An auth token.
      */
-    public async register(userReg: UserRegistration): Promise<string> {
+    public async register(userReg: UserRegistration): Promise<Either<string, ServiceError>> {
         try {
             const response: HttpResponse = await this._httpClient.post('/auth/register', userReg);
-            return response.data.token;
+            return Either.left(response.data.token);
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 
@@ -64,13 +66,19 @@ export class AuthService extends Service {
      * @param user The user's email to verify.
      * @param emailToken The email token they entered.
      */
-    public async verifyEmail(user: User, emailToken: string): Promise<void> {
+    public async verifyEmail(user: User, emailToken: string): Promise<Maybe<ServiceError>> {
         try {
-            await this._httpClient.post('/auth/verify', {
-                emailToken,
-            }, user.authToken);
+            await this._httpClient.post(
+                '/auth/verify',
+                {
+                    emailToken,
+                },
+                user.authToken
+            );
+
+            return Maybe.none();
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 
@@ -79,13 +87,15 @@ export class AuthService extends Service {
      * email with a reset code.
      * @param email The email of the user.
      */
-    public async requestPasswordReset(email: string): Promise<void> {
+    public async requestPasswordReset(email: string): Promise<Maybe<ServiceError>> {
         try {
             await this._httpClient.post('/auth/password', {
                 email,
             });
+
+            return Maybe.none();
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 
@@ -93,11 +103,12 @@ export class AuthService extends Service {
      * Send a password reset request to the backend.
      * @param passwordReset The password reset to submit
      */
-    public async resetPassword(passwordReset: UserPasswordReset): Promise<void> {
+    public async resetPassword(passwordReset: UserPasswordReset): Promise<Maybe<ServiceError>> {
         try {
             await this._httpClient.put('/auth/password', passwordReset);
+            return Maybe.none();
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 
@@ -106,11 +117,12 @@ export class AuthService extends Service {
      * @param user The user to update the password for.
      * @param passwordUpdate Their password update info.
      */
-    public async updatePassword(user: User, passwordUpdate: UserPasswordUpdate): Promise<void> {
+    public async updatePassword(user: User, passwordUpdate: UserPasswordUpdate): Promise<Maybe<ServiceError>> {
         try {
             await this._httpClient.patch('/auth/password', passwordUpdate, user.authToken);
+            return Maybe.none();
         } catch (error) {
-            throw new ServiceError(error.response.status, error.response.data.errorMsg);
+            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
     }
 }

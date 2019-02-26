@@ -82,7 +82,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import FormContainer from '@/core/components/form/form-container.vue';
 import AlertMessage from '@/core/components/alert-message.vue';
 import { UserPasswordReset } from '@/user-system/services/auth/user-password-reset';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
+import { UserMixin } from '@/user-system/user-mixin';
 import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { ThemeColor } from '@/core/components/theme-color';
 
@@ -138,7 +138,7 @@ export default class ResetPasswordForm extends UserMixin {
         }
 
         try {
-            await this.$resetPassword({
+            await this.$userStore.resetPassword({
                 email: this.email,
                 resetToken: this.resetCode,
                 newPassword: this.newPassword,

@@ -5,7 +5,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ForgotPasswordForm from '@/user-system/components/forgot-password-form.vue';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
 
 @Component({
     components: {

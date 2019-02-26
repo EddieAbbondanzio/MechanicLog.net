@@ -1,25 +1,45 @@
+import { Nullable } from '@/core/common/monads/nullable';
 
 /**
  * User of the site.
  */
-export interface User {
+export class User {
+    /**
+     * The current active user.
+     */
+    public static CURRENT: Nullable<User> = null;
+
     /**
      * Their auth token.
      */
-    authToken: string;
+    public authToken: string;
 
     /**
      * The full name of the user.
      */
-    name: string;
+    public name: string;
 
     /**
      * The contact email address.
      */
-    email: string;
+    public email: string;
 
     /**
      * If the user has verified their email.
      */
-    isVerified: boolean;
+    public isVerified: boolean;
+
+    /**
+     * Create a new user.
+     * @param authToken The JWT of the user
+     * @param name The name of the user.
+     * @param email The email address of the user.
+     * @param isVerified If the user is verified.
+     */
+    constructor(authToken: string, name: string, email: string, isVerified: boolean) {
+        this.authToken = authToken;
+        this.name = name;
+        this.email = email;
+        this.isVerified = isVerified;
+    }
 }

@@ -3,9 +3,10 @@
         <!-- Header -->
         <div class="row pt-3">
             <div class="col-12 col-lg-6">
-                <p class="text-muted py-2 px-4" style="font-size: 1.25em;">
-                    Mechanics, shops, or dealerships that work on your vehicles.
-                </p>
+                <p
+                    class="text-muted py-2 px-4"
+                    style="font-size: 1.25em;"
+                >Mechanics, shops, or dealerships that work on your vehicles.</p>
             </div>
 
             <div class="col-12 col-lg-6">
@@ -79,7 +80,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import AddMechanicForm from '@/vehicle-system/mechanic/components/add-mechanic-form.vue';
 import MechanicSummary from '@/vehicle-system/mechanic/components/mechanic-summary.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
-import { MechanicMixin } from '@/vehicle-system/mechanic/mixins/mechanic-mixin';
+import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 
 @Component({
     name: 'new-component',
@@ -92,7 +93,14 @@ export default class Mechanics extends MechanicMixin {
     public mechanics: Mechanic[] = [];
 
     public async mounted(): Promise<void> {
-        this.mechanics = await this.$getMechanics();
+        (await this.$mechanicStore.getMechanics()).do(
+            async (mechanics) => {
+                this.mechanics = mechanics;
+            },
+            async (error) => {
+                this.mechanics = [];
+            }
+        );
     }
 }
 </script>

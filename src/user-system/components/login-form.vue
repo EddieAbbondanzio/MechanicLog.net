@@ -31,7 +31,7 @@
                 @keyup.enter="onLoginButtonClicked"
             >
             <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
-            
+
             <router-link class="info-link" to="/forgot" tabindex="-1">I forgot my password</router-link>
         </div>
 
@@ -54,7 +54,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
+import { UserMixin } from '@/user-system/user-mixin';
 import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
 import FormContainer from '@/core/components/form/form-container.vue';
@@ -114,8 +114,7 @@ export default class LoginForm extends UserMixin {
      * inputs first, then send off a request to the back end.
      */
     public async onLoginButtonClicked(event: any): Promise<void> {
-        const submitButton: FormSubmitButton = this.$refs
-            .submitButton as FormSubmitButton;
+        const submitButton: FormSubmitButton = this.$refs.submitButton as FormSubmitButton;
 
         // Validate first.
         if (!(await this.$validator.validate())) {
@@ -124,23 +123,19 @@ export default class LoginForm extends UserMixin {
         }
 
         try {
-            const u: User | null = await this.$login(
-                this.email,
-                this.password,
-                this.rememberMe
-            );
-            // If the login was successful, fire off the event.
-            if (u != null) {
-                this.errorMessage = '';
-                this.successMessage = 'Success. Redirecting...';
-                this.$forceUpdate();
+            const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
 
-                // Propogate the event to the parent (page)
-                this.$emit('login', u);
-            } else {
-                this.errorMessage = 'Invalid email and/or password';
-                submitButton.reset();
+            if (u.isRight()) {
+                this.errorMessage = u.getRight().message;
             }
+
+            // If the login was successful, fire off the event.
+            this.errorMessage = '';
+            this.successMessage = 'Success. Redirecting...';
+            this.$forceUpdate();
+
+            // Propogate the event to the parent (page)
+            this.$emit('login', u.getLeft());
         } catch (error) {
             // Alert the user of what went wrong
             this.errorMessage = error.message;

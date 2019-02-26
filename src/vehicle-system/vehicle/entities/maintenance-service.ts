@@ -22,4 +22,12 @@ export class MaintenanceService {
         this.id = id;
         this.description = description;
     }
+
+    /**
+     * Rebuild the service from it's raw counterpart.
+     * @param raw The raw object of the service.
+     */
+    public static async fromRaw(raw: any): Promise<MaintenanceService> {
+        return new MaintenanceService(raw.id, raw.description);
+    }
 }

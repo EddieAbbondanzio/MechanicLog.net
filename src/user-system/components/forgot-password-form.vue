@@ -30,7 +30,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import FormContainer from '@/core/components/form/form-container.vue';
 import AlertMessage from '@/core/components/alert-message.vue';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
+import { UserMixin } from '@/user-system/user-mixin';
 import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { ThemeColor } from '@/core/components/theme-color';
 
@@ -82,7 +82,7 @@ export default class ForgotPasswordForm extends UserMixin {
         }
 
         try {
-            await this.$requestPasswordReset(this.email);
+            await this.$userStore.requestPasswordReset(this.email);
         } catch (error) {
             this.message.text = error.message;
             (this.$refs.submitButton as FormSubmitButton).reset();

@@ -52,7 +52,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
+import { UserMixin } from '@/user-system/user-mixin';
 import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
