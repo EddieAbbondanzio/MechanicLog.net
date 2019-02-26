@@ -1,0 +1,41 @@
+html {
+    height: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    min-height: 100%;
+}
+
+.icon-sm {
+    font-size: 16px;
+}
+
+.icon-md {
+    font-size: 24px;
+}
+
+.icon-lg {
+    font-size: 48px;
+}
+
+.icon-xl {
+    font-size: 64px;
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.required:after { 
+    color: red;
+    content: " *"; 
+}
+
+.h-auto {
+    height: auto!important;
+}
