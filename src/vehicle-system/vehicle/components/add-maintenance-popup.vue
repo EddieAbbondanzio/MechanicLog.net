@@ -60,6 +60,10 @@ import AddMaintenanceWhenPage from './add-maintenance-when-page.vue';
 import AddMaintenanceServicesPage from './add-maintenance-services-page.vue';
 import AddMaintenanceCostPage from './add-maintenance-cost-page.vue';
 import { Nullable } from '@/core/common/monads/nullable';
+import { MaintenanceEvent } from '@/vehicle-system/vehicle/entities/maintenance-event';
+import { MaintenanceService } from '@/vehicle-system/vehicle/entities/maintenance-service';
+import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
+import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 
 /**
  * Popup form to add a new maintenance even.
@@ -77,7 +81,7 @@ import { Nullable } from '@/core/common/monads/nullable';
         AddMaintenanceCostPage,
     },
 })
-export default class AddMaintenancePopup extends Vue implements Popup {
+export default class AddMaintenancePopup extends VehicleMixin implements Popup {
     /**
      * Type declarations for the $refs of the component.
      */
@@ -88,6 +92,12 @@ export default class AddMaintenancePopup extends Vue implements Popup {
         servicesPage: AddMaintenanceServicesPage;
         costPage: AddMaintenanceCostPage;
     };
+
+    /**
+     * The vehicle being worked on.
+     */
+    @Prop()
+    public vehicle!: Vehicle;
 
     /**
      * The mechanic selected
@@ -157,7 +167,19 @@ export default class AddMaintenancePopup extends Vue implements Popup {
         }
 
         if (this.activePage === 4) {
-            alert('created');
+            if (typeof this.whenInfo.mileage === 'string') {
+                this.whenInfo.mileage = parseFloat(this.whenInfo.mileage);
+            }
+
+            const event: MaintenanceEvent = new MaintenanceEvent(
+                this.whenInfo!.mileage!,
+                this.whenInfo.date!,
+                this.mechanic!,
+                this.services!.map((s) => new MaintenanceService(s))
+            );
+            event.totalCost = this.cost || 0;
+
+            await this.$vehicleStore.addMaintenanceEvent(this.vehicle, event);
         }
     }
 

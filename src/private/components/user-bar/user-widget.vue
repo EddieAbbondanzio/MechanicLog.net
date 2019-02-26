@@ -34,7 +34,7 @@
                 <!-- Name of the User -->
                 <span
                     class="user-name"
-                >{{ $currentUser.name.indexOf(' ') != -1 ? $currentUser.name.split(' ')[0] : $currentUser.name }}</span>
+                >{{ currentUser.getFirstName() }}</span>
             </div>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <!-- <router-link class="dropdown-item" to="/settings">
@@ -54,6 +54,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/user-mixin';
 import MaterialIcon from '@/core/components/material-icon.vue';
+import { User } from '@/user-system/entities/user';
 
 /**
  * Widget that displays the active user on screen.
@@ -64,5 +65,14 @@ import MaterialIcon from '@/core/components/material-icon.vue';
         MaterialIcon,
     },
 })
-export default class UserWidget extends UserMixin {}
+export default class UserWidget extends UserMixin {
+    /**
+     * The currently logged in user.
+     */
+    private currentUser!: User;
+
+    public created(): void {
+        this.currentUser = User.CURRENT!;
+    }
+}
 </script>

@@ -9,17 +9,28 @@ export class MaintenanceService {
     public id: number;
 
     /**
+     * The ID of the user that owns it.
+     */
+    public userId: number;
+
+    /**
+     * The ID of the event it belongs to.
+     */
+    public eventId: number;
+
+    /**
      * The description of the service.
      */
     public description: string;
 
     /**
      * Create a new maintenance service.
-     * @param id The ID of the service.
      * @param description The service description.
      */
-    constructor(id: number, description: string) {
-        this.id = id;
+    constructor(description: string) {
+        this.id = 0;
+        this.userId = 0;
+        this.eventId = 0;
         this.description = description;
     }
 
@@ -28,6 +39,9 @@ export class MaintenanceService {
      * @param raw The raw object of the service.
      */
     public static async fromRaw(raw: any): Promise<MaintenanceService> {
-        return new MaintenanceService(raw.id, raw.description);
+        const s = new MaintenanceService(raw.description);
+        s.userId = raw.userId;
+        s.eventId = raw.eventId;
+        return s;
     }
 }

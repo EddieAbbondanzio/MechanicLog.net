@@ -82,6 +82,9 @@ import MechanicSummary from '@/vehicle-system/mechanic/components/mechanic-summa
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 
+/**
+ * List of all the mechanics the user has.
+ */
 @Component({
     name: 'new-component',
     components: {
@@ -90,8 +93,14 @@ import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
     },
 })
 export default class Mechanics extends MechanicMixin {
+    /**
+     * The mechanics to render
+     */
     public mechanics: Mechanic[] = [];
 
+    /**
+     * On page load go out and try to get all of the mechanics from the backend.
+     */
     public async mounted(): Promise<void> {
         (await this.$mechanicStore.getMechanics()).do(
             async (mechanics) => {

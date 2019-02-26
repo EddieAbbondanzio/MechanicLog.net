@@ -19,7 +19,7 @@
                         ref="totalCostField"
                         @keyup="onChange"
                         name="totalCost"
-                        v-validate="'required|numeric'"
+                        v-validate="'required|decimal:2'"
                     >
                     <b-form-invalid-feedback>{{ errors.first('totalCost') }}</b-form-invalid-feedback>
                 </div>
@@ -120,7 +120,7 @@ export default class AddMaintenanceCostPage extends Vue {
     }
 
     public onChange(): void {
-        this.$emit('input', parseInt(this.$refs.totalCostField.value, 10));
+        this.$emit('input', parseFloat(this.$refs.totalCostField.value));
     }
 
     /**

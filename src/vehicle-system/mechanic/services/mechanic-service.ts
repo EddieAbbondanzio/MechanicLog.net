@@ -18,7 +18,7 @@ export class MechanicService extends Service {
     public async getAllMechanicsForUser(user: User): Promise<Either<Mechanic[], ServiceError>> {
         try {
             const response: HttpResponse = await this._httpClient.get('/mechanic', user.authToken);
-            return response.data.map((m: any) => Mechanic.fromRaw(m));
+            return Either.left(response.data.map((m: any) => Mechanic.fromRaw(m)));
         } catch (error) {
             return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }

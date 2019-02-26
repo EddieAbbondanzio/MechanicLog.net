@@ -18,7 +18,20 @@ export class VehicleMaintenanceEventService extends Service {
     public async getAllForVehicle(user: User, vehicle: Vehicle): Promise<Either<MaintenanceEvent[], ServiceError>> {
         try {
             const response: HttpResponse = await this._httpClient.get(`/vehicle/${vehicle.id}/maintenance`, user.authToken);
-            return Either.left([]);
+
+            const events: MaintenanceEvent[] = [];
+
+            for (const raw of response.data) {
+                const event = await MaintenanceEvent.fromRaw(raw);
+
+                if (event.isRight()) {
+                    return Either.right(event.getRight());
+                }
+
+                events.push(event.getLeft());
+            }
+
+            return Either.left(events);
         } catch (error) {
             return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
@@ -32,7 +45,8 @@ export class VehicleMaintenanceEventService extends Service {
      */
     public async addEventForVehicle(user: User, vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<ServiceError>> {
         try {
-            // vehicle. d = response.data.id;
+            const response: HttpResponse = await this._httpClient.post(`/vehicle/${vehicle.id}/maintenance`, event, user.authToken);
+            event.id = response.data.id;
             return Maybe.none();
         } catch (error) {
             return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
@@ -47,6 +61,7 @@ export class VehicleMaintenanceEventService extends Service {
      */
     public async deleteEventForVehicle(user: User, vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<ServiceError>> {
         try {
+            await this._httpClient.delete(`/vehicle/${vehicle.id}/maintenance/${event.id}`, user.authToken);
             return Maybe.none();
         } catch (error) {
             return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));

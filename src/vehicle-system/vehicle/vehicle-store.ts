@@ -9,6 +9,8 @@ import { VehicleService } from './services/vehicle-service';
 import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
 import { Nullable } from '@/core/common/monads/nullable';
+import { VehicleMaintenanceEventService } from './services/vehicle-maintenance-event-service';
+import { MaintenanceEvent } from './entities/maintenance-event';
 
 /**
  * Store for vehicles of the user.
@@ -25,6 +27,11 @@ export class VehicleStore extends StoreModule {
     private _vehicleService: VehicleService;
 
     /**
+     * The underlying maintenance service to the backend.
+     */
+    private _maintenanceService: VehicleMaintenanceEventService;
+
+    /**
      * Cache of vehicles from the backend.
      */
     private _vehicleCache: Nullable<Vehicle[]>;
@@ -35,6 +42,7 @@ export class VehicleStore extends StoreModule {
     constructor() {
         super();
         this._vehicleService = ServiceRegistry.resolve(ServiceType.Vehicle);
+        this._maintenanceService = ServiceRegistry.resolve(ServiceType.MaintenanceEvent);
         this._vehicleCache = null;
     }
 
@@ -113,5 +121,31 @@ export class VehicleStore extends StoreModule {
         }
 
         return Maybe.none();
+    }
+
+    /**
+     * Get all the maintenance events for a vehicle.
+     * @param vehicle The vehicle to get all the service events for.
+     */
+    public async getMaintenanceEvents(vehicle: Vehicle): Promise<Either<MaintenanceEvent[], ServiceError>> {
+        return this._maintenanceService.getAllForVehicle(User.CURRENT!, vehicle);
+    }
+
+    /**
+     * Add a maintenance event to a vehicle.
+     * @param vehicle The vehicle to add it to.
+     * @param event The event to add.
+     */
+    public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<ServiceError>> {
+        return this._maintenanceService.addEventForVehicle(User.CURRENT!, vehicle, event);
+    }
+
+    /**
+     * Delete an event from a vehicle.
+     * @param vehicle The vehicle to delete it from.
+     * @param event The event to delete.
+     */
+    public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<ServiceError>> {
+        return this._maintenanceService.deleteEventForVehicle(User.CURRENT!, vehicle, event);
     }
 }

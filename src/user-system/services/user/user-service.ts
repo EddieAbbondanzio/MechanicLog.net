@@ -18,12 +18,7 @@ export class UserService extends Service {
         try {
             const response: HttpResponse = await this._httpClient.get('/user', authToken);
 
-            return Either.left({
-                authToken: response.data.authToken,
-                name: response.data.name,
-                email: response.data.email,
-                isVerified: response.data.isVerified,
-            });
+            return Either.left(new User(authToken, response.data.name, response.data.email, response.data.isVerified));
         } catch (error) {
             return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }

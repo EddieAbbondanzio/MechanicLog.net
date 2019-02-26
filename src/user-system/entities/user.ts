@@ -42,4 +42,15 @@ export class User {
         this.email = email;
         this.isVerified = isVerified;
     }
+
+    /**
+     * Get the first name of the user.
+     */
+    public getFirstName(): string {
+        if (this.name.indexOf(' ') !== -1) {
+            return this.name.split(' ')[0];
+        } else {
+            return this.name;
+        }
+    }
 }

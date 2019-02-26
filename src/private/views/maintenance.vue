@@ -23,7 +23,7 @@
                             <span style="vertical-align: middle;">Add Maintenance</span>
                         </b-btn>
 
-                        <add-maintenance-popup ref="addPopup"/>
+                        <add-maintenance-popup ref="addPopup" :vehicle="vehicle"/>
                     </div>
                 </div>
             </div>
@@ -68,6 +68,16 @@
                 <hr class="my-0 py-0 bg-secondary" style="height 4px;">
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-12">
+                <maintenance-summary
+                    v-for="event in events"
+                    :maintenanceEvent="event"
+                    :key="event.id"
+                />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -79,6 +89,9 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
 import AddMaintenancePopup from '@/vehicle-system/vehicle/components/add-maintenance-popup.vue';
+import { MaintenanceService } from '@/vehicle-system/vehicle/entities/maintenance-service';
+import { MaintenanceEvent } from '@/vehicle-system/vehicle/entities/maintenance-event';
+import MaintenanceSummary from '@/vehicle-system/vehicle/components/maintenance-summary.vue';
 
 /**
  * Maintenance history page.
@@ -88,18 +101,24 @@ import AddMaintenancePopup from '@/vehicle-system/vehicle/components/add-mainten
     components: {
         MaterialIcon,
         AddMaintenancePopup,
+        MaintenanceSummary,
     },
 })
-export default class NewComponent extends VehicleMixin {
+export default class Maintenance extends VehicleMixin {
     /**
      * Component references
      */
     public $refs!: {
-        addPopup: AddMaintenancePopup
+        addPopup: AddMaintenancePopup;
     };
 
     /**
-     * The active vehicle being modified.
+     * The maintenance events.
+     */
+    public events!: MaintenanceEvent[];
+
+    /**
+     * The vehicle being displayed
      */
     public vehicle: Nullable<Vehicle> = null;
 
@@ -107,7 +126,27 @@ export default class NewComponent extends VehicleMixin {
      * On page load, pull in the vehicle.
      */
     public async created(): Promise<void> {
+        this.events = [];
+
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
+        const vehicles = await this.$vehicleStore.getVehicles();
+
+        if (vehicles.isRight()) {
+            throw vehicles.getRight();
+        }
+
+        this.vehicle = vehicles.getLeft().find((v: Vehicle) => v.id === vehicleId) || null;
+
+        if (this.vehicle != null) {
+            (await this.$vehicleStore.getMaintenanceEvents(this.vehicle!)).do(
+                async (events) => {
+                    this.events = events;
+                }
+            );
+        }
+
+        this.$forceUpdate();
+
         // const result: Maybe<Vehicle> = await this.$getVehicle(vehicleId);
 
         // if (result.hasSome()) {
