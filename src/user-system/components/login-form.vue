@@ -1,7 +1,6 @@
 <template>
     <form-container title="Login">
-        <alert-message type="Success" v-if="successMessage.length > 0">{{ successMessage }}</alert-message>
-        <alert-message type="Danger" v-if="errorMessage.length > 0">{{ errorMessage }}</alert-message>
+        <b-alert :variant="message.variant" :show="message.text != null">{{ message.text }}</b-alert>
 
         <div class="form-group">
             <label for="email-textbox">Email</label>
@@ -38,7 +37,7 @@
         <div class="form-group mt-5">
             <form-submit-button text="Login" @click="onLoginButtonClicked" ref="submitButton"/>
 
-            <div class="form-check d-inline-block ml-3">
+            <!-- <div class="form-check d-inline-block ml-3">
                 <input
                     v-model="rememberMe"
                     type="checkbox"
@@ -46,7 +45,7 @@
                     id="remember-me-check-box"
                 >
                 <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
-            </div>
+            </div>-->
         </div>
     </form-container>
 </template>
@@ -59,6 +58,7 @@ import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
 import FormContainer from '@/core/components/form/form-container.vue';
 import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
+import { Nullable } from '@/core/common/monads/nullable';
 
 /**
  * Login form to allow a user to sign in.
@@ -88,15 +88,10 @@ export default class LoginForm extends UserMixin {
      */
     public rememberMe!: boolean;
 
-    /**
-     * Error from the server on a failed login.
-     */
-    public errorMessage!: string;
-
-    /**
-     * Success message for when a login succeeds.
-     */
-    public successMessage!: string;
+    public message!: {
+        variant: string;
+        text: Nullable<string>;
+    };
 
     /**
      * Properties are assigned in created to prevent weird undefined errors.
@@ -105,8 +100,7 @@ export default class LoginForm extends UserMixin {
         this.email = '';
         this.password = '';
         this.rememberMe = false;
-        this.errorMessage = '';
-        this.successMessage = '';
+        this.message = { variant: 'success', text: null };
     }
 
     /**
@@ -122,26 +116,17 @@ export default class LoginForm extends UserMixin {
             return;
         }
 
-        try {
-            const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
+        const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
 
-            if (u.isRight()) {
-                this.errorMessage = u.getRight().message;
-            }
+        if (u.isRight()) {
+            this.message.text = u.getRight().message;
+            this.message.variant = 'danger';
+            submitButton.reset();
 
-            // If the login was successful, fire off the event.
-            this.errorMessage = '';
-            this.successMessage = 'Success. Redirecting...';
             this.$forceUpdate();
-
+        } else {
             // Propogate the event to the parent (page)
             this.$emit('login', u.getLeft());
-        } catch (error) {
-            // Alert the user of what went wrong
-            this.errorMessage = error.message;
-            this.successMessage = '';
-            this.$forceUpdate();
-            submitButton.reset();
         }
     }
 }

@@ -2,6 +2,7 @@ import { StoreModule } from './store-module';
 import { Dictionary } from '../common/dictionary';
 import { UserStore } from '@/user-system/user-store';
 import { MechanicStore } from '@/vehicle-system/mechanic/mechanic-store';
+import { VehicleStore } from '@/vehicle-system/vehicle/vehicle-store';
 
 /**
  * State store for managing data from the backend.
@@ -28,6 +29,7 @@ export class Store {
     public static initialize(): void {
         this.register(new UserStore());
         this.register(new MechanicStore());
+        this.register(new VehicleStore());
     }
 
     /**

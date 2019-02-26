@@ -27,7 +27,7 @@ export class AuthService extends Service {
                 password,
             });
 
-            return response.data.token;
+            return Either.left(response.data.token);
         } catch (error) {
             return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
         }
