@@ -40,6 +40,6 @@ export class CookieStorage {
      * @param expiration How long the cookie should be kept for.
      */
     public static set(key: string, value: any, expiration: string | number | Date): void {
-        (window as any).$cookies.set(key, value, expiration, '/', Store.baseUrl);
+        (window as any).$cookies.set(key, value, expiration, '/');
     }
 }
