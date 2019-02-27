@@ -3,6 +3,7 @@ import { Dictionary } from '../common/dictionary';
 import { UserStore } from '@/user-system/user-store';
 import { MechanicStore } from '@/vehicle-system/mechanic/mechanic-store';
 import { VehicleStore } from '@/vehicle-system/vehicle/vehicle-store';
+import { config } from '../../../config';
 
 /**
  * State store for managing data from the backend.
@@ -16,7 +17,7 @@ export class Store {
     /**
      * The URL to the backend.
      */
-    public static readonly backendUrl: string = 'https://localhost:3117';
+    public static readonly backendUrl: string = config.backendUrl;
 
     /**
      * The base URL of the site.
