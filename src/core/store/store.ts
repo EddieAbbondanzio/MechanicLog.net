@@ -20,11 +20,6 @@ export class Store {
     public static readonly backendUrl: string = config.backendUrl;
 
     /**
-     * The base URL of the site.
-     */
-    public static readonly baseUrl: string = 'localhost';
-
-    /**
      * Initialize the store for use.
      */
     public static initialize(): void {
