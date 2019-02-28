@@ -4,7 +4,6 @@
         ref="popup"
         title="Add Maintenance"
         size="lg"
-        @ok="onCreate"
     >
         <!-- Progress Tracker to keep the user updated on where their at. -->
         <progress-tracker :current="activePage" :max="4" class="pb-4"/>

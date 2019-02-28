@@ -94,6 +94,8 @@
                     v-for="vehicle in vehicles"
                     :vehicle="vehicle"
                     :key="vehicle.name"
+                    @edit="onVehicleEdit"
+                    @delete="onVehicleDelete"
                 />
             </div>
         </div>
@@ -155,6 +157,20 @@ export default class Vehicles extends VehicleMixin {
                 this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.mileage > b.mileage ? -1 : 1));
                 break;
         }
+    }
+
+    /**
+     * Event handler listening for an update on a vehicle.
+     */
+    public onVehicleEdit(vehicle: Vehicle) {
+        this.$forceUpdate();
+    }   
+
+    /**
+     * Event handler listening for a delete on a vehicle.
+     */
+    public onVehicleDelete(vehicle: Vehicle) {
+        this.$forceUpdate();
     }
 }
 </script>

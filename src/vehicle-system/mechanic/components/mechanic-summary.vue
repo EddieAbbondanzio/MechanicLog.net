@@ -130,20 +130,39 @@ export default class MechanicSummary extends MechanicMixin {
     @Prop()
     public mechanic!: Mechanic;
 
+    /**
+     * Event handler for when the user wants to edit the mechanic.
+     */
     protected async onEditClick(): Promise<void> {
         (this.$refs.editPopup as any).show();
     }
 
+    /**
+     * Event handler for when the user wants to delete the mechanic.
+     */
     protected async onDeleteClick(): Promise<void> {
         (this.$refs.deletePopup as any).show();
     }
 
+    /**
+     * Event handler for when the user has finished editing the mechanic.
+     */
     protected async onEdit(newMechanic: Mechanic): Promise<void> {
-        await this.$mechanicStore.updateMechanic(newMechanic);
+        const taskResult = await this.$mechanicStore.updateMechanic(newMechanic);
+
+        if (taskResult.hasSome()) {
+            this.$emit('error', taskResult.getSome());
+        } else {
+            this.$emit('edit', newMechanic);
+        }
     }
 
+    /**
+     * Event handler for when the user has finished deleting the mechanic.
+     */
     protected async onDelete(): Promise<void> {
         await this.$mechanicStore.deleteMechanic(this.mechanic);
+        this.$emit('delete', this.mechanic);
     }
 }
 </script>

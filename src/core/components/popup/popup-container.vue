@@ -9,7 +9,7 @@
             @shown="onShown"
             @hide="onHide"
             @hidden="onHidden"
-            header-bg-variant="primary"
+            :header-bg-variant="headerColor"
             header-text-variant="white"
             footer-bg-variant="light"
         >
@@ -22,7 +22,6 @@
                     <slot name="footer"></slot>
                 </div>
             </div>
-
         </b-modal>
     </div>
 </template>
@@ -62,6 +61,12 @@ export default class PopupContainer extends Vue {
      */
     @Prop()
     public title!: string;
+
+    /**
+     * The color of the banner.
+     */
+    @Prop({ default: 'primary' })
+    public headerColor!: string;
 
     /**
      * Show the popup on screen.

@@ -1,5 +1,7 @@
 <template>
     <div class="container-fluid px-0">
+        <error-popup ref="errorPopup" />
+
         <!-- Header -->
         <div class="row pt-3">
             <div class="col-12 col-lg-6">
@@ -69,6 +71,9 @@
                     v-for="mechanic in mechanics"
                     :mechanic="mechanic"
                     :key="mechanic.name"
+                    @edit="onMechanicEdit"
+                    @delete="onMechanicDelete"
+                    @error="onError"
                 />
             </div>
         </div>
@@ -81,6 +86,8 @@ import AddMechanicForm from '@/vehicle-system/mechanic/components/add-mechanic-f
 import MechanicSummary from '@/vehicle-system/mechanic/components/mechanic-summary.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
+import { HttpError } from '@/core/http/service-error';
+import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 
 /**
  * List of all the mechanics the user has.
@@ -90,9 +97,17 @@ import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
     components: {
         AddMechanicForm,
         MechanicSummary,
+        ErrorPopup,
     },
 })
 export default class Mechanics extends MechanicMixin {
+    /**
+     * References to children components.
+     */
+    public $refs!: {
+        errorPopup: ErrorPopup,
+    }
+
     /**
      * The mechanics to render
      */
@@ -110,6 +125,27 @@ export default class Mechanics extends MechanicMixin {
                 this.mechanics = [];
             }
         );
+    }
+
+    /**
+     * On an update, force an update of the screen.
+     */
+    public onMechanicEdit(mechanic: Mechanic) {
+        this.$forceUpdate();
+    }
+
+    /**
+     * On delete, force an update of the screen.
+     */
+    public onMechanicDelete(mechanic: Mechanic) {
+        this.$forceUpdate();
+    }
+    
+    /**
+     * On an error, display it to the user.
+     */
+    public onError(error: HttpError) {
+        this.$refs.errorPopup.show(error.message);
     }
 }
 </script>

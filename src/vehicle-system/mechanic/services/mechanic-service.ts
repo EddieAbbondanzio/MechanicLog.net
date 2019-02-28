@@ -62,7 +62,7 @@ export class MechanicService extends Service {
      * @param mechanic The mechanic to update.
      */
     public async updateMechanic(user: User, mechanic: Mechanic): Promise<Maybe<HttpError>> {
-        const apiResponse = await this._httpClient.patch(`/mechanic/${mechanic.id}`, mechanic, user.authToken);
+        const apiResponse = await this._httpClient.patch(`/v1/mechanic/${mechanic.id}`, mechanic, user.authToken);
 
         if (apiResponse.isLeft()) {
             return Maybe.none();
@@ -77,7 +77,7 @@ export class MechanicService extends Service {
      * @param mechanic The mechanic to delete.
      */
     public async deleteMechanic(user: User, mechanic: Mechanic): Promise<Maybe<HttpError>> {
-        const apiResponse = await this._httpClient.delete(`/mechanic/${mechanic.id}`, user.authToken);
+        const apiResponse = await this._httpClient.delete(`/v1/mechanic/${mechanic.id}`, user.authToken);
 
         if (apiResponse.isLeft()) {
             return Maybe.none();

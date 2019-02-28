@@ -3,7 +3,6 @@ import PublicMasterPage from '@/public/components/public-master-page.vue';
 
 export const publicRoutes: RouteConfig = {
     path: '/',
-    name: 'public',
     component: PublicMasterPage,
     children: [
         {

@@ -12,6 +12,7 @@
         <div class="p-1 d-inline-block align-top" style="width: calc(100% - 256px);">
             <router-view></router-view>
         </div>
+
     </div>
 </template>
 
@@ -27,8 +28,10 @@ import SideBar from "../components/side-bar/side-bar.vue";
     name: "private-master-page",
     components: {
         SideBar,
-        UserBar
+        UserBar,
     }
 })
-export default class PrivateMasterPage extends Vue {}
+export default class PrivateMasterPage extends Vue {
+
+}
 </script>

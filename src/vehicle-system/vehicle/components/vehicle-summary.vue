@@ -167,6 +167,7 @@ export default class VehicleSummary extends VehicleMixin {
      */
     protected async onDelete(): Promise<void> {
         await this.$vehicleStore.deleteVehicle(this.vehicle);
+        this.$emit('delete', this.vehicle);
     }
 
     /**
@@ -174,6 +175,7 @@ export default class VehicleSummary extends VehicleMixin {
      */
     protected async onEdit(newVehicle: Vehicle): Promise<void> {
         await this.$vehicleStore.updateVehicle(newVehicle);
+        this.$emit('edit', newVehicle);
     }
 }
 </script>
