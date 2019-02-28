@@ -1,31 +1,39 @@
+<style lang="scss" scoped>
+.hero-container {
+    margin-top: 2em;
+    margin-bottom: 128px;
+}
+</style>
+
 <template>
-    <div class="row">
-        <div class="col-12">
-            <div style="position: relative">
-                <img src="@/assets/hero.png" style="width: 100%;">
+    <div class="container-fluid mx-0 px-0 py-3">
+        <div class="row hero-container px-4">
+            <div class="col-12 col-lg-6 text-center d-table h-100">
+                <div class="d-inline-block align-middle d-table-cell px-4 pt-4">
+                    <h1 class="text-dark display-4 font-weight-bold pb-2 pb-md-5">
+                        Vehicle Maintenance
+                        Tracking Made Easy
+                    </h1>
 
-                <div
-                    class="text-white"
-                    style="position: absolute; left: 10%; top: 20%; right: 10%;"
-                >
-                    <h1 class="pb-3 font-weight-bold display-1">Simple, and Elegant</h1>
-                    <h3>
-                        Vehicle maintenance logging made easy. Never lose a receipt, or forget when a service was performed again. MechanicLog
-                        helps keep all vehicle maintenance records in one location. And if you ever need to warranty out a part, you'll
-                        know where to find the receipt.
-                    </h3>
+                    <p class="text-muted pb-4 text-left" style="font-size: 1.25em;">
+                        Upgrade from spreadsheets and never lose an invoice again. With us you can consolidate all your
+                        records in one convenient place that can be accessed from anywhere.
+                        Next time you need to hunt down a receipt, you'll know where to find it.
+                    </p>
 
-                    <!-- Call to action buttons -->
-                    <div class="mt-5">
-                        <router-link to="/login">
-                            <button type="button" class="btn btn-primary btn-lg mr-2" to="/login">Login</button>
-                        </router-link>
-    
+                    <div>
                         <router-link to="/register">
-                            <button type="button" class="btn btn-warning btn-lg ml-2">Sign Up</button>
+                            <b-btn
+                                size="lg"
+                                variant="primary"
+                                class="rounded ml-2"
+                            >Start My Free Trial</b-btn>
                         </router-link>
                     </div>
                 </div>
+            </div>
+            <div class="col-12 col-lg-6 h-100 pt-5 pt-lg-0">
+                <img src="@/assets/mechanic.jpg" class="w-100">
             </div>
         </div>
     </div>
