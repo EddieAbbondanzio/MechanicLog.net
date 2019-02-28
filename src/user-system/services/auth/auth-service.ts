@@ -5,7 +5,7 @@ import { UserPasswordReset } from './user-password-reset';
 import { UserPasswordUpdate } from './user-password-update';
 import { Service } from '@/core/services/service';
 import { HttpResponse } from '@/core/http/http-response';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 
@@ -20,16 +20,16 @@ export class AuthService extends Service {
      * @param rememberMe If the user wants to be remembered.
      * @returns The issued auth token.
      */
-    public async login(email: string, password: string, rememberMe: boolean = false): Promise<Either<string, ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.post('/auth/login', {
-                email,
-                password,
-            });
+    public async login(email: string, password: string, rememberMe: boolean = false): Promise<Either<string, HttpError>> {
+        const apiResponse: Either<HttpResponse, HttpError> = await this._httpClient.post('/v1/auth/login', {
+            email,
+            password,
+        });
 
-            return Either.left(response.data.token);
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+        if (apiResponse.isLeft()) {
+            return Either.left(apiResponse.getLeft().data.token);
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -38,12 +38,13 @@ export class AuthService extends Service {
      * @param authToken The JWT of the user.
      * @returns The same auth token if valid.
      */
-    public async relogin(authToken: string): Promise<Either<string, ServiceError>> {
-        try {
-            await this._httpClient.patch('/auth/login', {}, authToken);
+    public async relogin(authToken: string): Promise<Either<string, HttpError>> {
+        const apiResponse = await this._httpClient.patch('/v1/auth/login', {}, authToken);
+
+        if (apiResponse.isLeft()) {
             return Either.left(authToken);
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -52,12 +53,13 @@ export class AuthService extends Service {
      * @param userReg The user's details
      * @returns An auth token.
      */
-    public async register(userReg: UserRegistration): Promise<Either<string, ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.post('/auth/register', userReg);
-            return Either.left(response.data.token);
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+    public async register(userReg: UserRegistration): Promise<Either<string, HttpError>> {
+        const apiResponse = await this._httpClient.post('/v1/auth/register', userReg);
+
+        if (apiResponse.isLeft()) {
+            return Either.left(apiResponse.getLeft().data.authToken);
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -66,19 +68,19 @@ export class AuthService extends Service {
      * @param user The user's email to verify.
      * @param emailToken The email token they entered.
      */
-    public async verifyEmail(user: User, emailToken: string): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.post(
-                '/auth/verify',
-                {
-                    emailToken,
-                },
-                user.authToken
-            );
+    public async verifyEmail(user: User, emailToken: string): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.post(
+            '/auth/verify',
+            {
+                emailToken,
+            },
+            user.authToken
+        );
 
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -87,15 +89,15 @@ export class AuthService extends Service {
      * email with a reset code.
      * @param email The email of the user.
      */
-    public async requestPasswordReset(email: string): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.post('/auth/password', {
-                email,
-            });
+    public async requestPasswordReset(email: string): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.post('/v1/auth/password', {
+            email,
+        });
 
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -103,12 +105,13 @@ export class AuthService extends Service {
      * Send a password reset request to the backend.
      * @param passwordReset The password reset to submit
      */
-    public async resetPassword(passwordReset: UserPasswordReset): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.put('/auth/password', passwordReset);
+    public async resetPassword(passwordReset: UserPasswordReset): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.put('/v1/auth/password', passwordReset);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -117,12 +120,13 @@ export class AuthService extends Service {
      * @param user The user to update the password for.
      * @param passwordUpdate Their password update info.
      */
-    public async updatePassword(user: User, passwordUpdate: UserPasswordUpdate): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.patch('/auth/password', passwordUpdate, user.authToken);
+    public async updatePassword(user: User, passwordUpdate: UserPasswordUpdate): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.patch('/v1/auth/password', passwordUpdate, user.authToken);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 }

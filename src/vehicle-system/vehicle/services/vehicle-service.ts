@@ -2,7 +2,7 @@ import { Service } from '@/core/services/service';
 import { User } from '@/user-system/entities/user';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import { HttpResponse } from '@/core/http/http-response';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 
@@ -14,14 +14,13 @@ export class VehicleService extends Service {
      * Get a list of vehicles for a user.
      * @param user The user to get vehicles for.
      */
-    public async getAllVehiclesForUser(user: User): Promise<Either<Vehicle[], ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.get('/vehicle', user.authToken);
-            const vehicles: Vehicle[] = response.data.map((v: any) => Vehicle.fromRaw(v));
+    public async getAllVehiclesForUser(user: User): Promise<Either<Vehicle[], HttpError>> {
+        const apiResponse = await this._httpClient.get('/v1/vehicle', user.authToken);
 
-            return Either.left(vehicles);
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+        if (apiResponse.isLeft()) {
+            return Either.left(apiResponse.getLeft().data.map((v: any) => Vehicle.fromRaw(v)));
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -30,13 +29,14 @@ export class VehicleService extends Service {
      * @param user The user to add a vehicle for.
      * @param vehicle The vehicle to add.
      */
-    public async addVehicle(user: User, vehicle: Vehicle): Promise<Maybe<ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.post('/vehicle', vehicle, user.authToken);
-            vehicle.id = response.data.id;
+    public async addVehicle(user: User, vehicle: Vehicle): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.post('/v1/vehicle', vehicle, user.authToken);
+
+        if (apiResponse.isLeft()) {
+            vehicle.id = apiResponse.getLeft().data.id;
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -45,12 +45,13 @@ export class VehicleService extends Service {
      * @param user The user to update it for.
      * @param vehicle The vehicle to update.
      */
-    public async updateVehicle(user: User, vehicle: Vehicle): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.patch(`/vehicle/${vehicle.id}`, vehicle, user.authToken);
+    public async updateVehicle(user: User, vehicle: Vehicle): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.patch(`/v1/vehicle/${vehicle.id}`, vehicle, user.authToken);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -59,12 +60,13 @@ export class VehicleService extends Service {
      * @param user The user to delete a vehicle for.
      * @param vehicle The vehicle to delete.
      */
-    public async deleteVehicle(user: User, vehicle: Vehicle): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.delete(`/vehicle/${vehicle.id}`, user.authToken);
+    public async deleteVehicle(user: User, vehicle: Vehicle): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.delete(`/v1/vehicle/${vehicle.id}`, user.authToken);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 }

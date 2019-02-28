@@ -5,7 +5,7 @@ import { Mechanic } from './entities/mechanic';
 import { Nullable } from '@/core/common/monads/nullable';
 import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { User } from '@/user-system/entities/user';
 import { Maybe } from '@/core/common/monads/maybe';
@@ -38,7 +38,7 @@ export class MechanicStore extends StoreModule {
     /**
      * Get all mechanics for the user.
      */
-    public async getMechanics(): Promise<Either<Mechanic[], ServiceError>> {
+    public async getMechanics(): Promise<Either<Mechanic[], HttpError>> {
         if (this._mechanicCache == null) {
             const apiResponse = await this._mechanicService.getAllMechanicsForUser(User.CURRENT!);
 
@@ -56,7 +56,7 @@ export class MechanicStore extends StoreModule {
      * Get a specific mechanic.
      * @param id GThe ID of the mechanic.
      */
-    public async getMechanic(id: number): Promise<Either<Nullable<Mechanic>, ServiceError>> {
+    public async getMechanic(id: number): Promise<Either<Nullable<Mechanic>, HttpError>> {
         const mechanics = await this.getMechanics();
 
         // Error
@@ -73,7 +73,7 @@ export class MechanicStore extends StoreModule {
      * Add a mecahnic to the database.
      * @param mechanic The mechanic to add.
      */
-    public async addMechanic(mechanic: Mechanic): Promise<Maybe<ServiceError>> {
+    public async addMechanic(mechanic: Mechanic): Promise<Maybe<HttpError>> {
         const apiResponse = await this._mechanicService.addMechanic(User.CURRENT!, mechanic);
 
         // Errored out.
@@ -89,7 +89,7 @@ export class MechanicStore extends StoreModule {
      * Update an existing mechanic with the database.
      * @param mechanic The mechanic to update.
      */
-    public async updateMechanic(mechanic: Mechanic): Promise<Maybe<ServiceError>> {
+    public async updateMechanic(mechanic: Mechanic): Promise<Maybe<HttpError>> {
         const apiResponse = await this._mechanicService.updateMechanic(User.CURRENT!, mechanic);
 
         // Errored out.
@@ -108,7 +108,7 @@ export class MechanicStore extends StoreModule {
      * Delete an existing mechanic from the database.
      * @param mechanic The mechanic to delete.
      */
-    public async deleteMechanic(mechanic: Mechanic): Promise<Maybe<ServiceError>> {
+    public async deleteMechanic(mechanic: Mechanic): Promise<Maybe<HttpError>> {
         const apiResponse = await this._mechanicService.deleteMechanic(User.CURRENT!, mechanic);
 
         // Errored out.

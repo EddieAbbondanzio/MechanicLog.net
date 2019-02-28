@@ -7,7 +7,7 @@ import { User } from '@/user-system/entities/user';
 import { MechanicStore } from '@/vehicle-system/mechanic/mechanic-store';
 import { Store } from '@/core/store/store';
 import { Nullable } from '@/core/common/monads/nullable';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 
 /**
@@ -83,9 +83,9 @@ export class MaintenanceEvent {
      * Rebuild the maintenance event from it's raw object.
      * @param raw The raw object to rebuild it from.
      */
-    public static async fromRaw(raw: any): Promise<Either<MaintenanceEvent, ServiceError>> {
+    public static async fromRaw(raw: any): Promise<Either<MaintenanceEvent, HttpError>> {
         const mechanicStore: MechanicStore = Store.resolve<MechanicStore>('mechanic');
-        const mechanic: Either<Nullable<Mechanic>, ServiceError> = await mechanicStore.getMechanic(raw.mechanicId);
+        const mechanic: Either<Nullable<Mechanic>, HttpError> = await mechanicStore.getMechanic(raw.mechanicId);
 
         // Error out
         if (mechanic.isRight()) {

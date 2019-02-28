@@ -3,7 +3,7 @@ import { Mechanic } from '../entities/mechanic';
 import { User } from '@/user-system/entities/user';
 import { Nullable } from '@/core/common/monads/nullable';
 import { HttpResponse } from '@/core/http/http-response';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 
@@ -15,12 +15,13 @@ export class MechanicService extends Service {
      * Get all mechanics for a user.
      * @param user The user to get mechanics for.
      */
-    public async getAllMechanicsForUser(user: User): Promise<Either<Mechanic[], ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.get('/mechanic', user.authToken);
-            return Either.left(response.data.map((m: any) => Mechanic.fromRaw(m)));
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+    public async getAllMechanicsForUser(user: User): Promise<Either<Mechanic[], HttpError>> {
+        const apiResponse = await this._httpClient.get('/v1/mechanic', user.authToken);
+
+        if (apiResponse.isLeft()) {
+            return Either.left(apiResponse.getLeft().data.map((m: any) => Mechanic.fromRaw(m)));
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -29,12 +30,13 @@ export class MechanicService extends Service {
      * @param user The active user.
      * @param id The ID of the mechanic.
      */
-    public async getMechanicById(user: User, id: number): Promise<Either<Mechanic, ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.get(`/mechanic/${id}`, user.authToken);
-            return Either.left(Mechanic.fromRaw(response.data));
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+    public async getMechanicById(user: User, id: number): Promise<Either<Mechanic, HttpError>> {
+        const apiResponse = await this._httpClient.get(`/v1/mechanic/${id}`, user.authToken);
+
+        if (apiResponse.isLeft()) {
+            return Either.left(Mechanic.fromRaw(apiResponse.getLeft().data));
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -43,13 +45,14 @@ export class MechanicService extends Service {
      * @param user The active user.
      * @param mechanic The mechanic to add.
      */
-    public async addMechanic(user: User, mechanic: Mechanic): Promise<Maybe<ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.post('/mechanic', mechanic, user.authToken);
-            mechanic.id = response.data.id;
+    public async addMechanic(user: User, mechanic: Mechanic): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.post('/v1/mechanic', mechanic, user.authToken);
+
+        if (apiResponse.isLeft()) {
+            mechanic.id = apiResponse.getLeft().data.id;
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -58,12 +61,13 @@ export class MechanicService extends Service {
      * @param user The active user.
      * @param mechanic The mechanic to update.
      */
-    public async updateMechanic(user: User, mechanic: Mechanic): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.patch(`/mechanic/${mechanic.id}`, mechanic, user.authToken);
+    public async updateMechanic(user: User, mechanic: Mechanic): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.patch(`/mechanic/${mechanic.id}`, mechanic, user.authToken);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 
@@ -72,12 +76,13 @@ export class MechanicService extends Service {
      * @param user The active user.
      * @param mechanic The mechanic to delete.
      */
-    public async deleteMechanic(user: User, mechanic: Mechanic): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.delete(`/mechanic/${mechanic.id}`, user.authToken);
+    public async deleteMechanic(user: User, mechanic: Mechanic): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.delete(`/mechanic/${mechanic.id}`, user.authToken);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 }

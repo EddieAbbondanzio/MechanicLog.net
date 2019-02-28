@@ -1,7 +1,7 @@
 import { StoreModule } from '@/core/store/store-module';
 import { StoreModuleNamespace } from '@/core/store/store-module-namespace';
 import { Vehicle } from './entities/vehicle';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 import { User } from '@/user-system/entities/user';
@@ -49,7 +49,7 @@ export class VehicleStore extends StoreModule {
     /**
      * Get all the vehicles of the user.
      */
-    public async getVehicles(): Promise<Either<Vehicle[], ServiceError>> {
+    public async getVehicles(): Promise<Either<Vehicle[], HttpError>> {
         if (this._vehicleCache == null) {
             const apiResponse = await this._vehicleService.getAllVehiclesForUser(User.CURRENT!);
 
@@ -68,7 +68,7 @@ export class VehicleStore extends StoreModule {
      * Add a new vehicle for the user to the backend.
      * @param vehicle the vehicle to add.
      */
-    public async addVehicle(vehicle: Vehicle): Promise<Maybe<ServiceError>> {
+    public async addVehicle(vehicle: Vehicle): Promise<Maybe<HttpError>> {
         const apiResponse = await this._vehicleService.addVehicle(User.CURRENT!, vehicle);
 
         // Errored out.
@@ -85,7 +85,7 @@ export class VehicleStore extends StoreModule {
      * Update an existing vehicle with the backend.
      * @param vehicle The vehicle to update.
      */
-    public async updateVehicle(vehicle: Vehicle): Promise<Maybe<ServiceError>> {
+    public async updateVehicle(vehicle: Vehicle): Promise<Maybe<HttpError>> {
         const apiResponse = await this._vehicleService.updateVehicle(User.CURRENT!, vehicle);
 
         // Errored out.
@@ -106,7 +106,7 @@ export class VehicleStore extends StoreModule {
      * Delete an existing vehicle with the backend.
      * @param vehicle The vehicle to delete.
      */
-    public async deleteVehicle(vehicle: Vehicle): Promise<Maybe<ServiceError>> {
+    public async deleteVehicle(vehicle: Vehicle): Promise<Maybe<HttpError>> {
         const apiResponse = await this._vehicleService.deleteVehicle(User.CURRENT!, vehicle);
 
         // Errored out.
@@ -127,7 +127,7 @@ export class VehicleStore extends StoreModule {
      * Get all the maintenance events for a vehicle.
      * @param vehicle The vehicle to get all the service events for.
      */
-    public async getMaintenanceEvents(vehicle: Vehicle): Promise<Either<MaintenanceEvent[], ServiceError>> {
+    public async getMaintenanceEvents(vehicle: Vehicle): Promise<Either<MaintenanceEvent[], HttpError>> {
         return this._maintenanceService.getAllForVehicle(User.CURRENT!, vehicle);
     }
 
@@ -136,7 +136,7 @@ export class VehicleStore extends StoreModule {
      * @param vehicle The vehicle to add it to.
      * @param event The event to add.
      */
-    public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<ServiceError>> {
+    public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
         return this._maintenanceService.addEventForVehicle(User.CURRENT!, vehicle, event);
     }
 
@@ -145,7 +145,7 @@ export class VehicleStore extends StoreModule {
      * @param vehicle The vehicle to delete it from.
      * @param event The event to delete.
      */
-    public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<ServiceError>> {
+    public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
         return this._maintenanceService.deleteEventForVehicle(User.CURRENT!, vehicle, event);
     }
 }

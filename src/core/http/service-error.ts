@@ -3,7 +3,7 @@ import * as HttpStatusCode from 'http-status-codes';
 /**
  * An error from the backend.
  */
-export class ServiceError extends Error {
+export class HttpError extends Error {
     /**
      * The HTTP status code returned by the API.
      */

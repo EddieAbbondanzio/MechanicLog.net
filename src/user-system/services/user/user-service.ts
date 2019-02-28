@@ -1,7 +1,7 @@
 import { Service } from '@/core/services/service';
 import { User } from '@/user-system/entities/user';
 import { HttpResponse } from '@/core/http/http-response';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 
@@ -14,13 +14,14 @@ export class UserService extends Service {
      * @param authToken The auth token in use.
      * @returns The user who owns the token.
      */
-    public async getUserFromToken(authToken: string): Promise<Either<User, ServiceError>> {
-        try {
-            const response: HttpResponse = await this._httpClient.get('/user', authToken);
+    public async getUserFromToken(authToken: string): Promise<Either<User, HttpError>> {
+        const apiResponse = await this._httpClient.get('/v1/user', authToken);
 
-            return Either.left(new User(authToken, response.data.name, response.data.email, response.data.isVerified));
-        } catch (error) {
-            return Either.right(new ServiceError(error.response.status, error.response.data.errorMsg));
+        if (apiResponse.isLeft()) {
+            const r = apiResponse.getLeft();
+            return Either.left(new User(authToken, r.data.name, r.data.email, r.data.isVerified));
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 
@@ -29,12 +30,13 @@ export class UserService extends Service {
      * @param user The user to update.
      * @param newName Their new full name.
      */
-    public async update(user: User): Promise<Maybe<ServiceError>> {
-        try {
-            await this._httpClient.patch('/user/name', { name: user.name, email: user.email }, user.authToken);
+    public async update(user: User): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.patch('/v1/user/name', { name: user.name, email: user.email }, user.authToken);
+
+        if (apiResponse.isLeft()) {
             return Maybe.none();
-        } catch (error) {
-            return Maybe.some(new ServiceError(error.response.status, error.response.data.errorMsg));
+        } else {
+            return Maybe.some(apiResponse.getRight());
         }
     }
 }

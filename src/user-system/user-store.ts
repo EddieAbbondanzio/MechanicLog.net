@@ -2,7 +2,7 @@ import { StoreModule } from '@/core/store/store-module';
 import { StoreModuleNamespace } from '@/core/store/store-module-namespace';
 import { Either } from '@/core/common/monads/either';
 import { User } from './entities/user';
-import { ServiceError } from '@/core/services/service-error';
+import { HttpError } from '@/core/http/service-error';
 import { UserRegistration } from './services/auth/user-registration';
 import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
@@ -45,7 +45,7 @@ export class UserStore extends StoreModule {
      * @param remmeberMe If they want to be saved. (by Jesus of course)
      * @returns The logged in user.
      */
-    public async login(email: string, password: string, rememberMe: boolean): Promise<Either<User, ServiceError>> {
+    public async login(email: string, password: string, rememberMe: boolean): Promise<Either<User, HttpError>> {
         const loginResponse = await this._authService.login(email, password, rememberMe);
 
         // Error out
@@ -69,7 +69,7 @@ export class UserStore extends StoreModule {
      * @param authToken The auth token of the user.
      * @returns The logged in user.
      */
-    public async relogin(authToken: string): Promise<Either<User, ServiceError>> {
+    public async relogin(authToken: string): Promise<Either<User, HttpError>> {
         const loginResponse = await this._authService.relogin(authToken);
 
         if (loginResponse.isRight()) {
@@ -97,7 +97,7 @@ export class UserStore extends StoreModule {
      * Register a new user with the system.
      * @param registration The new user's registration info.
      */
-    public async register(registration: UserRegistration): Promise<Either<User, ServiceError>> {
+    public async register(registration: UserRegistration): Promise<Either<User, HttpError>> {
         const registerResponse = await this._authService.register(registration);
 
         if (registerResponse.isRight()) {
@@ -119,7 +119,7 @@ export class UserStore extends StoreModule {
      * to do this once.
      * @param emailToken The email token of the user.
      */
-    public async verifyEmail(emailToken: string): Promise<Maybe<ServiceError>> {
+    public async verifyEmail(emailToken: string): Promise<Maybe<HttpError>> {
         return this._authService.verifyEmail(User.CURRENT!, emailToken);
     }
 
@@ -127,7 +127,7 @@ export class UserStore extends StoreModule {
      * Update the logged in user's email and name..
      * @param info The new info of the user.
      */
-    public async updateInfo(info: { name: Nullable<string>; email: Nullable<string> }): Promise<Maybe<ServiceError>> {
+    public async updateInfo(info: { name: Nullable<string>; email: Nullable<string> }): Promise<Maybe<HttpError>> {
         if (info.name != null) {
             User.CURRENT!.name = info.name;
         }
@@ -144,7 +144,7 @@ export class UserStore extends StoreModule {
      * email them a reset code.
      * @param email The email of the user.
      */
-    public async requestPasswordReset(email: string): Promise<Maybe<ServiceError>> {
+    public async requestPasswordReset(email: string): Promise<Maybe<HttpError>> {
         return this._authService.requestPasswordReset(email);
     }
 
@@ -152,7 +152,7 @@ export class UserStore extends StoreModule {
      * Reset the password of a user using the code they were emailed.
      * @param passwordReset The password reset info.
      */
-    public async resetPassword(passwordReset: UserPasswordReset): Promise<Maybe<ServiceError>> {
+    public async resetPassword(passwordReset: UserPasswordReset): Promise<Maybe<HttpError>> {
         return this._authService.resetPassword(passwordReset);
     }
 
@@ -161,7 +161,7 @@ export class UserStore extends StoreModule {
      * their password.
      * @param passwordUpdate The password update info.
      */
-    public async updatePassword(passwordUpdate: UserPasswordUpdate): Promise<Maybe<ServiceError>> {
+    public async updatePassword(passwordUpdate: UserPasswordUpdate): Promise<Maybe<HttpError>> {
         return this._authService.updatePassword(User.CURRENT!, passwordUpdate);
     }
 }
