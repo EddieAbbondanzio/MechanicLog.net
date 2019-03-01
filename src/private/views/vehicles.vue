@@ -164,7 +164,7 @@ export default class Vehicles extends VehicleMixin {
      */
     public onVehicleEdit(vehicle: Vehicle) {
         this.$forceUpdate();
-    }   
+    }
 
     /**
      * Event handler listening for a delete on a vehicle.

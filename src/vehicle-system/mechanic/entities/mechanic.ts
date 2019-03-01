@@ -63,4 +63,20 @@ export class Mechanic {
 
         return m;
     }
+
+    /**
+     * Rebuild a mechanic from it's raw input object counterpart.
+     * @param inputObj The input object to rebuild from.
+     */
+    public static fromInput(input: any): Mechanic {
+        const m = new Mechanic(input.name);
+
+        m.phone = input.phone !== '' ? input.phone : null;
+        m.address = input.address !== '' ? input.address : null;
+        m.city = input.city !== '' ? input.city : null;
+        m.state = input.state !== '' ? input.state : null;
+        m.zip = input.zip !== '' ? input.zip : null;
+
+        return m;
+    }
 }

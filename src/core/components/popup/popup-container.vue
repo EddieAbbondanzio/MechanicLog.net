@@ -13,12 +13,12 @@
             header-text-variant="white"
             footer-bg-variant="light"
         >
-            <div class="px-4">
+            <div class="p-4">
                 <slot></slot>
             </div>
 
-            <div slot="modal-footer">
-                <div>
+            <div slot="modal-footer" class="w-100">
+                <div class="w-100">
                     <slot name="footer"></slot>
                 </div>
             </div>

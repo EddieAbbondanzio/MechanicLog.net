@@ -1,6 +1,7 @@
 <template>
     <div class="container-fluid px-0">
-        <error-popup ref="errorPopup" />
+        <error-popup ref="errorPopup"/>
+        <add-mechanic-popup ref="addPopup" />
 
         <!-- Header -->
         <div class="row pt-3">
@@ -14,7 +15,10 @@
             <div class="col-12 col-lg-6">
                 <div class="float-right d-inline-block">
                     <div class="d-inline-block pb2 pb-sm-0 pr-2">
-                        <add-mechanic-form/>
+                        <b-btn variant="success" style="height: 40px" @click="onAddClick">
+                            <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                            <span style="vertical-align: middle;">Add Mechanic</span>
+                        </b-btn>
                     </div>
                 </div>
             </div>
@@ -88,6 +92,8 @@ import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 import { HttpError } from '@/core/http/service-error';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
+import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup/add-mechanic-popup.vue';
 
 /**
  * List of all the mechanics the user has.
@@ -96,8 +102,10 @@ import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
     name: 'new-component',
     components: {
         AddMechanicForm,
+        AddMechanicPopup,
         MechanicSummary,
         ErrorPopup,
+        MaterialIcon
     },
 })
 export default class Mechanics extends MechanicMixin {
@@ -105,8 +113,9 @@ export default class Mechanics extends MechanicMixin {
      * References to children components.
      */
     public $refs!: {
+        addPopup: AddMechanicPopup,
         errorPopup: ErrorPopup,
-    }
+    };
 
     /**
      * The mechanics to render
@@ -127,6 +136,10 @@ export default class Mechanics extends MechanicMixin {
         );
     }
 
+    public onAddClick(): void {
+        this.$refs.addPopup.show();
+    }
+
     /**
      * On an update, force an update of the screen.
      */
@@ -140,7 +153,7 @@ export default class Mechanics extends MechanicMixin {
     public onMechanicDelete(mechanic: Mechanic) {
         this.$forceUpdate();
     }
-    
+
     /**
      * On an error, display it to the user.
      */
