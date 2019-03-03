@@ -159,6 +159,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
+import { VehicleMake } from '@/vehicle-system/vehicle/entities/vehicle-make';
+import { VehicleModel } from '@/vehicle-system/vehicle/entities/vehicle-model';
 
 /**
  * Popup to add a new vehicle.
@@ -240,8 +242,8 @@ export default class AddVehicleForm extends VehicleMixin {
 
         const vehicle: Vehicle = new Vehicle(
             Number.parseInt(rawYear, 10),
-            rawMake,
-            rawModel,
+            VehicleMake.fromRaw({}),
+            VehicleModel.fromRaw({}),
             Number.parseInt(rawMileage, 10)
         );
 

@@ -1,4 +1,5 @@
 import { Nullable } from '@/core/common/monads/nullable';
+import { MechanicType } from './mechanic-type';
 
 /**
  * Mechanic that can perform maintenance on vehicles.
@@ -13,6 +14,11 @@ export class Mechanic {
      * The name of the mechanic / shop.
      */
     public name: string;
+
+    /**
+     * The type of mechanic they are.
+     */
+    public type: MechanicType;
 
     /**
      * The address of the shop.
@@ -43,9 +49,10 @@ export class Mechanic {
      * Create a new mechanic.
      * @param name The name of the mechanic.
      */
-    constructor(name: string) {
+    constructor(name: string, type: MechanicType) {
         this.id = 0;
         this.name = name;
+        this.type = type;
     }
 
     /**
@@ -53,7 +60,7 @@ export class Mechanic {
      * @param raw The raw object from the backend.
      */
     public static fromRaw(raw: any): Mechanic {
-        const m = new Mechanic(raw.name);
+        const m = new Mechanic(raw.name, raw.type);
         m.id = raw.id;
         m.address = raw.address;
         m.city = raw.city;
@@ -69,7 +76,7 @@ export class Mechanic {
      * @param inputObj The input object to rebuild from.
      */
     public static fromInput(input: any): Mechanic {
-        const m = new Mechanic(input.name);
+        const m = new Mechanic(input.name, input.type);
 
         m.phone = input.phone !== '' ? input.phone : null;
         m.address = input.address !== '' ? input.address : null;

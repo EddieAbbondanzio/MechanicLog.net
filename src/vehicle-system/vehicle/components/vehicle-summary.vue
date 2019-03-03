@@ -45,7 +45,7 @@
                         <div class="col-4 col-lg-3 py-2">
                             <span
                                 style="line-height: 39px;"
-                            >{{ vehicle.year + ' ' + vehicle.make + ' ' + vehicle.model}}</span>
+                            >{{ vehicle.toString() }}</span>
                         </div>
 
                         <div class="col-3 col-lg-2 py-2">

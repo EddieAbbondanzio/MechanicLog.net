@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid px-0">
         <error-popup ref="errorPopup"/>
-        <add-mechanic-popup ref="addPopup" />
+        <add-mechanic-popup ref="addPopup" @add="onMechanicAdd"/>
 
         <!-- Header -->
         <div class="row pt-3">
@@ -27,7 +27,6 @@
         <!-- Table Header -->
         <div class="row">
             <div class="col-12 pb-2">
-                <!-- <hr style="height: 4px; border: none;" class="bg-light"> -->
                 <span class="text-muted">MECHANICS</span>
             </div>
         </div>
@@ -36,11 +35,15 @@
         <div class="row pb-2">
             <div class="col-10 col-lg-11">
                 <div class="row">
-                    <div class="col-4 col-lg-2">
+                    <div class="col-3 col-lg-2">
                         <span>Name</span>
                     </div>
 
-                    <div class="col-4 col-lg-2">
+                    <div class="col-2 col-lg-1">
+                        <span>Type</span>
+                    </div>
+
+                    <div class="col-3 col-lg-2">
                         <span>Phone</span>
                     </div>
 
@@ -48,7 +51,7 @@
                         <span>Address</span>
                     </div>
 
-                    <div class="col-3 d-none d-lg-block">
+                    <div class="col-2 d-none d-lg-block">
                         <span>City</span>
                     </div>
 
@@ -86,14 +89,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import AddMechanicForm from '@/vehicle-system/mechanic/components/add-mechanic-form.vue';
 import MechanicSummary from '@/vehicle-system/mechanic/components/mechanic-summary.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 import { HttpError } from '@/core/http/service-error';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup/add-mechanic-popup.vue';
+import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup.vue';
 
 /**
  * List of all the mechanics the user has.
@@ -101,11 +103,10 @@ import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-
 @Component({
     name: 'new-component',
     components: {
-        AddMechanicForm,
         AddMechanicPopup,
         MechanicSummary,
         ErrorPopup,
-        MaterialIcon
+        MaterialIcon,
     },
 })
 export default class Mechanics extends MechanicMixin {
@@ -113,8 +114,8 @@ export default class Mechanics extends MechanicMixin {
      * References to children components.
      */
     public $refs!: {
-        addPopup: AddMechanicPopup,
-        errorPopup: ErrorPopup,
+        addPopup: AddMechanicPopup;
+        errorPopup: ErrorPopup;
     };
 
     /**
@@ -141,16 +142,30 @@ export default class Mechanics extends MechanicMixin {
     }
 
     /**
+     * On an new add, force an update of the screen.
+     */
+    public async onMechanicAdd(mechanic: Mechanic): Promise<void> {
+        const result = await this.$mechanicStore.addMechanic(mechanic);
+
+        // Errored out.
+        if (result.hasSome()) {
+            this.$refs.errorPopup.message = result.getSome().message;
+        }
+
+        this.$forceUpdate();
+    }
+
+    /**
      * On an update, force an update of the screen.
      */
-    public onMechanicEdit(mechanic: Mechanic) {
+    public async onMechanicEdit(mechanic: Mechanic): Promise<void> {
         this.$forceUpdate();
     }
 
     /**
      * On delete, force an update of the screen.
      */
-    public onMechanicDelete(mechanic: Mechanic) {
+    public async onMechanicDelete(mechanic: Mechanic): Promise<void> {
         this.$forceUpdate();
     }
 

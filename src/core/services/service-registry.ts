@@ -7,6 +7,8 @@ import { MechanicService } from '@/vehicle-system/mechanic/services/mechanic-ser
 import { VehicleService } from '@/vehicle-system/vehicle/services/vehicle-service';
 import { Store } from '../store/store';
 import { VehicleMaintenanceEventService } from '@/vehicle-system/vehicle/services/vehicle-maintenance-event-service';
+import { VehicleMakeService } from '@/vehicle-system/vehicle/services/vehicle-make-service';
+import { VehicleModelService } from '@/vehicle-system/vehicle/services/vehicle-model-service';
 
 /**
  * Helper to locate, and register services for use later on.
@@ -25,6 +27,8 @@ export class ServiceRegistry {
         this.register(ServiceType.User, new UserService(Store.backendUrl));
         this.register(ServiceType.Mechanic, new MechanicService(Store.backendUrl));
         this.register(ServiceType.Vehicle, new VehicleService(Store.backendUrl));
+        this.register(ServiceType.VehicleMake, new VehicleMakeService(Store.backendUrl));
+        this.register(ServiceType.VehicleModel, new VehicleModelService(Store.backendUrl));
         this.register(ServiceType.MaintenanceEvent, new VehicleMaintenanceEventService(Store.backendUrl));
     }
 

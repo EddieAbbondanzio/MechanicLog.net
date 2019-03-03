@@ -8,6 +8,7 @@ import { phoneNumberVeeRule } from '@/core/validation/phone-number-vee-rule';
 import { zipCodeVeeRule } from './core/validation/zip-code-vee-rule';
 import { ServiceRegistry } from './core/services/service-registry';
 import { Store } from './core/store/store';
+import Vuetify from 'vuetify';
 
 Validator.extend('phone-number', phoneNumberVeeRule);
 Validator.extend('zip-code', zipCodeVeeRule);

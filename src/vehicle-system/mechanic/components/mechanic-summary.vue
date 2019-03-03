@@ -39,11 +39,15 @@
                 <div class="row">
                     <div class="text-muted mechanic-summary col-10 col-lg-11">
                         <div class="row">
-                            <div class="col-4 col-lg-2 py-2">
+                            <div class="col-3 col-lg-2 py-2">
                                 <span>{{ mechanic.name }}</span>
                             </div>
 
-                            <div class="col-4 col-lg-2 py-2">
+                            <div class="col-2 col-lg-1 py-2">
+                                <span>{{ mechanicTypeToString(mechanic.type) }}</span>
+                            </div>
+
+                            <div class="col-3 col-lg-2 py-2">
                                 <span>{{ mechanic.phone }}</span>
                             </div>
 
@@ -51,7 +55,7 @@
                                 <span>{{ mechanic.address }}</span>
                             </div>
 
-                            <div class="col-3 d-none d-lg-block py-2">
+                            <div class="col-2 d-none d-lg-block py-2">
                                 <span>{{ mechanic.city }}</span>
                             </div>
 
@@ -108,6 +112,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
+import { MechanicType } from '@/vehicle-system/mechanic/entities/mechanic-type';
 import EditMechanicPopup from '@/vehicle-system/mechanic/components/edit-mechanic-popup.vue';
 import DeleteMechanicConfirmPopup from '@/vehicle-system/mechanic/components/delete-mechanic-confirm-popup.vue';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
@@ -163,6 +168,10 @@ export default class MechanicSummary extends MechanicMixin {
     protected async onDelete(): Promise<void> {
         await this.$mechanicStore.deleteMechanic(this.mechanic);
         this.$emit('delete', this.mechanic);
+    }
+
+    protected mechanicTypeToString(type: MechanicType) {
+        return MechanicType[type];
     }
 }
 </script>

@@ -2,8 +2,10 @@ import { StoreModule } from './store-module';
 import { Dictionary } from '../common/dictionary';
 import { UserStore } from '@/user-system/user-store';
 import { MechanicStore } from '@/vehicle-system/mechanic/mechanic-store';
-import { VehicleStore } from '@/vehicle-system/vehicle/vehicle-store';
+import { VehicleStore } from '@/vehicle-system/vehicle/store/vehicle-store';
 import { config } from '../../../config';
+import { VehicleMakeStore } from '@/vehicle-system/vehicle/store/vehicle-make-store';
+import { VehicleModelStore } from '@/vehicle-system/vehicle/store/vehicle-model-store';
 
 /**
  * State store for managing data from the backend.
@@ -26,6 +28,8 @@ export class Store {
         this.register(new UserStore());
         this.register(new MechanicStore());
         this.register(new VehicleStore());
+        this.register(new VehicleMakeStore());
+        this.register(new VehicleModelStore());
     }
 
     /**

@@ -5,6 +5,8 @@ import { HttpResponse } from '@/core/http/http-response';
 import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
+import { VehicleMake } from '../entities/vehicle-make';
+import { VehicleModel } from '../entities/vehicle-model';
 
 /**
  * Service for retrieving, and updating vehicles from the back end.
@@ -67,6 +69,27 @@ export class VehicleService extends Service {
             return Maybe.none();
         } else {
             return Maybe.some(apiResponse.getRight());
+        }
+    }
+
+    /**
+     * Decode a vin to get the year, make, and model.
+     * @param user The user to decode the vin for.
+     * @param vin The vin to decode.
+     */
+    public async decodeVin(user: User, vin: string): Promise<Either<{ year: number; make: VehicleMake; model: VehicleModel }, HttpError>> {
+        const apiResponse = await this._httpClient.get(`/v1/vehicle/vin/${vin}`, user.authToken);
+
+        if (apiResponse.isLeft()) {
+            const raw = apiResponse.getLeft().data;
+
+            const year = raw.year;
+            const make = VehicleMake.fromRaw(raw.make);
+            const model = VehicleModel.fromRaw(raw.model);
+
+            return Either.left({ year, make, model });
+        } else {
+            return Either.right(apiResponse.getRight());
         }
     }
 }

@@ -1,16 +1,16 @@
 import { StoreModule } from '@/core/store/store-module';
 import { StoreModuleNamespace } from '@/core/store/store-module-namespace';
-import { Vehicle } from './entities/vehicle';
+import { Vehicle } from '../entities/vehicle';
 import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 import { User } from '@/user-system/entities/user';
-import { VehicleService } from './services/vehicle-service';
+import { VehicleService } from '../services/vehicle-service';
 import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
 import { Nullable } from '@/core/common/monads/nullable';
-import { VehicleMaintenanceEventService } from './services/vehicle-maintenance-event-service';
-import { MaintenanceEvent } from './entities/maintenance-event';
+import { VehicleMaintenanceEventService } from '../services/vehicle-maintenance-event-service';
+import { MaintenanceEvent } from '../entities/maintenance-event';
 
 /**
  * Store for vehicles of the user.
@@ -61,7 +61,7 @@ export class VehicleStore extends StoreModule {
             }
         }
 
-        return Either.left(this._vehicleCache);
+        return Either.left(this._vehicleCache!);
     }
 
     /**

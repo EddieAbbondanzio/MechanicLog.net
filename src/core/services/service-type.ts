@@ -6,6 +6,9 @@ export enum ServiceType {
     User,
     Auth,
     Vehicle,
+    VehicleMake,
+    VehicleModel,
     Mechanic,
     MaintenanceEvent,
+    Logger,
 }

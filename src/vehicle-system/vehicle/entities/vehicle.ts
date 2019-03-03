@@ -1,4 +1,6 @@
 import { MaintenanceEvent } from './maintenance-event';
+import { VehicleMake } from './vehicle-make';
+import { VehicleModel } from './vehicle-model';
 
 /**
  * A motor vehicle.
@@ -17,12 +19,12 @@ export class Vehicle {
     /**
      * The make of the car.
      */
-    public make: string;
+    public make: VehicleMake;
 
     /**
      * The model of the car.
      */
-    public model: string;
+    public model: VehicleModel;
 
     /**
      * How many miles the car has on it.
@@ -62,7 +64,7 @@ export class Vehicle {
      * @param model The model of the car.
      * @param mileage The current mileage.
      */
-    constructor(year: number, make: string, model: string, mileage: number) {
+    constructor(year: number, make: VehicleMake, model: VehicleModel, mileage: number) {
         this.id = 0;
         this.year = year;
         this.make = make;
@@ -75,11 +77,7 @@ export class Vehicle {
      * Convert the vehicle into a print friendly string.
      */
     public toString(): string {
-        if (this.name != null) {
-            return `${this.name} - ${this.year} ${this.make} ${this.model}`;
-        } else {
-            return `${this.year} ${this.make} ${this.model}`;
-        }
+        return `${this.year} ${this.make.name} ${this.model.name}`;
     }
 
     /**
@@ -88,7 +86,10 @@ export class Vehicle {
      * @param raw The raw object to pull the vehicle details from.
      */
     public static fromRaw(raw: any): Vehicle {
-        const v: Vehicle = new Vehicle(raw.year, raw.make, raw.model, raw.mileage);
+        const make = VehicleMake.fromRaw(raw.make);
+        const model = VehicleModel.fromRaw(raw.model);
+
+        const v: Vehicle = new Vehicle(raw.year, make, model, raw.mileage);
         v.id = raw.id;
         v.name = raw.name;
         v.color = raw.color;

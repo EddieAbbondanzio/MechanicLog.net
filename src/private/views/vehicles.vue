@@ -3,6 +3,9 @@
 
 <template>
     <div class="container-fluid px-0">
+        <error-popup ref="errorPopup"/>
+        <add-vehicle-popup ref="addPopup" @add="onVehicleAdd"/>
+
         <!-- Header -->
         <div class="row pt-3">
             <div class="col-12 col-lg-6">
@@ -15,7 +18,11 @@
             <div class="col-12 col-lg-6">
                 <div class="float-right d-inline-block">
                     <div class="d-inline-block pb2 pb-sm-0 pr-2">
-                        <add-vehicle-form/>
+                        <!-- Button on screen -->
+                        <b-btn variant="success" @click="onAddClick" style="height: 40px">
+                            <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                            <span style="vertical-align: middle;">Add Vehicle</span>
+                        </b-btn>
                     </div>
 
                     <div class="d-inline-block align-middle">
@@ -107,8 +114,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import VehicleSummary from '@/vehicle-system/vehicle/components/vehicle-summary.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import AddVehicleForm from '@/vehicle-system/vehicle/components/add-vehicle-form.vue';
+import AddVehiclePopup from '@/vehicle-system/vehicle/components/add-vehicle-popup.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
+import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 
 /**
  * Garage page.
@@ -118,10 +126,19 @@ import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
     components: {
         VehicleSummary,
         MaterialIcon,
-        AddVehicleForm,
+        AddVehiclePopup,
+        ErrorPopup,
     },
 })
 export default class Vehicles extends VehicleMixin {
+    /**
+     * References to children components.
+     */
+    public $refs!: {
+        addPopup: AddVehiclePopup;
+        errorPopup: ErrorPopup;
+    };
+
     public vehicles: Vehicle[] = [];
 
     public async mounted(): Promise<void> {
@@ -151,12 +168,20 @@ export default class Vehicles extends VehicleMixin {
                 this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.year > b.year ? -1 : 1));
                 break;
             case 'Make':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.make.localeCompare(b.make));
+                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.make.name.localeCompare(b.make.name));
                 break;
             case 'Mileage':
                 this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.mileage > b.mileage ? -1 : 1));
                 break;
         }
+    }
+
+    public onAddClick(): void {
+        this.$refs.addPopup.show();
+    }
+
+    public onVehicleAdd(): void {
+        alert('added');
     }
 
     /**

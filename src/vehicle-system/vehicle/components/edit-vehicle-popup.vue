@@ -134,6 +134,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import { Modal } from 'bootstrap-vue';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { VehicleMake } from '@/vehicle-system/vehicle/entities/vehicle-make';
+import { VehicleModel } from '@/vehicle-system/vehicle/entities/vehicle-model';
 
 /**
  * Popup to edit the details of a vehicle.
@@ -178,8 +180,8 @@ export default class EditVehiclePopup extends Vue {
 
         // Populate the fields
         this.$refs.yearField.value = this.vehicle.year.toString();
-        this.$refs.makeField.value = this.vehicle.make;
-        this.$refs.modelField.value = this.vehicle.model;
+        // this.$refs.makeField.value = this.vehicle.make;
+        // this.$refs.modelField.value = this.vehicle.model;
         this.$refs.mileageField.value = this.vehicle.mileage.toString();
         this.$refs.colorField.value = this.vehicle.color || '';
         this.$refs.licensePlateField.value = this.vehicle.licensePlate || '';
@@ -217,8 +219,8 @@ export default class EditVehiclePopup extends Vue {
 
         const vehicle: Vehicle = new Vehicle(
             Number.parseInt(rawYear, 10),
-            rawMake,
-            rawModel,
+            VehicleMake.fromRaw({}),
+            VehicleModel.fromRaw({}),
             Number.parseInt(rawMileage, 10),
         );
 

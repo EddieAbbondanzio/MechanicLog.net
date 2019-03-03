@@ -26,6 +26,18 @@
                             <b-form-invalid-feedback>{{ errors.first('mechanicName') }}</b-form-invalid-feedback>
                         </div>
 
+                        <div class="form-group">
+                            <label class="required" for="type-dropdown">Type</label>
+                            <b-form-select
+                                id="type-dropdown"
+                                v-model="type"
+                                :options="typeOptions"
+                                ref="addMechanicType"
+                                name="addMechanicType"
+                                v-validate="'required'"
+                            />
+                        </div>
+
                         <!-- Phone Textbox -->
                         <div class="form-group">
                             <label for="phone-textbox">Phone</label>
@@ -144,7 +156,7 @@
             <b-button
                 variant="primary"
                 class="float-right"
-                @click="onCreateClick($event)"
+                @click="onAddClick($event)"
                 v-else
             >Create</b-button>
         </div>
@@ -157,6 +169,7 @@ import PopupContainer from '@/core/components/popup/popup-container.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import ProgressTracker from '@/core/components/multi-step/progress-tracker.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
+import { MechanicType } from '@/vehicle-system/mechanic/entities/mechanic-type';
 
 /**
  * Popup to create a new mechanic for the user.
@@ -177,22 +190,62 @@ export default class AddMechanicPopup extends Vue {
     };
 
     /**
+     * Type options for the mechanic type select field.
+     */
+    public typeOptions: { value: number; text: string }[] = [
+        { value: 0, text: 'Mechanic' },
+        { value: 1, text: 'Dealership' },
+        { value: 2, text: 'Shop' },
+        { value: 3, text: 'Self' },
+        { value: 4, text: 'Employee' },
+        { value: 5, text: 'Friend' },
+        { value: 6, text: 'Other' },
+    ];
+
+    /**
      * The number of the step the user is currently on.
      */
     public activeStep!: number;
 
+    /**
+     * Cached value of the previous step so we can validate
+     * after a user has left a page.
+     */
     public lastStep!: number;
 
+    /**
+     * The name of the shop.
+     */
     public name!: string;
 
+    /**
+     * The type of mechanic they are.
+     */
+    public type!: MechanicType;
+
+    /**
+     * The phone number of the shop.
+     */
     public phone!: string;
 
+    /**
+     * The address of the shop.
+     */
     public address!: string;
 
+    /**
+     * The city of the shop.
+     */
     public city!: string;
 
+    /**
+     * The 2 character abbreviation state of the shop.
+     */
     public state!: string;
 
+    /**
+     * The ZIP code in #####, or #####-#### formant.
+     */
     public zip!: string;
 
     public created(): void {
@@ -200,6 +253,7 @@ export default class AddMechanicPopup extends Vue {
         this.lastStep = 0;
 
         this.name = '';
+        this.type = MechanicType.Mechanic;
         this.phone = '';
         this.address = '';
         this.city = '';
@@ -272,12 +326,13 @@ export default class AddMechanicPopup extends Vue {
     /**
      * User wants to create the mechanic.
      */
-    public async onCreateClick(): Promise<void> {
+    public async onAddClick(): Promise<void> {
         const isValid: boolean = await this.$validator.validate();
 
         if (isValid) {
             const mechanic: Mechanic = Mechanic.fromInput({
                 name: this.name,
+                type: this.type,
                 phone: this.phone,
                 address: this.address,
                 city: this.city,
@@ -300,12 +355,19 @@ export default class AddMechanicPopup extends Vue {
         this.lastStep = 0;
         this.$validator.reset();
         this.$refs.popup.show();
+        this.$forceUpdate();
     }
 
+    /**
+     * Hide the popup from view.
+     */
     public hide(): void {
         this.$refs.popup.hide();
     }
 
+    /**
+     * Validate the current step.
+     */
     public async validateTab(index: number): Promise<boolean> {
         switch (index) {
             case 0:
