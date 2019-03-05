@@ -21,46 +21,47 @@
                                 placeholder="2009"
                                 v-model.number="year"
                                 name="addVehicleYear"
+                                data-vv-scope="tab1"
                                 v-validate="'required|numeric'"
                             >
                             <b-form-invalid-feedback
                                 class="d-block"
-                            >{{ errors.first('addVehicleYear') }}</b-form-invalid-feedback>
+                            >{{ errors.first('tab1.addVehicleYear') }}</b-form-invalid-feedback>
                         </b-form-group>
 
                         <!-- Make -->
                         <b-form-group>
                             <label class="required" for="add-vehicle-make-textbox">Make</label>
-                            <auto-complete-textbox
+                            <auto-complete
                                 :options="makes"
-                                ref="makeTextbox"
-                                v-model="selectedMakeId"
+                                v-model="make"
                                 placeholder="Honda"
                                 @blur="onMakeBlur"
                                 name="addVehicleMake"
-                                v-validate="'min_value:0'"
+                                data-vv-scope="tab1"
+                                v-validate="'required'"
                             />
                             <b-form-invalid-feedback
                                 class="d-block"
-                            >{{ errors.first('addVehicleMake') }}</b-form-invalid-feedback>
+                            >{{ errors.first('tab1.addVehicleMake') }}</b-form-invalid-feedback>
                         </b-form-group>
 
                         <!-- Model -->
                         <b-form-group>
                             <label class="required" for="add-vehicle-model-textbox">Model</label>
-                            <auto-complete-textbox
+                            <auto-complete
                                 :options="models"
-                                ref="modelTextbox"
-                                v-model="selectedModelId"
+                                v-model="model"
                                 placeholder="Civic"
-                                :disabled="selectedMake == null"
+                                :disabled="make == null"
                                 @blur="onModelBlur"
                                 name="addVehicleModel"
-                                v-validate="'min_value:0'"
+                                data-vv-scope="tab1"
+                                v-validate="'required'"
                             />
                             <b-form-invalid-feedback
                                 class="d-block"
-                            >{{ errors.first('addVehicleModel') }}</b-form-invalid-feedback>
+                            >{{ errors.first('tab1.addVehicleModel') }}</b-form-invalid-feedback>
                         </b-form-group>
                     </b-tab>
 
@@ -75,6 +76,7 @@
                                 placeholder="VIN or Serial Number"
                                 v-model="vin"
                                 name="addVehicleVin"
+                                data-vv-scope="tab2"
                                 v-validate="'max:17'"
                             />
                         </b-form-group>
@@ -88,6 +90,7 @@
                                 placeholder="License Plate Number"
                                 v-model="plate"
                                 name="addVehiclePlate"
+                                data-vv-scope="tab2"
                                 v-validate="'max:10'"
                             />
                         </b-form-group>
@@ -104,6 +107,7 @@
                                 placeholder="49200"
                                 v-model.number="mileage"
                                 name="addVehicleMileage"
+                                data-vv-scope="tab3"
                                 v-validate="'numeric'"
                             />
                         </b-form-group>
@@ -117,6 +121,7 @@
                                 placeholder="Blue"
                                 v-model="color"
                                 name="addVehicleColor"
+                                data-vv-scope="tab3"
                                 v-validate="'max:16'"
                             />
                         </b-form-group>
@@ -130,6 +135,7 @@
                                 placeholder="Daily Driver"
                                 v-model="name"
                                 name="addVehicleName"
+                                data-vv-scope="tab3"
                                 v-validate="'max:32'"
                             />
                         </b-form-group>
@@ -178,7 +184,7 @@ import ProgressTracker from '@/core/components/multi-step/progress-tracker.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import { VehicleMake } from '@/vehicle-system/vehicle/entities/vehicle-make';
 import { Nullable } from '@/core/common/monads/nullable';
-import AutoCompleteTextbox from '@/core/components/inputs/auto-complete-textbox.vue';
+import AutoComplete from '@/core/components/inputs/auto-complete.vue';
 import { VehicleModel } from '@/vehicle-system/vehicle/entities/vehicle-model';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 
@@ -191,15 +197,13 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
         PopupContainer,
         MaterialIcon,
         ProgressTracker,
-        AutoCompleteTextbox,
+        AutoComplete,
     },
 })
 export default class AddVehiclePopup extends VehicleMixin {
     public $refs!: {
         popup: PopupContainer;
         form: HTMLFormElement;
-        makeTextbox: AutoCompleteTextbox;
-        modelTextbox: AutoCompleteTextbox;
     };
 
     /**
@@ -213,58 +217,62 @@ export default class AddVehiclePopup extends VehicleMixin {
      */
     public lastStep!: number;
 
-    public selectedMakeId!: number;
+    /**
+     * The available makes
+     */
+    public makes!: string[];
 
-    public selectedMake!: Nullable<VehicleMake>;
+    /**
+     * The available models.
+     */
+    public models!: string[];
 
-    public makes!: { value: number; text: string }[];
-
-    public selectedModelId!: number;
-
-    public selectedModel!: Nullable<VehicleModel>;
-
-    public models!: { value: number; text: string }[];
-
+    /**
+     * The model year of the vehicle.
+     */
     public year!: Nullable<number>;
 
+    /**
+     * The name of the make of the vehicle.
+     */
+    public make!: Nullable<string>;
+
+    /**
+     * The name of the model of the vehicle.
+     */
+    public model!: Nullable<string>;
+
+    /**
+     * The Vehicle Identification Number of the vehicle.
+     */
     public vin!: Nullable<string>;
 
+    /**
+     * The license plate number.
+     */
     public plate!: Nullable<string>;
 
+    /**
+     * The current mileage.
+     */
+    public mileage!: Nullable<number>;
+
+    /**
+     * The paint color of the vehicle.
+     */
     public color!: Nullable<string>;
 
+    /**
+     * The name of the vehicle.
+     */
     public name!: Nullable<string>;
-
-    public mileage!: Nullable<number>;
 
     /**
      * Event handler for when the component is created.
      */
     public async created(): Promise<void> {
-        this.activeStep = 0;
-        this.lastStep = 0;
-
-        this.selectedMake = null;
-        this.selectedMakeId = -1;
-
-        this.selectedModel = null;
-        this.selectedModelId = -1;
-
         this.makes = [];
-        this.models = [];
-
-        this.year = null;
-        this.vin = null;
-        this.plate = null;
-        this.color = null;
-        this.name = null;
-        this.mileage = null;
-
-        const makes = await this.$vehicleMakeStore.getMakes();
-
-        if (makes.isLeft()) {
-            this.makes = makes.getLeft().map((m) => ({ value: m.id, text: m.name }));
-        }
+        this.reset();
 
         this.$validator.localize('en', {
             custom: {
@@ -281,94 +289,69 @@ export default class AddVehiclePopup extends VehicleMixin {
                 },
             },
         });
-    }
 
-    /**
-     * Event handler for after the user leaves the make box.
-     */
-    public async onMakeBlur(): Promise<void> {
-        if (this.selectedMakeId !== -1) {
-            const allMakes = await this.$vehicleMakeStore.getMakes();
-
-            if (allMakes.isLeft()) {
-                const match = allMakes.getLeft().find((make) => make.id === this.selectedMakeId);
-
-                if (match != null) {
-                    this.selectedMake = match;
-
-                    // Pull in the models
-                    const allModels = await this.$vehicleModelStore.getModelsForMake(match);
-
-                    if (allModels.isLeft()) {
-                        this.models = allModels.getLeft().map((model) => ({ value: model.id, text: model.name }));
-                    }
-                }
+        // Pull in the makes from the database
+        this.makes = await (await this.$vehicleMakeStore.getMakes()).do(
+            async (makes) => {
+                return makes.map((m) => m.name);
+            },
+            async (error) => {
+                return [];
             }
-        }
+        );
 
-        const that: AddVehiclePopup = this;
-
-        setTimeout(function() {
-            if (that.errors.first('addVehicleMake') != null) {
-                that.$refs.makeTextbox.invalid();
-            } else {
-                that.$refs.makeTextbox.valid();
-            }
-        }, 100);
-
-        this.selectedModel = null;
-        this.selectedModelId = -1;
-        this.$refs.modelTextbox.clear();
         this.$forceUpdate();
     }
 
     /**
-     * Event handler for when the user leaves the model field.
+     * Event handler for after the user leaves the make field.
      */
-    public async onModelBlur(): Promise<void> {
-        if (this.selectedModelId !== -1) {
-            const allModels = await this.$vehicleModelStore.getModelsForMake(this.selectedMake!);
+    public async onMakeBlur(): Promise<void> {
+        // Pull in the models
+        if (this.make != null) {
+            const makeCode: VehicleMake = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make)!;
 
-            if (allModels.isLeft()) {
-                const match = allModels.getLeft().find((model) => model.id === this.selectedModelId);
-
-                if (match != null) {
-                    this.selectedModel = match;
-                } else {
-                    this.selectedModel = null;
+            this.models = await (await this.$vehicleModelStore.getModelsForMake(makeCode)).do(
+                async (models) => {
+                    return models.map((m) => m.name);
+                },
+                async (error) => {
+                    return [];
                 }
-            }
+            );
         }
 
-        const that: AddVehiclePopup = this;
+        this.$forceUpdate();
+    }
 
-        setTimeout(function() {
-            if (that.errors.first('addVehicleModel') != null) {
-                that.$refs.modelTextbox.invalid();
-            } else {
-                that.$refs.modelTextbox.valid();
-            }
-        }, 100);
+    /**
+     * Event handler for after the user leaves the model field.
+     */
+    public async onModelBlur(): Promise<void> {
+        this.$forceUpdate();
     }
 
     /**
      * Event handler for when the user cicks a tab.
      */
     public async onTabClick(): Promise<void> {
-        if (!(await this.validateTab(this.lastStep))) {
+        if (await this.$validator.validateAll(`tab${this.lastStep + 1}`)) {
             this.activeStep = this.lastStep;
-            this.$forceUpdate();
+
+            // Gotta cache last tab somehow. $event is coming in undefined...
+            this.lastStep = this.activeStep;
+        } else {
+            this.activeStep = this.lastStep;
         }
 
-        // Gotta cache last tab somehow. $event is coming in undefined...
-        this.lastStep = this.activeStep;
+        this.$forceUpdate();
     }
 
     /**
      * Event handler for when the user clicks the previous button.
      */
     public async onPreviousClick(): Promise<void> {
-        if (await this.validateTab(this.activeStep)) {
+        if (await this.$validator.validateAll(`tab${this.activeStep + 1}`)) {
             this.activeStep--;
         }
 
@@ -379,28 +362,19 @@ export default class AddVehiclePopup extends VehicleMixin {
      * Event handler for when the user clicks the next button.
      */
     public async onNextClick(): Promise<void> {
-        if (await this.validateTab(this.activeStep)) {
+        if (await this.$validator.validateAll(`tab${this.activeStep + 1}`)) {
             this.activeStep++;
         }
-        this.$forceUpdate();
+
     }
 
     /**
      * Event handler for when the user clicks the create button.
      */
     public async onAddClick(): Promise<void> {
-        const vehicle: Vehicle = Vehicle.fromInput({
-            year: this.year,
-            make: this.selectedMake!,
-            model: this.selectedModel!,
-            vin: this.vin,
-            licensePlate: this.plate,
-            color: this.color,
-            name: this.name,
-            mileage: this.mileage,
-        });
+        alert('added');
 
-        this.$emit('add', vehicle);
+        // this.$emit('add', vehicle);
         this.hide();
         this.$forceUpdate();
     }
@@ -409,22 +383,8 @@ export default class AddVehiclePopup extends VehicleMixin {
      * Show the popup on screen.
      */
     public show(): void {
-        this.activeStep = 0;
-        this.lastStep = 0;
-        this.selectedMakeId = -1;
-        this.selectedMake = null;
-        this.selectedModelId = -1;
-        this.selectedModel = null;
-        this.year = null;
-        this.vin = null;
-        this.plate = null;
-        this.color = null;
-        this.name = null;
-        this.mileage = null;
+        this.reset();
 
-        this.$refs.makeTextbox.clear();
-        this.$refs.modelTextbox.clear();
-        this.$validator.reset();
         this.$refs.popup.show();
         this.$forceUpdate();
     }
@@ -437,42 +397,24 @@ export default class AddVehiclePopup extends VehicleMixin {
     }
 
     /**
-     * Validate the current step.
+     * Reset the component back to defaults.
      */
-    public async validateTab(index: number): Promise<boolean> {
-        switch (index) {
-            case 0:
-                const yearValid = await this.$validator.validate('addVehicleYear');
-                const makeValid = await this.$validator.validate('addVehicleMake');
-                const modelValid = await this.$validator.validate('addVehicleModel');
+    private reset(): void {
+        this.activeStep = 0;
+        this.lastStep = 0;
 
-                if (!makeValid) {
-                    this.$refs.makeTextbox.invalid();
-                } else {
-                    this.$refs.makeTextbox.valid();
-                }
+        this.models = [];
 
-                if (!modelValid) {
-                    this.$refs.modelTextbox.invalid();
-                } else {
-                    this.$refs.modelTextbox.valid();
-                }
+        this.year = null;
+        this.make = null;
+        this.model = null;
+        this.vin = null;
+        this.plate = null;
+        this.mileage = null;
+        this.color = null;
+        this.name = null;
 
-                return yearValid && makeValid && modelValid;
-
-            case 1:
-                return (await Promise.all([this.$validator.validate('addVehicleVin'), this.$validator.validate('addVehiclePlate')])).every((v) => v);
-
-            case 2:
-                return (await Promise.all([
-                    this.$validator.validate('addVehicleMileage'),
-                    this.$validator.validate('addVehicleColor'),
-                    this.$validator.validate('addVehicleName'),
-                ])).every((v) => v);
-
-            default:
-                throw new Error(`Tab index ${index} is invalid.`);
-        }
+        this.$validator.reset();
     }
 }
 </script>

@@ -23,6 +23,8 @@
             type="text"
             class="form-control"
             ref="autoTextbox"
+            :disabled="disabled"
+            :placeholder="placeholder"
             @focus="onInputFocus"
             @blur="onInputBlur"
             @keydown="onKeyPress"
@@ -73,13 +75,21 @@ export default class AutoComplete extends Vue {
     public value!: Nullable<string>;
 
     /**
-     * Used by VeeValidate to enable custom validation.
+     * The placeholder of the textbox.
      */
-    public $_veeValidate = {
-        value() {
-            return this.value;
-        },
-    };
+    @Prop({ default: null })
+    public placeholder!: string;
+
+    /**
+     * If the input is disabled, or accepting input.
+     */
+    @Prop({ default: false })
+    public disabled!: boolean;
+
+    /**
+     * The active index of the options list.
+     */
+    public selectedIndex!: number;
 
     /**
      * If the user is currently in the textobx.
@@ -87,14 +97,18 @@ export default class AutoComplete extends Vue {
     private isActive!: boolean;
 
     /**
-     * The active index of the options list.
-     */
-    private selectedIndex!: number;
-
-    /**
      * The options matching the current text.
      */
     private matchedOptions!: string[];
+
+    /**
+     * Clear the textbox.
+     */
+    public clear(): void {
+        this.$emit('input', null);
+        this.selectedIndex = -1;
+        this.matchedOptions = this.options;
+    }
 
     /**
      * Initilization of the component.
@@ -116,9 +130,19 @@ export default class AutoComplete extends Vue {
     }
 
     /**
+     * Listens for when the options of the drop down change.
+     */
+    @Watch('options')
+    private onOptionsChange(value: string[]): void {
+        this.selectedIndex = -1;
+        this.$forceUpdate();
+    }
+
+    /**
      * Event handler for when the user enters the textbox.
      */
     private async onInputFocus(): Promise<void> {
+        this.matchedOptions = this.options;
         this.isActive = true;
         this.$emit('focus');
         this.$forceUpdate();

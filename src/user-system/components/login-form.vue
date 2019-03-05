@@ -3,11 +3,6 @@
         <b-alert :variant="message.variant" :show="message.text != null">{{ message.text }}</b-alert>
 
         <div class="form-group">
-            <auto-complete v-model="foo" name="autoTest" v-validate="'required'"/>
-            <b-form-invalid-feedback class="d-block">{{ errors.first('autoTest') }}</b-form-invalid-feedback>
-        </div>
-
-        <div class="form-group">
             <label for="email-textbox">Email</label>
             <input
                 v-model="email"
@@ -79,8 +74,6 @@ import AutoComplete from '@/core/components/inputs/auto-complete.vue';
     },
 })
 export default class LoginForm extends UserMixin {
-    public foo!: Nullable<string>;
-
     /**
      * The email of the user.
      */
@@ -106,7 +99,6 @@ export default class LoginForm extends UserMixin {
      * Properties are assigned in created to prevent weird undefined errors.
      */
     public created(): void {
-        this.foo = null;
         this.email = '';
         this.password = '';
         this.rememberMe = false;
