@@ -6,11 +6,11 @@
         size="lg"
         headerColor="primary"
     >
-        <form ref="form">
+        <form>
             <b-card no-body border-variant="white">
                 <b-tabs v-model="activeStep">
                     <!-- Model Information -->
-                    <b-tab title="Vehicle Model" class="py-4">
+                    <b-tab title="Vehicle Model" class="py-4" @click="onTabClick">
                         <!-- Model Year -->
                         <b-form-group>
                             <label class="required" for="add-vehicle-year-textbox">Year</label>
@@ -65,7 +65,7 @@
                     </b-tab>
 
                     <!-- Registration -->
-                    <b-tab title="Registration" class="py-4">
+                    <b-tab title="Registration" class="py-4" @click="onTabClick">
                         <!-- VIN -->
                         <b-form-group>
                             <label for="add-vehicle-vin-textbox">VIN</label>
@@ -96,7 +96,7 @@
                     </b-tab>
 
                     <!-- Details -->
-                    <b-tab title="Details" class="py-4">
+                    <b-tab title="Details" class="py-4" @click="onTabClick">
                         <!-- Current Mileage -->
                         <b-form-group>
                             <label for="add-vehicle-mileage-textbox">Current Mileage</label>
@@ -179,7 +179,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import PopupContainer from '@/core/components/popup/popup-container.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import ProgressTracker from '@/core/components/multi-step/progress-tracker.vue';
+import ProgressTracker from '@/core/components/ux/progress-tracker.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import { VehicleMake } from '@/vehicle-system/vehicle/entities/vehicle-make';
 import { Nullable } from '@/core/common/monads/nullable';
@@ -201,78 +201,74 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 })
 export default class AddVehiclePopup extends VehicleMixin {
     public $refs!: {
-        popup: PopupContainer;
-        form: HTMLFormElement;
+        popup: PopupContainer,
     };
 
     /**
      * The current step the user is on.
      */
-    public activeStep!: number;
+    public activeStep: number = 0;
 
     /**
      * Cached value of the previous step so we can validate
      * after a user has left a page.
      */
-    public lastStep!: number;
+    public lastStep: number = 0;
 
     /**
      * The available makes
      */
-    public makes!: string[];
+    public makes: string[] = [];
 
     /**
      * The available models.
      */
-    public models!: string[];
+    public models: string[] = [];
 
     /**
      * The model year of the vehicle.
      */
-    public year!: Nullable<number>;
+    public year: Nullable<number> = null;
 
     /**
      * The name of the make of the vehicle.
      */
-    public make!: Nullable<string>;
+    public make: Nullable<string> = null;
 
     /**
      * The name of the model of the vehicle.
      */
-    public model!: Nullable<string>;
+    public model: Nullable<string> = null;
 
     /**
      * The Vehicle Identification Number of the vehicle.
      */
-    public vin!: Nullable<string>;
+    public vin: Nullable<string> = null;
 
     /**
      * The license plate number.
      */
-    public plate!: Nullable<string>;
+    public plate: Nullable<string> = null;
 
     /**
      * The current mileage.
      */
-    public mileage!: Nullable<number>;
+    public mileage: Nullable<number> = null;
 
     /**
      * The paint color of the vehicle.
      */
-    public color!: Nullable<string>;
+    public color: Nullable<string> = null;
 
     /**
      * The name of the vehicle.
      */
-    public name!: Nullable<string>;
+    public name: Nullable<string> = null;
 
     /**
      * Event handler for when the component is created.
      */
     public async created(): Promise<void> {
-        this.makes = [];
-        this.reset();
-
         this.$validator.localize('en', {
             custom: {
                 addVehicleYear: {
@@ -299,7 +295,6 @@ export default class AddVehiclePopup extends VehicleMixin {
             }
         );
 
-        this.$forceUpdate();
     }
 
     /**
@@ -329,15 +324,11 @@ export default class AddVehiclePopup extends VehicleMixin {
      */
     public async onTabClick(): Promise<void> {
         if (await this.$validator.validateAll(`tab${this.lastStep + 1}`)) {
-            this.activeStep = this.lastStep;
-
             // Gotta cache last tab somehow. $event is coming in undefined...
             this.lastStep = this.activeStep;
         } else {
             this.activeStep = this.lastStep;
         }
-
-        this.$forceUpdate();
     }
 
     /**

@@ -1,63 +1,60 @@
 <template>
-    <popup-container
-        id="addMaintenance"
-        ref="popup"
-        title="Add Maintenance"
-        size="lg"
-    >
-        <!-- Progress Tracker to keep the user updated on where their at. -->
-        <progress-tracker :current="activePage" :max="4" class="pb-4"/>
+    <popup-container id="addMaintenance" ref="popup" title="Add Maintenance" size="lg">
+        <form>
+            <b-card no-body border-variant="white">
+                <b-tabs v-model="activeStep">
+                    <!-- Model Information -->
+                    <b-tab title="Mechanic" class="py-4" @click="onTabClick"></b-tab>
 
-        <!-- Step 1: Who -->
-        <add-maintenance-mechanic-page
-            ref="mechanicPage"
-            v-model="mechanic"
-            v-if="activePage == 1"
-        />
+                    <!-- Registration -->
+                    <b-tab title="Date" class="py-4" @click="onTabClick"></b-tab>
 
-        <!-- Step 2: When -->
-        <add-maintenance-when-page ref="whenPage" v-model="whenInfo" v-if="activePage == 2"/>
+                    <!-- Details -->
+                    <b-tab title="Services" class="py-4" @click="onTabClick"></b-tab>
+                    <!-- Details -->
+                    <b-tab title="Cost" class="py-4" @click="onTabClick"></b-tab>
+                </b-tabs>
+            </b-card>
+        </form>
 
-        <!-- Step 3: What -->
-        <add-maintenance-services-page
-            ref="servicesPage"
-            v-model="services"
-            v-if="activePage == 3"
-        />
+        <hr>
 
-        <!-- Step 4: Cost -->
-        <add-maintenance-cost-page ref="costPage" v-model="cost" v-if="activePage == 4"/>
+        <progress-tracker :current="activeStep + 1" :max="4"/>
 
-        <previous-next
-            class="pt-5"
-            @previous="onPrevious"
-            @next="onNext"
-            :disable-previous="activePage == 1"
-            :disable-next="activePage == 4"
-        />
-
+        <!-- Previous Button -->
         <div slot="footer">
-            <b-btn variant="primary" @click="onCreate" :disabled="activePage != 4">
-                <material-icon class="align-middle" icon="create"/>
-                <span class="align-bottom">Create</span>
-            </b-btn>
+            <b-button
+                variant="success"
+                class="float-left"
+                v-if="activeStep > 0"
+            >Previous</b-button>
+
+            <!-- Next Button -->
+            <b-button
+                variant="success"
+                class="float-right"
+                @click="onNextClick"
+                v-if="activeStep < 3"
+            >Next</b-button>
+
+            <!-- Create Button -->
+            <b-button
+                variant="primary"
+                class="float-right"
+                v-else
+            >Create</b-button>
         </div>
     </popup-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import PopupContainer from '@/core/components/popup/popup-container.vue';
 import { Popup } from '@/core/components/interfaces/popup';
-import ProgressTracker from '@/core/components/multi-step/progress-tracker.vue';
-import PreviousNext from '@/core/components/multi-step/previous-next.vue';
-import AddMaintenanceMechanicPage from './add-maintenance-mechanic-page.vue';
-import AddMaintenanceWhenPage from './add-maintenance-when-page.vue';
-import AddMaintenanceServicesPage from './add-maintenance-services-page.vue';
-import AddMaintenanceCostPage from './add-maintenance-cost-page.vue';
+import ProgressTracker from '@/core/components/ux/progress-tracker.vue';
 import { Nullable } from '@/core/common/monads/nullable';
 import { MaintenanceEvent } from '@/vehicle-system/vehicle/entities/maintenance-event';
 import { MaintenanceService } from '@/vehicle-system/vehicle/entities/maintenance-service';
@@ -73,11 +70,6 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
         MaterialIcon,
         PopupContainer,
         ProgressTracker,
-        PreviousNext,
-        AddMaintenanceMechanicPage,
-        AddMaintenanceWhenPage,
-        AddMaintenanceServicesPage,
-        AddMaintenanceCostPage,
     },
 })
 export default class AddMaintenancePopup extends VehicleMixin implements Popup {
@@ -86,10 +78,6 @@ export default class AddMaintenancePopup extends VehicleMixin implements Popup {
      */
     public $refs!: {
         popup: PopupContainer;
-        mechanicPage: AddMaintenanceMechanicPage;
-        whenPage: AddMaintenanceWhenPage;
-        servicesPage: AddMaintenanceServicesPage;
-        costPage: AddMaintenanceCostPage;
     };
 
     /**
@@ -99,49 +87,32 @@ export default class AddMaintenancePopup extends VehicleMixin implements Popup {
     public vehicle!: Vehicle;
 
     /**
-     * The mechanic selected
-     */
-    public mechanic!: Nullable<Mechanic>;
-
-    /**
-     * The date and mileage it occured at.
-     */
-    public whenInfo!: { mileage: Nullable<number>; date: Nullable<Date> };
-
-    /**
-     * The services performed.
-     */
-    public services!: string[];
-
-    /**
-     * The total cost of it.
-     */
-    public cost!: Nullable<number>;
-
-    /**
      * The active step the user is on.
      */
-    public activePage!: number;
+    public activeStep: number = 0;
 
     /**
-     * The mechanics of the user.
+     * Cache of the last step we were on.
      */
-    public mechanics: Mechanic[] = [];
+    public lastStep: number = 0;
 
-    public async created(): Promise<void> {
-        this.activePage = 1;
-        this.mechanic = null;
-        this.cost = null;
-        this.whenInfo = { mileage: null, date: null };
-        this.services = [];
+    public async onTabClick(): Promise<void> {
+        this.lastStep = this.activeStep;
+        this.$forceUpdate();
+        console.log('clicked', this.activeStep);
+    }
+
+    @Watch('activeStep')
+    public fuck(value: any): void {
+        console.log('fuck');
     }
 
     /**
      * Event handler for when the user wants to go back a page.
      */
     public async onPrevious(): Promise<void> {
-        if (this.activePage > 1) {
-            this.activePage--;
+        if (this.activeStep > 1) {
+            this.activeStep = this.activeStep;
             this.$forceUpdate();
         }
     }
@@ -149,47 +120,23 @@ export default class AddMaintenancePopup extends VehicleMixin implements Popup {
     /**
      * Event handler for when the user wants to go forward a page.
      */
-    public async onNext(): Promise<void> {
-        if (this.activePage < 4) {
-            if (!(await this.validate())) {
-                return;
-            }
-
-            this.activePage++;
-            this.$forceUpdate();
+    public async onNextClick(): Promise<void> {
+        if (this.activeStep < 4) {
+            this.activeStep += 1;
+            // this.activeStep++;
         }
+
+        console.log('on next click: ', this.activeStep);
     }
 
-    public async onCreate(): Promise<void> {
-        if (!(await this.$refs.costPage.validate())) {
-            return;
-        }
-
-        if (this.activePage === 4) {
-            if (typeof this.whenInfo.mileage === 'string') {
-                this.whenInfo.mileage = parseFloat(this.whenInfo.mileage);
-            }
-
-            const event: MaintenanceEvent = new MaintenanceEvent(
-                this.whenInfo!.mileage!,
-                this.whenInfo.date!,
-                this.mechanic!,
-                this.services!.map((s) => new MaintenanceService(s))
-            );
-            event.totalCost = this.cost || 0;
-
-            await this.$vehicleStore.addMaintenanceEvent(this.vehicle, event);
-        }
-    }
+    public async onCreate(): Promise<void> {}
 
     /**
      * Show the popup on screen.
      */
     public show() {
         this.$refs.popup.show();
-        this.activePage = 1;
-        this.mechanic = null;
-        this.whenInfo = { mileage: null, date: null };
+        this.activeStep = 0;
         this.$forceUpdate();
     }
 
@@ -198,27 +145,7 @@ export default class AddMaintenancePopup extends VehicleMixin implements Popup {
      */
     public hide() {
         this.$refs.popup.hide();
-        this.activePage = 1;
         this.$forceUpdate();
-    }
-
-    protected async validate(): Promise<boolean> {
-        switch (this.activePage) {
-            case 1:
-                return this.$refs.mechanicPage.validate();
-
-            case 2:
-                return this.$refs.whenPage.validate();
-
-            case 3:
-                return this.$refs.servicesPage.validate();
-
-            case 4:
-                return this.$refs.costPage.validate();
-
-            default:
-                return false;
-        }
     }
 }
 </script>

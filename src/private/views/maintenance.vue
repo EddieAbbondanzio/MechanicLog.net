@@ -71,11 +71,11 @@
 
         <div class="row">
             <div class="col-12">
-                <maintenance-summary
+                <!-- <maintenance-summary
                     v-for="event in events"
                     :maintenanceEvent="event"
                     :key="event.id"
-                />
+                /> -->
             </div>
         </div>
     </div>
@@ -129,13 +129,7 @@ export default class Maintenance extends VehicleMixin {
         this.events = [];
 
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
-        const vehicles = await this.$vehicleStore.getVehicles();
-
-        if (vehicles.isRight()) {
-            throw vehicles.getRight();
-        }
-
-        this.vehicle = vehicles.getLeft().find((v: Vehicle) => v.id === vehicleId) || null;
+        this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)).getLeft();
 
         if (this.vehicle != null) {
             (await this.$vehicleStore.getMaintenanceEvents(this.vehicle!)).do(
@@ -149,14 +143,6 @@ export default class Maintenance extends VehicleMixin {
         }
 
         this.$forceUpdate();
-
-        // const result: Maybe<Vehicle> = await this.$getVehicle(vehicleId);
-
-        // if (result.hasSome()) {
-        //     this.vehicle = result.getSome();
-        // } else {
-        //     this.$router.go(-1);
-        // }
     }
 
     public onAddClick(): void {

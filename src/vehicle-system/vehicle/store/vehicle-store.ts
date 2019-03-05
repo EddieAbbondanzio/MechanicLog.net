@@ -46,6 +46,16 @@ export class VehicleStore extends StoreModule {
         this._vehicleCache = null;
     }
 
+    public async getVehicle(id: number): Promise<Either<Nullable<Vehicle>, HttpError>> {
+        const vehicles = await this.getVehicles();
+
+        if (vehicles.isRight()) {
+            return Either.right(vehicles.getRight());
+        } else {
+            return Either.left(vehicles.getLeft().find((v) => v.id === id) || null);
+        }
+    }
+
     /**
      * Get all the vehicles of the user.
      */
@@ -61,7 +71,7 @@ export class VehicleStore extends StoreModule {
             }
         }
 
-        return Either.left(this._vehicleCache!);
+        return Either.left(this._vehicleCache);
     }
 
     /**
