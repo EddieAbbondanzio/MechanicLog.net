@@ -180,8 +180,14 @@ export default class Vehicles extends VehicleMixin {
         this.$refs.addPopup.show();
     }
 
-    public onVehicleAdd(): void {
-        alert('added');
+    public async onVehicleAdd(vehicle: Vehicle): Promise<void> {
+        const result = await this.$vehicleStore.addVehicle(vehicle);
+
+        if (result.hasSome()) {
+            this.$refs.errorPopup.show(result.getSome().message);
+        }
+
+        this.$forceUpdate();
     }
 
     /**

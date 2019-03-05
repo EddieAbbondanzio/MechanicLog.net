@@ -74,6 +74,22 @@ export class Vehicle {
     }
 
     /**
+     * Convert the vehicle into a JSON friendly object.
+     */
+    public toJSON(): {} {
+        return {
+            id: this.id,
+            year: this.year,
+            make: this.make.id,
+            model: this.model.id,
+            vin: this.vin,
+            licensePlate: this.licensePlate,
+            mileage: this.mileage,
+            color: this.color,
+        };
+    }
+
+    /**
      * Convert the vehicle into a print friendly string.
      */
     public toString(): string {
@@ -95,6 +111,20 @@ export class Vehicle {
         v.color = raw.color;
         v.licensePlate = raw.licensePlate;
         v.vin = raw.vin;
+
+        return v;
+    }
+
+    /**
+     * Rebuild a vehicle from it's raw input object form.
+     * @param input The raw input object.
+     */
+    public static fromInput(input: any): Vehicle {
+        const v: Vehicle = new Vehicle(input.year, input.make, input.model, input.mileage);
+        v.name = input.name !== '' ? input.name : null;
+        v.color = input.color !== '' ? input.color : null;
+        v.licensePlate = input.licensePlate !== '' ? input.licensePlate : null;
+        v.vin = input.vin !== '' ? input.vin : null;
 
         return v;
     }

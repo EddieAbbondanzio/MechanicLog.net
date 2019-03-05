@@ -141,7 +141,10 @@ export default class Maintenance extends VehicleMixin {
             (await this.$vehicleStore.getMaintenanceEvents(this.vehicle!)).do(
                 async (events) => {
                     this.events = events;
-                }
+                },
+                async (error) => {
+                    alert(error.message);
+                },
             );
         }
 

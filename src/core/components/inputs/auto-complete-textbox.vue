@@ -14,7 +14,7 @@
 <template>
     <div class="d-block" style="position: relative;">
         <input
-            class="form-control is-invalid"
+            :class="cssClass"
             type="text"
             :placeholder="placeholder"
             v-model="text"
@@ -23,9 +23,10 @@
             @keyup="onTextChange"
             :disabled="disabled"
         >
-        <b-list-group class="auto-complete-list" v-if="isActive">
+        <b-list-group class="auto-complete-list" v-if="isActive" tabindex="-1">
             <b-list-group-item
                 href="#"
+                tabindex="-1"
                 v-for="option in matchedOptions"
                 v-bind:key="option.value"
                 @click="onOptionClick(option.value)"
@@ -80,6 +81,11 @@ export default class AutoCompleteTextbox extends Vue {
     };
 
     /**
+     * The CSS class
+     */
+    private cssClass!: string;
+
+    /**
      * The text in the textbox.
      */
     private text!: string;
@@ -95,6 +101,7 @@ export default class AutoCompleteTextbox extends Vue {
     private isActive!: boolean;
 
     public created(): void {
+        this.cssClass = 'form-control';
         this.isActive = false;
         this.text = this.value !== -1 ? this.options.find((o) => o.value === this.value)!.text : '';
         this.matchedOptions = [];
@@ -163,12 +170,23 @@ export default class AutoCompleteTextbox extends Vue {
         return null;
     }
 
+    public valid(): void {
+        this.cssClass = 'form-control';
+        this.$forceUpdate();
+    }
+
+    public invalid(): void {
+        this.cssClass = 'form-control is-invalid';
+        this.$forceUpdate();
+    }
+
     /**
      * Clear the textbox.
      */
     public clear(): void {
         this.isActive = false;
         this.text = '';
+        this.cssClass = 'form-control';
         this.$forceUpdate();
     }
 }

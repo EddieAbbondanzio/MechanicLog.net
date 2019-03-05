@@ -44,12 +44,11 @@ export class Either<TLeft, TRight> {
      * @param leftAction The action to perform if the left value is populated.
      * @param rightAction The action to perform if the right value is populated.
      */
-    public async do(leftAction: (val: TLeft) => Promise<void>, rightAction?: (val: TRight) => Promise<void>)
-        : Promise<void> {
+    public async do<TResult>(leftAction: (val: TLeft) => Promise<TResult>, rightAction: (val: TRight) => Promise<TResult>): Promise<TResult> {
         if (this._isLeft) {
-            await leftAction(this.left!);
-        } else if (rightAction != null) {
-            await rightAction(this.right!);
+            return await leftAction(this.left!);
+        } else {
+            return await rightAction(this.right!);
         }
     }
 

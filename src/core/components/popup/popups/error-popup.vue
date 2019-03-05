@@ -50,6 +50,7 @@ export default class ErrorPopup extends Vue {
     public show(errorMsg: string = 'Something went wrong. Please try again later.'): void {
         this.message = errorMsg;
         this.$refs.popup.show();
+        this.$forceUpdate();
     }
 
     /**
