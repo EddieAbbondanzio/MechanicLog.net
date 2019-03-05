@@ -10,7 +10,7 @@
             <b-card no-body border-variant="white">
                 <b-tabs v-model="activeStep">
                     <!-- Model Information -->
-                    <b-tab title="Vehicle Model" class="py-4" @click="onTabClick">
+                    <b-tab title="Vehicle Model" class="py-4">
                         <!-- Model Year -->
                         <b-form-group>
                             <label class="required" for="add-vehicle-year-textbox">Year</label>
@@ -54,7 +54,6 @@
                                 v-model="model"
                                 placeholder="Civic"
                                 :disabled="make == null"
-                                @blur="onModelBlur"
                                 name="addVehicleModel"
                                 data-vv-scope="tab1"
                                 v-validate="'required'"
@@ -66,7 +65,7 @@
                     </b-tab>
 
                     <!-- Registration -->
-                    <b-tab title="Registration" class="py-4" @click="onTabClick">
+                    <b-tab title="Registration" class="py-4">
                         <!-- VIN -->
                         <b-form-group>
                             <label for="add-vehicle-vin-textbox">VIN</label>
@@ -97,7 +96,7 @@
                     </b-tab>
 
                     <!-- Details -->
-                    <b-tab title="Details" class="py-4" @click="onTabClick">
+                    <b-tab title="Details" class="py-4">
                         <!-- Current Mileage -->
                         <b-form-group>
                             <label for="add-vehicle-mileage-textbox">Current Mileage</label>
@@ -321,13 +320,7 @@ export default class AddVehiclePopup extends VehicleMixin {
             );
         }
 
-        this.$forceUpdate();
-    }
-
-    /**
-     * Event handler for after the user leaves the model field.
-     */
-    public async onModelBlur(): Promise<void> {
+        this.model = null;
         this.$forceUpdate();
     }
 
@@ -365,16 +358,28 @@ export default class AddVehiclePopup extends VehicleMixin {
         if (await this.$validator.validateAll(`tab${this.activeStep + 1}`)) {
             this.activeStep++;
         }
-
     }
 
     /**
      * Event handler for when the user clicks the create button.
      */
     public async onAddClick(): Promise<void> {
-        alert('added');
+        const make = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make)!;
+        const model = (await this.$vehicleModelStore.getModelsForMake(make)).getLeft().find((m) => m.name === this.model)!;
 
-        // this.$emit('add', vehicle);
+        const vehicle = Vehicle.fromInput({
+            year: this.year,
+            make,
+            model,
+            mileage: this.mileage,
+            name: this.name,
+            color: this.color,
+            licensePlate: this.plate,
+            vin: this.vin,
+        });
+
+
+        this.$emit('add', vehicle);
         this.hide();
         this.$forceUpdate();
     }

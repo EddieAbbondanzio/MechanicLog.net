@@ -79,7 +79,7 @@
                                 />
                             </div>
 
-                            <b-dropdown-item href="#" @click="onEditClick">Edit</b-dropdown-item>
+                            <!-- <b-dropdown-item href="#" @click="onEditClick">Edit</b-dropdown-item> -->
                             <b-dropdown-item
                                 href="#"
                                 class="text-danger"
