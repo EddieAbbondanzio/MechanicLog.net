@@ -12,14 +12,11 @@ export class HttpClient {
      */
     private _axios: AxiosInstance;
 
-    private _baseUrl: string;
-
     /**
      * Create a new HTTP client.
      * @param baseUrl The base URL the HTTP client works with.
      */
     constructor(baseUrl?: string) {
-        this._baseUrl = baseUrl || '';
         this._axios = axios.create({
             baseURL: baseUrl,
         });
@@ -32,7 +29,6 @@ export class HttpClient {
      * @returns The response.
      */
     public async get(url: string, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
-        console.log(`${this._baseUrl}${url}`);
         try {
             if (authToken != null) {
                 return Either.left(
@@ -57,7 +53,6 @@ export class HttpClient {
      * @returns The response.
      */
     public async head(url: string, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
-        console.log(`${this._baseUrl}${url}`);
         try {
             if (authToken != null) {
                 return Either.left(
@@ -82,7 +77,6 @@ export class HttpClient {
      * @returns The response.
      */
     public async put(url: string, body?: any, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
-        console.log(`${this._baseUrl}${url}`);
         try {
             if (authToken != null) {
                 return Either.left(await this._axios.put(url, body, {
@@ -106,7 +100,6 @@ export class HttpClient {
      * @returns The response.
      */
     public async post(url: string, body?: any, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
-        console.log(`${this._baseUrl}${url}`);
         try {
             if (authToken != null) {
                 return Either.left(await this._axios.post(url, body, {
@@ -130,7 +123,6 @@ export class HttpClient {
      * @returns The response.
      */
     public async patch(url: string, body?: any, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
-        console.log(`${this._baseUrl}${url}`);
         try {
             if (authToken != null) {
                 return Either.left(await this._axios.patch(url, body, {
@@ -153,7 +145,6 @@ export class HttpClient {
      * @returns The response.
      */
     public async delete(url: string, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
-        console.log(`${this._baseUrl}${url}`);
         try {
             if (authToken != null) {
                 return Either.left(await this._axios.delete(url, {
