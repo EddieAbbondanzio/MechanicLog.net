@@ -158,7 +158,7 @@
                 class="float-right"
                 @click="onAddClick($event)"
                 v-else
-            >Create</b-button>
+            >Add</b-button>
         </div>
     </popup-container>
 </template>

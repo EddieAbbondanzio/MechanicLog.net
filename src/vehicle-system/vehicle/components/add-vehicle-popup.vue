@@ -170,7 +170,7 @@
                 class="float-right"
                 @click="onAddClick($event)"
                 v-else
-            >Create</b-button>
+            >Add</b-button>
         </div>
     </popup-container>
 </template>
@@ -201,7 +201,7 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 })
 export default class AddVehiclePopup extends VehicleMixin {
     public $refs!: {
-        popup: PopupContainer,
+        popup: PopupContainer;
     };
 
     /**
@@ -294,7 +294,6 @@ export default class AddVehiclePopup extends VehicleMixin {
                 return [];
             }
         );
-
     }
 
     /**
@@ -303,7 +302,12 @@ export default class AddVehiclePopup extends VehicleMixin {
     public async onMakeBlur(): Promise<void> {
         // Pull in the models
         if (this.make != null) {
-            const makeCode: VehicleMake = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make)!;
+            const makeCode = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make);
+
+            // User never selected anything.
+            if (makeCode == null) {
+                return;
+            }
 
             this.models = await (await this.$vehicleModelStore.getModelsForMake(makeCode)).do(
                 async (models) => {
@@ -338,8 +342,6 @@ export default class AddVehiclePopup extends VehicleMixin {
         if (await this.$validator.validateAll(`tab${this.activeStep + 1}`)) {
             this.activeStep--;
         }
-
-        this.$forceUpdate();
     }
 
     /**
@@ -368,7 +370,6 @@ export default class AddVehiclePopup extends VehicleMixin {
             licensePlate: this.plate,
             vin: this.vin,
         });
-
 
         this.$emit('add', vehicle);
         this.hide();

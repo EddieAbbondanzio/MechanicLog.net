@@ -23,7 +23,7 @@
                             <span style="vertical-align: middle;">Add Maintenance</span>
                         </b-btn>
 
-                        <add-maintenance-popup ref="addPopup" :vehicle="vehicle"/>
+                        <add-maintenance-popup ref="addPopup" :vehicle="vehicle" @add="onMaintenanceAdd"/>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@
                         <span>Cost</span>
                     </div>
                     <div class="col-2">
-                        <span>Label</span>
+                        <!-- <span>Label</span> -->
                     </div>
                 </div>
             </div>
@@ -71,11 +71,11 @@
 
         <div class="row">
             <div class="col-12">
-                <!-- <maintenance-summary
+                <maintenance-summary
                     v-for="event in events"
                     :maintenanceEvent="event"
                     :key="event.id"
-                /> -->
+                />
             </div>
         </div>
     </div>
@@ -147,6 +147,10 @@ export default class Maintenance extends VehicleMixin {
 
     public onAddClick(): void {
         this.$refs.addPopup.show();
+    }
+
+    public async onMaintenanceAdd(maintenance: MaintenanceEvent): Promise<void> {
+        const result = await this.$vehicleStore.addMaintenanceEvent(this.vehicle!, maintenance);
     }
 }
 </script>

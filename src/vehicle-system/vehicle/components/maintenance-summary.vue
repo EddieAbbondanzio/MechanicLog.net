@@ -25,7 +25,7 @@
                 <div class="col-10 col-lg-11 .maintenance-summary text-muted">
                     <div class="row">
                         <div class="col-2 py-2">
-                            <span style="line-height: 39px;">{{ maintenanceEvent.mileage }}</span>
+                            <span style="line-height: 39px;">{{ maintenanceEvent.mileage.toLocaleString() }}</span>
                         </div>
                         <div class="col-1 py-2">
                             <span
@@ -35,9 +35,9 @@
                         <div class="col-2 py-2">
                             <span style="line-height: 39px;">{{ maintenanceEvent.mechanic.name }}</span>
                         </div>
-                        <div class="col-3 py-2">
+                        <div class="col-3 py-2" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;">
                             <span
-                                style="line-height: 39px; text-overflow: ellipsis"
+                                style="line-height: 39px;"
                                 :title="maintenanceEvent.services.map((s) => s.description).join(', ')"
                             >{{ maintenanceEvent.services.map((s) => s.description).join(', ') }}</span>
                         </div>
