@@ -5,6 +5,7 @@
     position: relative;
     top: 0px;
     display: inline-block;
+    float: left;
 }
 </style>
 

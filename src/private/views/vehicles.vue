@@ -3,6 +3,8 @@
 
 <template>
     <div class="container-fluid px-0">
+        <garage-bar/>
+
         <error-popup ref="errorPopup"/>
         <add-vehicle-popup ref="addPopup" @add="onVehicleAdd"/>
 
@@ -114,9 +116,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import VehicleSummary from '@/vehicle-system/vehicle/components/vehicle-summary.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import AddVehiclePopup from '@/vehicle-system/vehicle/components/add-vehicle-popup.vue';
+import AddVehiclePopup from '@/vehicle-system/vehicle/components/popups/add-vehicle-popup.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
+import GarageBar from "@/vehicle-system/components/garage-bar.vue";
 
 /**
  * Garage page.
@@ -128,6 +131,7 @@ import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
         MaterialIcon,
         AddVehiclePopup,
         ErrorPopup,
+        GarageBar,
     },
 })
 export default class Vehicles extends VehicleMixin {

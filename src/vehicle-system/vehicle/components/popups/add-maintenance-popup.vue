@@ -240,7 +240,7 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
     /**
      * The date that the maintenance event occured on.
      */
-    private date: Nullable<Date> = null;
+    private date: Nullable<string> = null;
 
     /**
      * The mileage of the service.
@@ -359,7 +359,7 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
         const mech = this.mechanics.find((m) => m.id === this.selectedMechanicIndex);
         const maintenance: MaintenanceEvent = new MaintenanceEvent(
             this.mileage!,
-            this.date!,
+            new Date(this.date!),
             mech!,
             this.selectedServices.map((s) => new MaintenanceService(s))
         );

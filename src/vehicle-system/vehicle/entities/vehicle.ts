@@ -1,6 +1,7 @@
 import { MaintenanceEvent } from './maintenance-event';
 import { VehicleMake } from './vehicle-make';
 import { VehicleModel } from './vehicle-model';
+import { Nullable } from '@/core/common/monads/nullable';
 
 /**
  * A motor vehicle.
@@ -34,22 +35,22 @@ export class Vehicle {
     /**
      * The nickname of the car.
      */
-    public name?: string;
+    public name: Nullable<string>;
 
     /**
      * The paint color.
      */
-    public color?: string;
+    public color: Nullable<string>;
 
     /**
      * The license plate number.
      */
-    public licensePlate?: string;
+    public licensePlate: Nullable<string>;
 
     /**
      * The VIN of the vehicle.
      */
-    public vin?: string;
+    public vin: Nullable<string>;
 
     /**
      * The maintenance history of the vehicle.
@@ -71,6 +72,10 @@ export class Vehicle {
         this.model = model;
         this.mileage = mileage;
         this.maintenance = [];
+        this.name = null;
+        this.licensePlate = null;
+        this.color = null;
+        this.vin = null;
     }
 
     /**

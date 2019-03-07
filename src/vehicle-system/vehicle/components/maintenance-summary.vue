@@ -2,18 +2,14 @@
 @import './public/bootstrap/_functions.scss';
 @import './public/bootstrap/_variables.scss';
 
-.maintenance-summary {
-}
-
-.maintenance-options-button {
-    cursor: pointer;
-    text-decoration: none !important;
-
-    &:hover {
-        background-color: $gray-200;
-    }
-    &:active {
-        background-color: $gray-300;
+.maintenance-options {
+    button {
+        &:hover {
+            background-color: $gray-200 !important;
+        }
+        &:active {
+            background-color: $gray-300!important;
+        }
     }
 }
 </style>
@@ -24,8 +20,11 @@
             <div class="row">
                 <div class="col-10 col-lg-11 .maintenance-summary text-muted">
                     <div class="row">
-                        <div class="col-2 py-2">
-                            <span style="line-height: 39px;">{{ maintenanceEvent.mileage.toLocaleString() }}</span>
+                        <div class="col-2 col-lg-1 py-2">
+                            <span
+                                class="float-right"
+                                style="line-height: 39px;"
+                            >{{ maintenanceEvent.mileage.toLocaleString() }}</span>
                         </div>
                         <div class="col-1 py-2">
                             <span
@@ -35,14 +34,20 @@
                         <div class="col-2 py-2">
                             <span style="line-height: 39px;">{{ maintenanceEvent.mechanic.name }}</span>
                         </div>
-                        <div class="col-3 py-2" style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                        <div
+                            class="col-3 py-2"
+                            style="overflow-x: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                        >
                             <span
                                 style="line-height: 39px;"
                                 :title="maintenanceEvent.services.map((s) => s.description).join(', ')"
                             >{{ maintenanceEvent.services.map((s) => s.description).join(', ') }}</span>
                         </div>
                         <div class="col-2 py-2">
-                            <span style="line-height: 39px;">{{ maintenanceEvent.totalCost }}</span>
+                            <span
+                                class="float-right"
+                                style="line-height: 39px;"
+                            >${{ maintenanceEvent.totalCost.toLocaleString() }}</span>
                         </div>
                         <div class="col-2 py-2">
                             <span style="line-height: 39px;">{{ maintenanceEvent.label }}</span>
@@ -51,16 +56,14 @@
                 </div>
 
                 <!-- More Options Button -->
-                <div
-                    class="col-2 col-lg-1 py-2 maintenance-options-button text-center d-table align-middle text-muted"
-                >
+                <div class="col-2 col-lg-1 py-2 text-center d-table align-middle text-muted">
                     <div class="d-table-cell">
-                        <b-dropdown variant="link" no-caret>
+                        <b-dropdown no-caret variant="link" class="maintenance-options">
                             <div slot="button-content">
                                 <material-icon
                                     icon="more_vert"
+                                    color="muted"
                                     size="md"
-                                    color="dark"
                                     class="align-middle"
                                 />
                             </div>
@@ -93,7 +96,7 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import { Nullable } from '@/core/common/monads/nullable';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
-import deleteMaintenanceConfirmPopup from '@/vehicle-system/vehicle/components/delete-maintenance-confirm-popup.vue';
+import deleteMaintenanceConfirmPopup from '@/vehicle-system/vehicle/components/popups/delete-maintenance-confirm-popup.vue';
 
 /**
  * Summary of a maintenance event.
@@ -124,14 +127,7 @@ export default class MaintenanceSummary extends VehicleMixin {
      * Delete the maintenance event
      */
     private async onDelete(): Promise<void> {
-        const vehicles = await this.$vehicleStore.getVehicles();
-
-        if (vehicles.isRight()) {
-            return;
-        }
-
-        const vehicle: Nullable<Vehicle> = vehicles.getLeft().find((v) => v.id === this.maintenanceEvent.vehicleId) || null;
-        await this.$vehicleStore.deleteMaintenanceEvent(vehicle!, this.maintenanceEvent);
+        this.$emit('delete', this.maintenanceEvent);
     }
 
     /**

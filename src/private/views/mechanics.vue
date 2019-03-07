@@ -1,5 +1,7 @@
 <template>
     <div class="container-fluid px-0">
+        <garage-bar/>
+
         <error-popup ref="errorPopup"/>
         <add-mechanic-popup ref="addPopup" @add="onMechanicAdd"/>
 
@@ -96,6 +98,7 @@ import { HttpError } from '@/core/http/service-error';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup.vue';
+import GarageBar from "@/vehicle-system/components/garage-bar.vue";
 
 /**
  * List of all the mechanics the user has.
@@ -107,6 +110,7 @@ import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-
         MechanicSummary,
         ErrorPopup,
         MaterialIcon,
+        GarageBar,
     },
 })
 export default class Mechanics extends MechanicMixin {

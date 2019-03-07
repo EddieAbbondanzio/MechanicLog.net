@@ -6,6 +6,7 @@ import { Vehicle } from '../entities/vehicle';
 import { Maybe } from '@/core/common/monads/maybe';
 import { HttpResponse } from '@/core/http/http-response';
 import { HttpError } from '@/core/http/service-error';
+import { MaintenanceEventStats } from '../entities/maintenance-event-stats';
 /**
  * API service for getting services of vehicles.
  */
@@ -32,6 +33,21 @@ export class VehicleMaintenanceEventService extends Service {
             }
 
             return Either.left(events);
+        } else {
+            return Either.right(apiResponse.getRight());
+        }
+    }
+
+    /**
+     * Get the month to date, and year to date cost of a vehicle.
+     * @param user The active user.
+     * @param vehicle The vehicle to get stats for.
+     */
+    public async getStatsForVehicle(user: User, vehicle: Vehicle): Promise<Either<MaintenanceEventStats, HttpError>> {
+        const apiResponse = await this._httpClient.get(`/v1/vehicle/${vehicle.id}/maintenance/stats`, user.authToken);
+
+        if (apiResponse.isLeft()) {
+            return Either.left(MaintenanceEventStats.fromRaw(apiResponse.getLeft().data));
         } else {
             return Either.right(apiResponse.getRight());
         }

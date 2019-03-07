@@ -106,8 +106,8 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import { Vehicle } from "@/vehicle-system/vehicle/entities/vehicle";
 import MaterialIcon from "@/core/components/material-icon.vue";
-import DeleteVehicleConfirmPopup from "@/vehicle-system/vehicle/components/delete-vehicle-confirm-popup.vue";
-import EditVehiclePopup from "@/vehicle-system/vehicle/components/edit-vehicle-popup.vue";
+import DeleteVehicleConfirmPopup from "@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue";
+import EditVehiclePopup from "@/vehicle-system/vehicle/components/popups/edit-vehicle-popup.vue";
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 
 /**

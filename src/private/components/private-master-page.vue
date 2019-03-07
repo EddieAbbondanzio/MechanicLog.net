@@ -5,11 +5,11 @@
 </style>
 
 <template>
-    <div>
+    <div class="page-content">
         <user-bar/>
         <side-bar/>
 
-        <div class="p-1 d-inline-block align-top" style="width: calc(100% - 256px);">
+        <div class="d-inline-block align-top" style="width: calc(100% - 256px); height: calc(100vh - 64px);">
             <router-view></router-view>
         </div>
 

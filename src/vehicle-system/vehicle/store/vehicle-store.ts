@@ -11,6 +11,8 @@ import { ServiceType } from '@/core/services/service-type';
 import { Nullable } from '@/core/common/monads/nullable';
 import { VehicleMaintenanceEventService } from '../services/vehicle-maintenance-event-service';
 import { MaintenanceEvent } from '../entities/maintenance-event';
+import { MaintenanceEventStats } from '../entities/maintenance-event-stats';
+import { Dictionary } from '@/core/common/dictionary';
 
 /**
  * Store for vehicles of the user.
@@ -36,6 +38,8 @@ export class VehicleStore extends StoreModule {
      */
     private _vehicleCache: Nullable<Vehicle[]>;
 
+    private _statsCache: Dictionary<Nullable<MaintenanceEventStats>>;
+
     /**
      * Create a new vehicle store.
      */
@@ -44,6 +48,7 @@ export class VehicleStore extends StoreModule {
         this._vehicleService = ServiceRegistry.resolve(ServiceType.Vehicle);
         this._maintenanceService = ServiceRegistry.resolve(ServiceType.MaintenanceEvent);
         this._vehicleCache = null;
+        this._statsCache = {};
     }
 
     public async getVehicle(id: number): Promise<Either<Nullable<Vehicle>, HttpError>> {
@@ -142,11 +147,36 @@ export class VehicleStore extends StoreModule {
     }
 
     /**
+     * Get the year to date, and month to date cost of a vehicle.
+     * @param vehicle The vehicle to get stats for.
+     */
+    public async getMaintenanceEventStats(vehicle: Vehicle): Promise<Either<MaintenanceEventStats, HttpError>> {
+        // Did we already cache it?
+        if (this._statsCache[vehicle.id] != null) {
+            return Either.left(this._statsCache[vehicle.id]!);
+        }
+
+        const result = await this._maintenanceService.getStatsForVehicle(User.CURRENT!, vehicle);
+
+        // Cache it if needed.
+        if (result.isLeft()) {
+            this._statsCache[vehicle.id] = result.getLeft();
+        }
+
+        return result;
+    }
+
+    /**
      * Add a maintenance event to a vehicle.
      * @param vehicle The vehicle to add it to.
      * @param event The event to add.
      */
     public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
+        // Clear it from cache if needed.
+        if (this._statsCache[vehicle.id] != null) {
+            this._statsCache[vehicle.id] = null;
+        }
+
         return this._maintenanceService.addEventForVehicle(User.CURRENT!, vehicle, event);
     }
 
@@ -156,6 +186,11 @@ export class VehicleStore extends StoreModule {
      * @param event The event to delete.
      */
     public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
+        // Clear it from cache if needed.
+        if (this._statsCache[vehicle.id] != null) {
+            this._statsCache[vehicle.id] = null;
+        }
+
         return this._maintenanceService.deleteEventForVehicle(User.CURRENT!, vehicle, event);
     }
 }
