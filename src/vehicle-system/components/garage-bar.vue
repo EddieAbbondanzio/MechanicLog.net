@@ -1,23 +1,26 @@
 <template>
-    <div class="pt-4 pb-2">
+    <div class="px-3 pt-3 border-bottom shadow w-100" style="height: 78px; position: relative">
         <garage-bar-tab name="Vehicles" :route="{ name: 'vehicles' }" icon="directions_car"/>
         <garage-bar-tab name="Mechanics" :route="{ name: 'mechanics' }" icon="build"/>
-        <hr class="my-0 py-0">
+
+        <div class="float-right">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import GarageBarTab from './garage-bar-tab.vue';
 
 /**
  * Navigation bar of the garage container/
  */
 @Component({
-    name: "garage-bar",
+    name: 'garage-bar',
     components: {
-        GarageBarTab
-    }
+        GarageBarTab,
+    },
 })
 export default class GarageBar extends Vue {}
 </script>

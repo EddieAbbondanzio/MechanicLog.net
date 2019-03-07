@@ -1,6 +1,13 @@
 <template>
     <div class="container-fluid px-0">
-        <garage-bar/>
+        <garage-bar>
+            <div class="d-inline-block pb2 pb-sm-0 pr-2">
+                <b-btn variant="success" style="height: 40px" @click="onAddClick">
+                    <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                    <span style="vertical-align: middle;">Add Mechanic</span>
+                </b-btn>
+            </div>
+        </garage-bar>
 
         <error-popup ref="errorPopup"/>
         <add-mechanic-popup ref="addPopup" @add="onMechanicAdd"/>
@@ -12,17 +19,6 @@
                     class="text-muted py-2 px-4"
                     style="font-size: 1.25em;"
                 >Mechanics, shops, or dealerships that work on your vehicles.</p>
-            </div>
-
-            <div class="col-12 col-lg-6">
-                <div class="float-right d-inline-block">
-                    <div class="d-inline-block pb2 pb-sm-0 pr-2">
-                        <b-btn variant="success" style="height: 40px" @click="onAddClick">
-                            <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
-                            <span style="vertical-align: middle;">Add Mechanic</span>
-                        </b-btn>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -98,7 +94,7 @@ import { HttpError } from '@/core/http/service-error';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup.vue';
-import GarageBar from "@/vehicle-system/components/garage-bar.vue";
+import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 
 /**
  * List of all the mechanics the user has.

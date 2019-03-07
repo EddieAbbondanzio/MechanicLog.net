@@ -6,7 +6,7 @@
 
 
 <template>
-    <div class="px-4 py-2 bg-primary text-center clearfix">
+    <div class="px-4 py-2 bg-primary text-center clearfix position-relative" style="z-index: 100;">
         <!-- ML Icon -->
         <img class="icon d-inline-block float-left" src="../../../assets/logo.png">
 

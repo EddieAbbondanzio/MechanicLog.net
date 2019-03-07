@@ -16,7 +16,7 @@
 </style>
 
 <template>
-    <div class="w-100 bg-white shadow px-3 py-3 border-bottom">
+    <div class="w-100 bg-white shadow px-3 py-3 border-bottom" style="height:78px;">
         <router-link :to="href" class="btn back-btn rounded" style="height: 40px;">
             <material-icon icon="keyboard_backspace" color="muted" class="align-middle pr-1"/>
             <span class="text-muted align-middle">Back</span>

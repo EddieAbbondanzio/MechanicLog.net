@@ -4,6 +4,8 @@
 
 .garage-bar-tab {
     display: inline-block;
+    position: relative;
+    height: 100%;
 
     a {
         font-size: 1.5em;
@@ -16,8 +18,10 @@
     .router-link-active:after {
         content: '';
         display: block;
-        width: 110%;
-        margin-left: -5%;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        position: absolute;
         margin-top: 4px;
         height: 4px;
         background-color: $primary;
