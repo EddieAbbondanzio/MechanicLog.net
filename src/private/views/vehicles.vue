@@ -3,6 +3,9 @@
 
 <template>
     <div class="h-100">
+        <error-popup ref="errorPopup"/>
+        <add-vehicle-popup ref="addPopup" @add="onVehicleAdd"/>
+
         <garage-bar>
             <div class="d-inline-block align-middle">
                 <div class="d-inline-block pb2 pb-sm-0 pr-2">
@@ -38,73 +41,66 @@
             </div>
         </garage-bar>
 
-        <div class="container-fluid px-0 bg-light" style="height: calc(100% - 78px)">
-            <error-popup ref="errorPopup"/>
-            <add-vehicle-popup ref="addPopup" @add="onVehicleAdd"/>
-
-            <!-- Header -->
-            <div class="row pt-3 bg-light">
-                <div class="col-12 col-lg-6">
-                    <p
-                        class="text-muted py-2 px-4"
-                        style="font-size: 1.25em;"
-                    >Vehicle records allow for tracking maintenace, and or repairs.</p>
-                </div>
-            </div>
-
-            <!-- Sexy HR -->
-            <div class="row">
-                <div class="col-12 pb-2">
-                    <!-- <hr style="height: 4px; border: none;" class="bg-light"> -->
-                    <span class="text-muted">VEHICLES</span>
-                </div>
-            </div>
-
-            <div class="row pb-2">
-                <div class="col-10 col-lg-11">
-                    <div class="row">
-                        <div class="col-2">
-                            <span>Nickname</span>
-                        </div>
-
-                        <div class="col-4 col-lg-3">
-                            <span>Year/Make/Model</span>
-                        </div>
-
-                        <div class="col-3 col-lg-2">
-                            <span>Mileage</span>
-                        </div>
-
-                        <div class="col-2">
-                            <span>Color</span>
-                        </div>
-
-                        <div class="col-2 d-none d-lg-block">
-                            <span>VIN</span>
-                        </div>
-
-                        <div class="col-1 d-none d-lg-block">
-                            <span>Plate</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 py-0 my-0">
-                    <hr class="my-0 py-0 bg-secondary" style="height 4px;">
-                </div>
-            </div>
-
+        <div class="container-fluid pt-3" style="height: calc(100% - 78px)">
             <div class="row">
                 <div class="col-12">
-                    <vehicle-summary
-                        v-for="vehicle in vehicles"
-                        :vehicle="vehicle"
-                        :key="vehicle.name"
-                        @edit="onVehicleEdit"
-                        @delete="onVehicleDelete"
-                    />
+                    <card-container>
+                        <!-- Sexy HR -->
+                        <div class="row">
+                            <div class="col-12 pb-2">
+                                <!-- <hr style="height: 4px; border: none;" class="bg-light"> -->
+                                <span class="text-muted">VEHICLES</span>
+                            </div>
+                        </div>
+
+                        <div class="row pb-2">
+                            <div class="col-10 col-lg-11">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <span>Nickname</span>
+                                    </div>
+
+                                    <div class="col-4 col-lg-3">
+                                        <span>Year/Make/Model</span>
+                                    </div>
+
+                                    <div class="col-3 col-lg-2">
+                                        <span>Mileage</span>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <span>Color</span>
+                                    </div>
+
+                                    <div class="col-2 d-none d-lg-block">
+                                        <span>VIN</span>
+                                    </div>
+
+                                    <div class="col-1 d-none d-lg-block">
+                                        <span>Plate</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 py-0 my-0">
+                                <hr class="my-0 py-0 bg-secondary" style="height 4px;">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <vehicle-summary
+                                    v-for="vehicle in vehicles"
+                                    :vehicle="vehicle"
+                                    :key="vehicle.name"
+                                    @edit="onVehicleEdit"
+                                    @delete="onVehicleDelete"
+                                />
+                            </div>
+                        </div>
+                    </card-container>
                 </div>
             </div>
         </div>
@@ -120,6 +116,7 @@ import AddVehiclePopup from '@/vehicle-system/vehicle/components/popups/add-vehi
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import GarageBar from '@/vehicle-system/components/garage-bar.vue';
+import CardContainer from '@/core/components/cards/card-container.vue';
 
 /**
  * Garage page.
@@ -132,6 +129,7 @@ import GarageBar from '@/vehicle-system/components/garage-bar.vue';
         AddVehiclePopup,
         ErrorPopup,
         GarageBar,
+        CardContainer,
     },
 })
 export default class Vehicles extends VehicleMixin {
