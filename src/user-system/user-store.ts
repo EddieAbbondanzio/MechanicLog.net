@@ -12,6 +12,7 @@ import { UserService } from './services/user/user-service';
 import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
 import { AuthService } from './services/auth/auth-service';
+import { UserFeedback } from './entities/user-feedback';
 
 /**
  * Store for managing users.
@@ -163,5 +164,13 @@ export class UserStore extends StoreModule {
      */
     public async updatePassword(passwordUpdate: UserPasswordUpdate): Promise<Maybe<HttpError>> {
         return this._authService.updatePassword(User.CURRENT!, passwordUpdate);
+    }
+
+    /**
+     * Send some feedback to the backend.
+     * @param feedback The feedback to send.
+     */
+    public async sendFeedback(feedback: UserFeedback): Promise<Maybe<HttpError>> {
+        return this._userService.sendFeedback(User.CURRENT!, feedback);
     }
 }

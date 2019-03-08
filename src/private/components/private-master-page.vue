@@ -9,7 +9,7 @@
         <user-bar/>
         <side-bar/>
 
-        <div class="d-inline-block align-top" style="width: calc(100% - 256px); height: calc(100vh - 64px);">
+        <div class="d-inline-block align-top bg-light" style="width: calc(100% - 256px); height: calc(100vh - 64px);">
             <router-view></router-view>
         </div>
 

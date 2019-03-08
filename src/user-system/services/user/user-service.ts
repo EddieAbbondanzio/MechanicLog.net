@@ -4,6 +4,7 @@ import { HttpResponse } from '@/core/http/http-response';
 import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
+import { UserFeedback } from '@/user-system/entities/user-feedback';
 
 /**
  * Service for everything related to users.
@@ -32,6 +33,21 @@ export class UserService extends Service {
      */
     public async update(user: User): Promise<Maybe<HttpError>> {
         const apiResponse = await this._httpClient.patch('/v1/user/name', { name: user.name, email: user.email }, user.authToken);
+
+        if (apiResponse.isLeft()) {
+            return Maybe.none();
+        } else {
+            return Maybe.some(apiResponse.getRight());
+        }
+    }
+
+    /**
+     * Send a feedback message to the backend, and email the founder.
+     * @param user The user sending the feedback.
+     * @param feedback The feedback to send.
+     */
+    public async sendFeedback(user: User, feedback: UserFeedback): Promise<Maybe<HttpError>> {
+        const apiResponse = await this._httpClient.post('/v1/user/feedback', feedback, user.authToken);
 
         if (apiResponse.isLeft()) {
             return Maybe.none();

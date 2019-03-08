@@ -53,6 +53,14 @@ export const privateRoutes: RouteConfig = {
                         authRequired: true,
                     },
                 },
+                {
+                    path: 'feedback',
+                    name: 'feedback',
+                    component: () => import('./views/feedback.vue'),
+                    meta: {
+                        authRequired: true,
+                    },
+                },
             ],
         },
     ],
