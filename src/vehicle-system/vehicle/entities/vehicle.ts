@@ -7,6 +7,11 @@ import { Nullable } from '@/core/common/monads/nullable';
  * A motor vehicle.
  */
 export class Vehicle {
+    public static MIN_MODEL_YEAR = 1900;
+    public static MAX_MODEL_YEAR = new Date().getFullYear() + 1;
+    public static MAX_LICENSE_PLATE_LENGTH = 10;
+    public static MAX_VIN_LENGTH = 10;
+
     /**
      * The unique ID of the vehicle.
      */
@@ -87,6 +92,7 @@ export class Vehicle {
             year: this.year,
             make: this.make.id,
             model: this.model.id,
+            name: this.name,
             vin: this.vin,
             licensePlate: this.licensePlate,
             mileage: this.mileage,

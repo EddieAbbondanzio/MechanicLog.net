@@ -22,7 +22,7 @@
                                 v-model.number="year"
                                 name="addVehicleYear"
                                 data-vv-scope="tab1"
-                                v-validate="'required|numeric'"
+                                v-validate="`required|numeric|min_value:${VEHICLE_MIN_MODEL_YEAR}|max_value:${VEHICLE_MAX_MODEL_YEAR}`"
                             >
                             <b-form-invalid-feedback
                                 class="d-block"
@@ -76,8 +76,11 @@
                                 v-model="vin"
                                 name="addVehicleVin"
                                 data-vv-scope="tab2"
-                                v-validate="'max:17'"
+                                v-validate="`max:${VEHICLE_VIN_MAX_LENGTH}`"
                             />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab2.addVehicleVin') }}</b-form-invalid-feedback>
                         </b-form-group>
 
                         <!-- License Plate -->
@@ -90,8 +93,11 @@
                                 v-model="plate"
                                 name="addVehiclePlate"
                                 data-vv-scope="tab2"
-                                v-validate="'max:10'"
+                                v-validate="`max:${VEHICLE_LICENSE_PLATE_MAX_LENGTH}`"
                             />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab2.addVehiclePlate') }}</b-form-invalid-feedback>
                         </b-form-group>
                     </b-tab>
 
@@ -99,7 +105,10 @@
                     <b-tab title="Details" class="py-4" @click="onTabClick">
                         <!-- Current Mileage -->
                         <b-form-group>
-                            <label for="add-vehicle-mileage-textbox">Current Mileage</label>
+                            <label
+                                for="add-vehicle-mileage-textbox"
+                                class="required"
+                            >Current Mileage</label>
                             <b-form-input
                                 type="text"
                                 id="add-vehicle-mileage-textbox"
@@ -107,8 +116,11 @@
                                 v-model.number="mileage"
                                 name="addVehicleMileage"
                                 data-vv-scope="tab3"
-                                v-validate="'numeric'"
+                                v-validate="'required|integer|min_value:0'"
                             />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab3.addVehicleMileage') }}</b-form-invalid-feedback>
                         </b-form-group>
 
                         <!-- Color -->
@@ -123,6 +135,9 @@
                                 data-vv-scope="tab3"
                                 v-validate="'max:16'"
                             />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab3.addVehicleColor') }}</b-form-invalid-feedback>
                         </b-form-group>
 
                         <!-- Nickname -->
@@ -137,6 +152,9 @@
                                 data-vv-scope="tab3"
                                 v-validate="'max:32'"
                             />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab3.addVehicleName') }}</b-form-invalid-feedback>
                         </b-form-group>
                     </b-tab>
                 </b-tabs>
@@ -165,12 +183,7 @@
             >Next</b-button>
 
             <!-- Create Button -->
-            <b-button
-                variant="primary"
-                class="float-right"
-                @click="onAddClick($event)"
-                v-else
-            >Add</b-button>
+            <b-button variant="primary" class="float-right" @click="onAddClick($event)" v-else>Add</b-button>
         </div>
     </popup-container>
 </template>
@@ -203,6 +216,11 @@ export default class AddVehiclePopup extends VehicleMixin {
     public $refs!: {
         popup: PopupContainer;
     };
+
+    public VEHICLE_MAX_MODEL_YEAR: number = Vehicle.MAX_MODEL_YEAR;
+    public VEHICLE_MIN_MODEL_YEAR: number = Vehicle.MIN_MODEL_YEAR;
+    public VEHICLE_VIN_MAX_LENGTH = Vehicle.MAX_VIN_LENGTH;
+    public VEHICLE_LICENSE_PLATE_MAX_LENGTH = Vehicle.MAX_LICENSE_PLATE_LENGTH;
 
     /**
      * The current step the user is on.
@@ -273,6 +291,8 @@ export default class AddVehiclePopup extends VehicleMixin {
             custom: {
                 addVehicleYear: {
                     required: 'Vehicle year is required.',
+                    min_value: `Vehicle year must be greater than ${Vehicle.MIN_MODEL_YEAR}.`,
+                    max_value: `Vehicle year must be less than ${Vehicle.MAX_MODEL_YEAR}.`,
                 },
                 addVehicleMake: {
                     required: 'Vehicle make is required.',
@@ -282,6 +302,17 @@ export default class AddVehiclePopup extends VehicleMixin {
                     required: 'Vehicle model is required.',
                     min_value: 'Vehicle model must be from the provided list.',
                 },
+                addVehicleMileage: {
+                    required: 'Vehicle mileage is required.',
+                    integer: 'Vehicle mileage must be an integer',
+                    min_value: 'Vehicle mileage must be greater than 0.',
+                },
+                addVehicleVin: {
+                    max: 'Vehicle Identification Number must be 17 characters or less.' 
+                },
+                addVehiclePlate: {
+                    max: 'License plate number must be 10 characters or less.'
+                }
             },
         });
 
@@ -357,6 +388,10 @@ export default class AddVehiclePopup extends VehicleMixin {
      * Event handler for when the user clicks the create button.
      */
     public async onAddClick(): Promise<void> {
+        if (!(await this.$validator.validateAll(`tab${this.activeStep + 1}`))) {
+            return;
+        }
+
         const make = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make)!;
         const model = (await this.$vehicleModelStore.getModelsForMake(make)).getLeft().find((m) => m.name === this.model)!;
 
