@@ -19,6 +19,7 @@
                                 class="form-control"
                                 id="add-vehicle-year-textbox"
                                 placeholder="2009"
+                                ref="yearTextbox"
                                 v-model.number="year"
                                 name="addVehicleYear"
                                 data-vv-scope="tab1"
@@ -73,6 +74,7 @@
                                 type="text"
                                 id="add-vehicle-vin-textbox"
                                 placeholder="VIN or Serial Number"
+                                ref="vinTextbox"
                                 v-model="vin"
                                 name="addVehicleVin"
                                 data-vv-scope="tab2"
@@ -113,6 +115,7 @@
                                 type="text"
                                 id="add-vehicle-mileage-textbox"
                                 placeholder="49200"
+                                ref="mileageTextbox"
                                 v-model.number="mileage"
                                 name="addVehicleMileage"
                                 data-vv-scope="tab3"
@@ -170,6 +173,7 @@
             <b-button
                 variant="success"
                 class="float-left"
+                tabindex="-1"
                 @click="onPreviousClick"
                 v-if="activeStep > 0"
             >Previous</b-button>
@@ -215,6 +219,9 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 export default class AddVehiclePopup extends VehicleMixin {
     public $refs!: {
         popup: PopupContainer;
+        yearTextbox: HTMLInputElement;
+        vinTextbox: HTMLInputElement;
+        mileageTextbox: HTMLInputElement;
     };
 
     public VEHICLE_MAX_MODEL_YEAR: number = Vehicle.MAX_MODEL_YEAR;
@@ -308,11 +315,11 @@ export default class AddVehiclePopup extends VehicleMixin {
                     min_value: 'Vehicle mileage must be greater than 0.',
                 },
                 addVehicleVin: {
-                    max: 'Vehicle Identification Number must be 17 characters or less.' 
+                    max: 'Vehicle Identification Number must be 17 characters or less.',
                 },
                 addVehiclePlate: {
-                    max: 'License plate number must be 10 characters or less.'
-                }
+                    max: 'License plate number must be 10 characters or less.',
+                },
             },
         });
 
@@ -382,6 +389,18 @@ export default class AddVehiclePopup extends VehicleMixin {
         if (await this.$validator.validateAll(`tab${this.activeStep + 1}`)) {
             this.activeStep++;
         }
+
+        this.$nextTick(function() {
+            switch (this.activeStep) {
+                case 1:
+                    this.$refs.vinTextbox.focus();
+                    break;
+
+                case 2:
+                    this.$refs.mileageTextbox.focus();
+                    break;
+            }
+        });
     }
 
     /**
@@ -416,9 +435,7 @@ export default class AddVehiclePopup extends VehicleMixin {
      */
     public show(): void {
         this.reset();
-
         this.$refs.popup.show();
-        this.$forceUpdate();
     }
 
     /**

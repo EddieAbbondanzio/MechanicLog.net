@@ -60,7 +60,7 @@
                                 </b-form-group>
 
                                 <b-form-group class="pt-3">
-                                    <b-button variant="warning" @click="onResetClick">Reset</b-button>
+                                    <b-button variant="outline-secondary" @click="onResetClick">Reset</b-button>
 
                                     <b-button
                                         variant="success"

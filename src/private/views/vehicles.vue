@@ -188,8 +188,6 @@ export default class Vehicles extends VehicleMixin {
         if (result.hasSome()) {
             this.$refs.errorPopup.show(result.getSome().message);
         }
-
-        this.$forceUpdate();
     }
 
     /**

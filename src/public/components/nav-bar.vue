@@ -34,6 +34,10 @@
         </div>
 
         <div class="d-inline-block nav-buttons float-right">
+            <a href="http://blog.mechaniclog.net" class="text-light mx-2 nav-link d-inline-block">
+                Blog
+            </a>
+
             <router-link to="/login">
                 <b-btn variant="outline-light" class="rounded mr-2" @click="$emit('login')">Login</b-btn>
             </router-link>
