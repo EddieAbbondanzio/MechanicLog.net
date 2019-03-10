@@ -1,18 +1,266 @@
+
+
+
 <template>
-    <div class="px-2">
-        <div class="pt-4 pb-2">
-            <h4>Account Settings</h4>
-            <hr class="my-0 py-0">
+    <div class="h-100">
+        <error-popup ref="errorPopup"/>
+
+        <div>
+            <div
+                class="w-100 bg-white shadow px-3 py-3 border-bottom align-middle d-flex align-items-center"
+                style="height:78px;"
+            >
+                <h3 class="py-0 my-0 d-inline-block">Settings</h3>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 mx-0 px-0">
+                    <loading-bar v-if="isLoading"/>
+                </div>
+            </div>
+
+            <div class="row py-3">
+                <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
+                    <card-container>
+                        <h4>Account Info</h4>
+                        <hr class="pt-0 mt-0">
+
+                        <b-form>
+                            <div class="form-group">
+                                <label class="required" for="name-textbox">Name</label>
+                                <input
+                                    v-model="name"
+                                    type="text"
+                                    class="form-control"
+                                    id="name-textbox"
+                                    placeholder="John Smith"
+                                    name="name"
+                                    data-vv-scope="accountInfo"
+                                    v-validate="'required|max:64'"
+                                >
+                                <b-form-invalid-feedback>{{ errors.first('accountInfo.name') }}</b-form-invalid-feedback>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="required" for="email-textbox">Email</label>
+                                <input
+                                    v-model="email"
+                                    type="email"
+                                    class="form-control"
+                                    id="email-textbox"
+                                    placeholder="Email@domain.com"
+                                    name="email"
+                                    data-vv-scope="accountInfo"
+                                    v-validate="'required|email|max:64'"
+                                >
+                                <b-form-invalid-feedback>{{ errors.first('accountInfo.email') }}</b-form-invalid-feedback>
+                            </div>
+                        </b-form>
+                    </card-container>
+                </div>
+            </div>
+
+            <div class="row pb-3">
+                <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
+                    <card-container>
+                        <h4>Password</h4>
+                        <hr class="pt-0 mt-0">
+
+                        <b-form>
+                            <b-form-group>
+                                <label for="new-password-textbox">New Password</label>
+                                <input
+                                    id="new-password-textbox"
+                                    class="form-control"
+                                    type="password"
+                                    placeholder="********"
+                                    ref="newPassword"
+                                    name="newPassword"
+                                    v-model="newPassword"
+                                    data-vv-scope="password"
+                                    v-validate="'required|min:8'"
+                                >
+                                <b-form-invalid-feedback>{{ errors.first('password.newPassword') }}</b-form-invalid-feedback>
+                            </b-form-group>
+
+                            <b-form-group>
+                                <label for="confirm-password-textbox">Confirm New Password</label>
+                                <input
+                                    id="confirm-password-textbox"
+                                    class="form-control"
+                                    type="password"
+                                    placeholder="********"
+                                    v-model="confirmNewPassword"
+                                    name="confirmNewPassword"
+                                    data-vv-scope="password"
+                                    v-validate="'required|min:8|confirmed:newPassword'"
+                                >
+                                <b-form-invalid-feedback>{{ errors.first('password.confirmNewPassword') }}</b-form-invalid-feedback>
+                            </b-form-group>
+
+                            <b-form-group v-if="newPassword != null && newPassword.length > 0">
+                                <label
+                                    class="required"
+                                    for="current-password-textbox"
+                                >Current Password</label>
+                                <input
+                                    id="current-password-textbox"
+                                    class="form-control"
+                                    type="password"
+                                    placeholder="********"
+                                    v-model="currentPassword"
+                                    name="currentPassword"
+                                    data-vv-scope="password"
+                                    v-validate="'required'"
+                                >
+                                <b-form-invalid-feedback>{{ errors.first('password.currentPassword') }}</b-form-invalid-feedback>
+                            </b-form-group>
+                        </b-form>
+                    </card-container>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
+                    <card-container class="clearfix">
+                        <b-btn variant="outline-secondary" @click="onResetClick" :disabled="isLoading">Reset</b-btn>
+                        <b-btn class="float-right" variant="success" @click="onUpdateClick" :disabled="isLoading">{{ isLoading ? 'Updating' : 'Update' }}</b-btn>
+                    </card-container>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
+import CardContainer from '@/core/components/cards/card-container.vue';
+import { User } from '@/user-system/entities/user';
+import { Nullable } from '@/core/common/monads/nullable';
+import { UserMixin } from '@/user-system/user-mixin';
+import LoadingBar from '@/core/components/ux/loading-bar.vue';
 
+/**
+ * Settings page for updating the user.
+ */
 @Component({
     name: 'settings-page',
-    components: {},
+    components: {
+        CardContainer,
+        ErrorPopup,
+        LoadingBar,
+    },
 })
-export default class Settings extends Vue {}
+export default class Settings extends UserMixin {
+    /**
+     * Component references
+     */
+    public $refs!: {
+        errorPopup: ErrorPopup;
+    };
+
+    /**
+     * The current name of the user.
+     */
+    public name: string = User.CURRENT!.name;
+
+    /**
+     * The contact email of the user.
+     */
+    public email: string = User.CURRENT!.email;
+
+    /**
+     * The new password they want.
+     */
+    public newPassword: Nullable<string> = null;
+
+    /**
+     * Confirmation of the new password.
+     */
+    public confirmNewPassword: Nullable<string> = null;
+
+    /**
+     * Their current password for authentication.
+     */
+    public currentPassword: Nullable<string> = null;
+
+    /**
+     * If the form is loading.
+     */
+    public isLoading: boolean = false;
+
+    /**
+     * Prepare the component for use when generated.
+     */
+    public async created(): Promise<void> {
+        this.$validator.localize('en', {
+            custom: {
+                name: {
+                    required: 'Name is required.',
+                    max: 'Name must be 64 characters or less.'
+                },
+                email: {
+                    required: 'Email is required.',
+                    email: 'Email must be valid.',
+                    max: 'Email must be 64 characters or less.'
+                },
+                newPassword: {
+                    required: 'New password is required.',
+                    min: 'New password must be 8 characters or more.'
+                },
+                confirmNewPassword: {
+                    required: 'Confirmation password is required.',
+                    min: 'Confirmation password must be 8 characters or more.',
+                    confirmed: 'Confirmation password does not match.'
+                },
+                currentPassword: {
+                    required: 'Current password is required.',
+                }
+            },
+        });
+    }
+
+    /**
+     * Event handler for sending off the update request.
+     */
+    public async onUpdateClick(): Promise<void> {
+        if (!(await this.$validator.validateAll('accountInfo'))) {
+            return;
+        }
+
+        this.isLoading = true;
+        const infoResult = await this.$userStore.updateInfo({ name: this.name, email: this.email });
+
+        if (infoResult.hasSome()) {
+            this.$refs.errorPopup.show(infoResult.getSome().message);
+            this.isLoading = false;
+            return;
+        }
+
+        if (this.newPassword != null) {
+            const passResult = await this.$userStore.updatePassword({ currentPassword: this.currentPassword!, newPassword: this.newPassword! });
+
+            if (passResult.hasSome()) {
+                this.$refs.errorPopup.show(passResult.getSome().message);
+            }
+        }
+
+        this.isLoading = false;
+    }
+
+    /**
+     * Event handler to reset the form back to it's initial state.
+     */
+    public async onResetClick(): Promise<void> {
+        this.$validator.reset();
+        this.name = User.CURRENT!.name;
+        this.email = User.CURRENT!.email;
+        this.newPassword = null;
+        this.confirmNewPassword = null;
+        this.currentPassword = null;
+    }
+}
 </script>

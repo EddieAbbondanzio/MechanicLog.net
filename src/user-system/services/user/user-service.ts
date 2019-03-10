@@ -32,7 +32,7 @@ export class UserService extends Service {
      * @param newName Their new full name.
      */
     public async update(user: User): Promise<Maybe<HttpError>> {
-        const apiResponse = await this._httpClient.patch('/v1/user/name', { name: user.name, email: user.email }, user.authToken);
+        const apiResponse = await this._httpClient.patch('/v1/user', { name: user.name, email: user.email }, user.authToken);
 
         if (apiResponse.isLeft()) {
             return Maybe.none();

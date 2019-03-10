@@ -37,11 +37,15 @@
                 >{{ currentUser.getFirstName() }}</span>
             </div>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <!-- <router-link class="dropdown-item" to="/settings">
+                <router-link class="dropdown-item py-2" to="/feedback">
+                    <material-icon icon="feedback" color="dark" class="align-bottom pr-2"/>
+                    <span class="align-middle">Feedback</span>
+                </router-link>
+                <router-link class="dropdown-item py-2" to="/settings">
                     <material-icon icon="settings" color="dark" class="align-bottom pr-2"/>
                     <span class="align-middle">Settings</span>
-                </router-link> -->
-                <router-link class="dropdown-item" to="/goodbye">
+                </router-link>
+                <router-link class="dropdown-item py-2" to="/goodbye">
                     <material-icon icon="exit_to_app" color="dark" class="align-bottom pr-2"/>
                     <span class="align-middle">Log Out</span>
                 </router-link>

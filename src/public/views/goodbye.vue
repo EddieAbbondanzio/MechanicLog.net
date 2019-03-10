@@ -2,13 +2,6 @@
     <div>
         <form-container title="Goodbye!">
             <h3 class="text-center pb-5">Thank you for using MechanicLog.net!</h3>
-            
-            
-            <p class="text-center">
-                For any questions, concerns, or complaints
-                email the founder directly at:
-                <a href="mailto:me@eddiabbondanz.io" class="text-center">me@eddieabbondanz.io</a>
-            </p>
         </form-container>
     </div>
 </template>

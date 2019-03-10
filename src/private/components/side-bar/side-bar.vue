@@ -15,7 +15,6 @@
         
         <!-- <side-bar-button name="Dashboard" route="dashboard" icon="dashboard"/> -->
         <side-bar-button name="Garage" route="vehicles" icon="time_to_leave" />
-        <side-bar-button name="Feedback" route="feedback" icon="feedback" />
     </nav>
 </template>
 

@@ -24,6 +24,14 @@ export const privateRoutes: RouteConfig = {
             },
         },
         {
+            path: 'feedback',
+            name: 'feedback',
+            component: () => import('./views/feedback.vue'),
+            meta: {
+                authRequired: true,
+            },
+        },
+        {
             name: 'garage',
             path: '/garage',
             component: () =>
@@ -49,14 +57,6 @@ export const privateRoutes: RouteConfig = {
                     path: 'mechanics',
                     name: 'mechanics',
                     component: () => import('./views/mechanics.vue'),
-                    meta: {
-                        authRequired: true,
-                    },
-                },
-                {
-                    path: 'feedback',
-                    name: 'feedback',
-                    component: () => import('./views/feedback.vue'),
                     meta: {
                         authRequired: true,
                     },

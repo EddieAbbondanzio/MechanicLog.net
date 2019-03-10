@@ -12,6 +12,12 @@
         </div>
 
         <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 mx-0 px-0">
+                    <loading-bar v-if="isLoading"/>
+                </div>
+            </div>
+
             <div class="row py-3">
                 <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
                     <card-container>
@@ -60,7 +66,10 @@
                                 </b-form-group>
 
                                 <b-form-group class="pt-3">
-                                    <b-button variant="outline-secondary" @click="onResetClick">Reset</b-button>
+                                    <b-button
+                                        variant="outline-secondary"
+                                        @click="onResetClick"
+                                    >Reset</b-button>
 
                                     <b-button
                                         variant="success"
@@ -94,12 +103,14 @@ import { UserFeedbackType } from '@/user-system/entities/user-feedback-type';
 import { UserMixin } from '@/user-system/user-mixin';
 import { UserFeedback } from '@/user-system/entities/user-feedback';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
+import LoadingBar from '@/core/components/ux/loading-bar.vue';
 
 @Component({
     name: 'feedback',
     components: {
         CardContainer,
         ErrorPopup,
+        LoadingBar,
     },
 })
 export default class Feedback extends UserMixin {
@@ -121,6 +132,8 @@ export default class Feedback extends UserMixin {
     public message: string = '';
 
     public status: 'unsent' | 'sending' | 'sent' = 'unsent';
+
+    public isLoading: boolean = false;
 
     /**
      * Prepare the component for use when generated.
@@ -157,6 +170,7 @@ export default class Feedback extends UserMixin {
         }
 
         this.status = 'sending';
+        this.isLoading = true;
         const result = await this.$userStore.sendFeedback(new UserFeedback(this.type, this.message));
 
         if (result.hasSome()) {
@@ -166,6 +180,8 @@ export default class Feedback extends UserMixin {
             this.type = -1;
             this.message = '';
         }
+
+        this.isLoading = false;
     }
 }
 </script>
