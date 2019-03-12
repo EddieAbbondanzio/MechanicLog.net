@@ -11,4 +11,6 @@ export enum ServiceType {
     Mechanic,
     MaintenanceEvent,
     Logger,
+    Subscription,
+    SubscriptionPlan,
 }

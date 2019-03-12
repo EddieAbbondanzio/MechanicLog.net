@@ -16,6 +16,14 @@ export const privateRoutes: RouteConfig = {
             },
         },
         {
+            path: '/subscription',
+            name: 'subscription',
+            component: () => import('./views/subscription.vue'),
+            meta: {
+                authRequired: true,
+            },
+        },
+        {
             path: '/settings',
             name: 'settings',
             component: () => import('./views/settings.vue'),

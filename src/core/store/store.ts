@@ -6,6 +6,7 @@ import { VehicleStore } from '@/vehicle-system/vehicle/store/vehicle-store';
 import { config } from '../../../config';
 import { VehicleMakeStore } from '@/vehicle-system/vehicle/store/vehicle-make-store';
 import { VehicleModelStore } from '@/vehicle-system/vehicle/store/vehicle-model-store';
+import { SubscriptionStore } from '@/subscription-system/subscription-store';
 
 /**
  * State store for managing data from the backend.
@@ -30,6 +31,7 @@ export class Store {
         this.register(new VehicleStore());
         this.register(new VehicleMakeStore());
         this.register(new VehicleModelStore());
+        this.register(new SubscriptionStore());
     }
 
     /**
@@ -56,3 +58,4 @@ export class Store {
         this._modules[module.namespace] = module;
     }
 }
+

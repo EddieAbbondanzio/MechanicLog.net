@@ -4,6 +4,7 @@ import router from './router';
 import * as VueCookies from 'vue-cookies';
 import VeeValidate, { Validator } from 'vee-validate';
 import BootstrapVue from 'bootstrap-vue';
+import VueStripeCheckout from 'vue-stripe-checkout';
 import { phoneNumberVeeRule } from '@/core/validation/phone-number-vee-rule';
 import { zipCodeVeeRule } from './core/validation/zip-code-vee-rule';
 import { ServiceRegistry } from './core/services/service-registry';
@@ -25,6 +26,7 @@ Vue.use(VeeValidate, {
     events: 'blur',
 });
 Vue.use(BootstrapVue);
+Vue.use(VueStripeCheckout, 'pk_test_pAE8iUOuNnFxmQRYITJsHiiT');
 
 const v: Vue = new Vue({
     router,

@@ -192,6 +192,7 @@ export default class SignUpForm extends UserMixin {
             // Alert the user of what went wrong
             this.errorMessage = error.message;
             this.successMessage = '';
+            (this.$refs.button as FormSubmitButton).reset();
         }
 
         this.$forceUpdate();

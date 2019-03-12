@@ -57,7 +57,7 @@ export class AuthService extends Service {
         const apiResponse = await this._httpClient.post('/v1/auth/register', userReg);
 
         if (apiResponse.isLeft()) {
-            return Either.left(apiResponse.getLeft().data.authToken);
+            return Either.left(apiResponse.getLeft().data.token);
         } else {
             return Either.right(apiResponse.getRight());
         }

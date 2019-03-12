@@ -32,14 +32,16 @@
             >
                 <material-icon icon="person" size="lg" class="pr-2 user-icon" title="Logged in as"/>
                 <!-- Name of the User -->
-                <span
-                    class="user-name"
-                >{{ currentUser.getFirstName() }}</span>
+                <span class="user-name">{{ currentUser.getFirstName() }}</span>
             </div>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <router-link class="dropdown-item py-2" to="/feedback">
                     <material-icon icon="feedback" color="dark" class="align-bottom pr-2"/>
                     <span class="align-middle">Feedback</span>
+                </router-link>
+                <router-link class="dropdown-item py-2" to="/subscription">
+                    <material-icon icon="card_membership" color="dark" class="align-bottom pr-2"/>
+                    <span class="align-middle">Subscription</span>
                 </router-link>
                 <router-link class="dropdown-item py-2" to="/settings">
                     <material-icon icon="settings" color="dark" class="align-bottom pr-2"/>
