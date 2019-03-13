@@ -11,7 +11,7 @@
 <template>
   <div class="row" style="height: 128px;">
     <div class="col-12 text-center" style="line-height: 128px;">
-      <span class="text-light">© {{ year }} Eddie Abbondanzio</span>
+      <span class="text-light">© {{ year }} MechanicLog</span>
     </div>
   </div>
 </template>
