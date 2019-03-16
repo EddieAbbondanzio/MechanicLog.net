@@ -203,6 +203,7 @@ import { Nullable } from '@/core/common/monads/nullable';
 import AutoComplete from '@/core/components/inputs/auto-complete.vue';
 import { VehicleModel } from '@/vehicle-system/vehicle/entities/vehicle-model';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { User } from '@/user-system/entities/user';
 
 /**
  * Popup to add a new vehicle for the user.

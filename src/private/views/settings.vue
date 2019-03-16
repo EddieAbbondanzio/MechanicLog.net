@@ -151,6 +151,7 @@ import { User } from '@/user-system/entities/user';
 import { Nullable } from '@/core/common/monads/nullable';
 import { UserMixin } from '@/user-system/user-mixin';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
+import * as HttpStatusCodes from 'http-status-codes';
 
 /**
  * Settings page for updating the user.
@@ -245,7 +246,14 @@ export default class Settings extends UserMixin {
         this.isLoading = false;
 
         if (this.newPassword != null) {
-            await this.$userStore.updatePassword({ currentPassword: this.currentPassword!, newPassword: this.newPassword! });
+            try {
+                await this.$userStore.updatePassword({ currentPassword: this.currentPassword!, newPassword: this.newPassword! });
+                this.newPassword = null;
+                this.confirmNewPassword = null;
+                this.currentPassword = null;
+            } catch (error) {
+                this.$refs.errorPopup.show(error.message);
+            }
         }
 
         this.isLoading = false;

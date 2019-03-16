@@ -13,7 +13,7 @@ export class UserService extends Service {
      */
     public async getUserFromToken(authToken: string): Promise<User> {
         const apiResponse = await this._httpClient.get('/v1/user', authToken);
-        return User.fromRaw(authToken, apiResponse);
+        return User.fromRaw(authToken, apiResponse.data);
     }
 
     /**

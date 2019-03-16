@@ -15,7 +15,6 @@ export class VehicleMaintenanceEventService extends Service {
      */
     public async getAllForVehicle(user: User, vehicle: Vehicle): Promise<MaintenanceEvent[]> {
         const apiResponse = await this._httpClient.get(`/v1/vehicle/${vehicle.id}/maintenance`, user.authToken);
-
         const events = await Promise.all(apiResponse.data.map((m: any) => MaintenanceEvent.fromRaw(m)));
         return (events as unknown) as MaintenanceEvent[];
     }

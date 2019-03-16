@@ -10,7 +10,12 @@
             <div class="d-inline-block align-middle">
                 <div class="d-inline-block pb2 pb-sm-0 pr-2">
                     <!-- Button on screen -->
-                    <b-btn variant="success" @click="onAddClick" style="height: 40px">
+                    <b-btn
+                        variant="success"
+                        @click="onAddClick"
+                        style="height: 40px"
+                        :disabled="canAddVehicle"
+                    >
                         <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
                         <span style="vertical-align: middle;">Add Vehicle</span>
                     </b-btn>
@@ -117,6 +122,7 @@ import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
+import { User } from '@/user-system/entities/user';
 
 /**
  * Garage page.
@@ -169,6 +175,13 @@ export default class Vehicles extends VehicleMixin {
                 this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.mileage > b.mileage ? -1 : 1));
                 break;
         }
+    }
+
+    /**
+     * If the user can add any new vehicles.
+     */
+    public canAddVehicle(): boolean {
+        return this.vehicles.length < User.CURRENT!.subscription.plan.vehicleCount;
     }
 
     public onAddClick(): void {

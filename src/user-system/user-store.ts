@@ -12,6 +12,7 @@ import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
 import { AuthService } from './services/auth/auth-service';
 import { UserFeedback } from './entities/user-feedback';
+import { SubscriptionService } from '@/subscription-system/services/subscription-service';
 
 /**
  * Store for managing users.
@@ -32,10 +33,16 @@ export class UserStore extends StoreModule {
      */
     private _authService: AuthService;
 
+    /**
+     * The subscription service.
+     */
+    private _subscriptionService: SubscriptionService;
+
     constructor() {
         super();
         this._userService = ServiceRegistry.resolve<UserService>(ServiceType.User);
         this._authService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
+        this._subscriptionService = ServiceRegistry.resolve<SubscriptionService>(ServiceType.Subscription);
     }
 
     /**
@@ -50,6 +57,8 @@ export class UserStore extends StoreModule {
         const user = await this._userService.getUserFromToken(token);
 
         User.CURRENT = user;
+        user.subscription = await this._subscriptionService.getSubscription();
+
         return user;
     }
 
@@ -64,6 +73,8 @@ export class UserStore extends StoreModule {
         const user = await this._userService.getUserFromToken(token);
 
         User.CURRENT = user;
+        user.subscription = await this._subscriptionService.getSubscription();
+
         return user;
     }
 
@@ -83,6 +94,8 @@ export class UserStore extends StoreModule {
         const user = await this._userService.getUserFromToken(token);
 
         User.CURRENT = user;
+        user.subscription = await this._subscriptionService.getSubscription();
+
         return user;
     }
 

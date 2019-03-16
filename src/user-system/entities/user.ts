@@ -1,4 +1,5 @@
 import { Nullable } from '@/core/common/monads/nullable';
+import { Subscription } from '@/subscription-system/entities/subscription';
 
 /**
  * User of the site.
@@ -28,6 +29,11 @@ export class User {
      * If the user has verified their email.
      */
     public isVerified: boolean;
+
+    /**
+     * The subscription of the user.
+     */
+    public subscription!: Subscription;
 
     /**
      * Create a new user.

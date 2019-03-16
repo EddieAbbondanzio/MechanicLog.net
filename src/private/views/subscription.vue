@@ -41,6 +41,12 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-3 text-muted">Vehicle Limit</div>
+                                <div class="col-9">
+                                    <span>{{ subscription.plan.vehicleCount }}</span>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-3 text-muted">Status</div>
                                 <div class="col-9">
                                     <span>{{ getStatusToString() }}</span>
@@ -109,6 +115,7 @@ export default class Susbcription extends SubscriptionMixin {
 
     public async created(): Promise<void> {
         this.subscription = await this.$subscriptionStore.getSubscription();
+        console.log(this.subscription);
     }
 
     /**

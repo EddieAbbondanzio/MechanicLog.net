@@ -52,7 +52,7 @@
                             <span class="display-4 text-success">$</span>
                             <span
                                 class="display-3 text-dark"
-                            >{{ stats != null ? stats.monthToDateCost.toFixed(2) : 0 }}</span>
+                            >{{ stats != null ? stats.monthToDateCost.toFixed(2) : '0.00' }}</span>
                         </div>
                     </div>
                 </card-container>
@@ -71,7 +71,7 @@
                             <span class="display-4 text-success">$</span>
                             <span
                                 class="display-3 text-dark"
-                            >{{ stats != null ? stats.yearToDateCost.toFixed(2) : 0 }}</span>
+                            >{{ stats != null ? stats.yearToDateCost.toFixed(2) : '0.00' }}</span>
                         </div>
                     </div>
                 </card-container>
