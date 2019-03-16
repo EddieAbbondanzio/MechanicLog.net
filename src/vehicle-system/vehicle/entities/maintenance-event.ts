@@ -6,9 +6,6 @@ import { ServiceType } from '@/core/services/service-type';
 import { User } from '@/user-system/entities/user';
 import { MechanicStore } from '@/vehicle-system/mechanic/mechanic-store';
 import { Store } from '@/core/store/store';
-import { Nullable } from '@/core/common/monads/nullable';
-import { HttpError } from '@/core/http/service-error';
-import { Either } from '@/core/common/monads/either';
 
 /**
  * Maintenance event for a vehicle.
@@ -83,14 +80,9 @@ export class MaintenanceEvent {
      * Rebuild the maintenance event from it's raw object.
      * @param raw The raw object to rebuild it from.
      */
-    public static async fromRaw(raw: any): Promise<Either<MaintenanceEvent, HttpError>> {
+    public static async fromRaw(raw: any): Promise<MaintenanceEvent> {
         const mechanicStore: MechanicStore = Store.resolve<MechanicStore>('mechanic');
-        const mechanic: Either<Nullable<Mechanic>, HttpError> = await mechanicStore.getMechanic(raw.mechanicId);
-
-        // Error out
-        if (mechanic.isRight()) {
-            return Either.right(mechanic.getRight());
-        }
+        const mechanic = await mechanicStore.getMechanic(raw.mechanicId);
 
         const services = [];
 
@@ -99,14 +91,14 @@ export class MaintenanceEvent {
             services.push(await MaintenanceService.fromRaw(service));
         }
 
-        const event = new MaintenanceEvent(raw.mileage, new Date(raw.date), mechanic.getLeft()!, services);
+        const event = new MaintenanceEvent(raw.mileage, new Date(raw.date), mechanic!, services);
         event.id = raw.id;
         event.userId = raw.userId;
         event.vehicleId = raw.vehicleId;
         event.totalCost = raw.totalCost;
         event.label = raw.label;
 
-        return Either.left(event);
+        return event;
     }
 
     /**

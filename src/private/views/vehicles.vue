@@ -144,14 +144,7 @@ export default class Vehicles extends VehicleMixin {
     public vehicles: Vehicle[] = [];
 
     public async mounted(): Promise<void> {
-        (await this.$vehicleStore.getVehicles()).do(
-            async (vehicles) => {
-                this.vehicles = vehicles;
-            },
-            async (error) => {
-                this.vehicles = [];
-            }
-        );
+        this.vehicles = await this.$vehicleStore.getVehicles();
     }
     /**
      * Event handler to process when the user wants to change how their ordering
@@ -183,11 +176,7 @@ export default class Vehicles extends VehicleMixin {
     }
 
     public async onVehicleAdd(vehicle: Vehicle): Promise<void> {
-        const result = await this.$vehicleStore.addVehicle(vehicle);
-
-        if (result.hasSome()) {
-            this.$refs.errorPopup.show(result.getSome().message);
-        }
+        await this.$vehicleStore.addVehicle(vehicle);
     }
 
     /**

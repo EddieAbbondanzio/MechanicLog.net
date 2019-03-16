@@ -125,8 +125,17 @@
             <div class="row">
                 <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
                     <card-container class="clearfix">
-                        <b-btn variant="outline-secondary" @click="onResetClick" :disabled="isLoading">Reset</b-btn>
-                        <b-btn class="float-right" variant="success" @click="onUpdateClick" :disabled="isLoading">{{ isLoading ? 'Updating' : 'Update' }}</b-btn>
+                        <b-btn
+                            variant="outline-secondary"
+                            @click="onResetClick"
+                            :disabled="isLoading"
+                        >Reset</b-btn>
+                        <b-btn
+                            class="float-right"
+                            variant="success"
+                            @click="onUpdateClick"
+                            :disabled="isLoading"
+                        >{{ isLoading ? 'Updating' : 'Update' }}</b-btn>
                     </card-container>
                 </div>
             </div>
@@ -200,25 +209,25 @@ export default class Settings extends UserMixin {
             custom: {
                 name: {
                     required: 'Name is required.',
-                    max: 'Name must be 64 characters or less.'
+                    max: 'Name must be 64 characters or less.',
                 },
                 email: {
                     required: 'Email is required.',
                     email: 'Email must be valid.',
-                    max: 'Email must be 64 characters or less.'
+                    max: 'Email must be 64 characters or less.',
                 },
                 newPassword: {
                     required: 'New password is required.',
-                    min: 'New password must be 8 characters or more.'
+                    min: 'New password must be 8 characters or more.',
                 },
                 confirmNewPassword: {
                     required: 'Confirmation password is required.',
                     min: 'Confirmation password must be 8 characters or more.',
-                    confirmed: 'Confirmation password does not match.'
+                    confirmed: 'Confirmation password does not match.',
                 },
                 currentPassword: {
                     required: 'Current password is required.',
-                }
+                },
             },
         });
     }
@@ -232,20 +241,11 @@ export default class Settings extends UserMixin {
         }
 
         this.isLoading = true;
-        const infoResult = await this.$userStore.updateInfo({ name: this.name, email: this.email });
-
-        if (infoResult.hasSome()) {
-            this.$refs.errorPopup.show(infoResult.getSome().message);
-            this.isLoading = false;
-            return;
-        }
+        await this.$userStore.updateInfo({ name: this.name, email: this.email });
+        this.isLoading = false;
 
         if (this.newPassword != null) {
-            const passResult = await this.$userStore.updatePassword({ currentPassword: this.currentPassword!, newPassword: this.newPassword! });
-
-            if (passResult.hasSome()) {
-                this.$refs.errorPopup.show(passResult.getSome().message);
-            }
+            await this.$userStore.updatePassword({ currentPassword: this.currentPassword!, newPassword: this.newPassword! });
         }
 
         this.isLoading = false;

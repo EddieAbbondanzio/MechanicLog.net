@@ -1,7 +1,6 @@
 import { StoreModule } from '@/core/store/store-module';
 import { StoreModuleNamespace } from '@/core/store/store-module-namespace';
 import { Vehicle } from '../entities/vehicle';
-import { HttpError } from '@/core/http/service-error';
 import { Either } from '@/core/common/monads/either';
 import { Maybe } from '@/core/common/monads/maybe';
 import { User } from '@/user-system/entities/user';
@@ -51,98 +50,66 @@ export class VehicleStore extends StoreModule {
         this._statsCache = {};
     }
 
-    public async getVehicle(id: number): Promise<Either<Nullable<Vehicle>, HttpError>> {
+    public async getVehicle(id: number): Promise<Nullable<Vehicle>> {
         const vehicles = await this.getVehicles();
-
-        if (vehicles.isRight()) {
-            return Either.right(vehicles.getRight());
-        } else {
-            return Either.left(vehicles.getLeft().find((v) => v.id === id) || null);
-        }
+        return vehicles.find((v) => v.id === id) || null;
     }
 
     /**
      * Get all the vehicles of the user.
      */
-    public async getVehicles(): Promise<Either<Vehicle[], HttpError>> {
+    public async getVehicles(): Promise<Vehicle[]> {
         if (this._vehicleCache == null) {
-            const apiResponse = await this._vehicleService.getAllVehiclesForUser(User.CURRENT!);
-
-            // If we got back good data, return it to the user.
-            if (apiResponse.isLeft()) {
-                this._vehicleCache = apiResponse.getLeft();
-            } else {
-                return apiResponse;
-            }
+            this._vehicleCache = await this._vehicleService.getAllVehiclesForUser(User.CURRENT!);
         }
 
-        return Either.left(this._vehicleCache);
+        return this._vehicleCache;
     }
 
     /**
      * Add a new vehicle for the user to the backend.
      * @param vehicle the vehicle to add.
      */
-    public async addVehicle(vehicle: Vehicle): Promise<Maybe<HttpError>> {
+    public async addVehicle(vehicle: Vehicle): Promise<void> {
         const apiResponse = await this._vehicleService.addVehicle(User.CURRENT!, vehicle);
-
-        // Errored out.
-        if (apiResponse.hasSome()) {
-            return apiResponse;
-        }
 
         // Update the local cache
         this._vehicleCache!.push(vehicle);
-        return Maybe.none();
     }
 
     /**
      * Update an existing vehicle with the backend.
      * @param vehicle The vehicle to update.
      */
-    public async updateVehicle(vehicle: Vehicle): Promise<Maybe<HttpError>> {
+    public async updateVehicle(vehicle: Vehicle): Promise<void> {
         const apiResponse = await this._vehicleService.updateVehicle(User.CURRENT!, vehicle);
-
-        // Errored out.
-        if (apiResponse.hasSome()) {
-            return apiResponse;
-        }
 
         // Update the local cache
         const index: number = this._vehicleCache!.findIndex((v) => v.id === vehicle.id);
         if (index !== -1) {
             this._vehicleCache![index] = vehicle;
         }
-
-        return Maybe.none();
     }
 
     /**
      * Delete an existing vehicle with the backend.
      * @param vehicle The vehicle to delete.
      */
-    public async deleteVehicle(vehicle: Vehicle): Promise<Maybe<HttpError>> {
+    public async deleteVehicle(vehicle: Vehicle): Promise<void> {
         const apiResponse = await this._vehicleService.deleteVehicle(User.CURRENT!, vehicle);
-
-        // Errored out.
-        if (apiResponse.hasSome()) {
-            return apiResponse;
-        }
 
         // Update the local cache
         const index: number = this._vehicleCache!.findIndex((v) => v.id === vehicle.id);
         if (index !== -1) {
             this._vehicleCache!.splice(index, 1);
         }
-
-        return Maybe.none();
     }
 
     /**
      * Get all the maintenance events for a vehicle.
      * @param vehicle The vehicle to get all the service events for.
      */
-    public async getMaintenanceEvents(vehicle: Vehicle): Promise<Either<MaintenanceEvent[], HttpError>> {
+    public async getMaintenanceEvents(vehicle: Vehicle): Promise<MaintenanceEvent[]> {
         return this._maintenanceService.getAllForVehicle(User.CURRENT!, vehicle);
     }
 
@@ -150,20 +117,16 @@ export class VehicleStore extends StoreModule {
      * Get the year to date, and month to date cost of a vehicle.
      * @param vehicle The vehicle to get stats for.
      */
-    public async getMaintenanceEventStats(vehicle: Vehicle): Promise<Either<MaintenanceEventStats, HttpError>> {
+    public async getMaintenanceEventStats(vehicle: Vehicle): Promise<MaintenanceEventStats> {
         // Did we already cache it?
         if (this._statsCache[vehicle.id] != null) {
-            return Either.left(this._statsCache[vehicle.id]!);
+            return this._statsCache[vehicle.id]!;
         }
 
-        const result = await this._maintenanceService.getStatsForVehicle(User.CURRENT!, vehicle);
+        const stats = await this._maintenanceService.getStatsForVehicle(User.CURRENT!, vehicle);
+        this._statsCache[vehicle.id] = stats;
 
-        // Cache it if needed.
-        if (result.isLeft()) {
-            this._statsCache[vehicle.id] = result.getLeft();
-        }
-
-        return result;
+        return stats;
     }
 
     /**
@@ -171,7 +134,7 @@ export class VehicleStore extends StoreModule {
      * @param vehicle The vehicle to add it to.
      * @param event The event to add.
      */
-    public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
+    public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<void> {
         // Clear it from cache if needed.
         if (this._statsCache[vehicle.id] != null) {
             this._statsCache[vehicle.id] = null;
@@ -185,7 +148,7 @@ export class VehicleStore extends StoreModule {
      * @param vehicle The vehicle to delete it from.
      * @param event The event to delete.
      */
-    public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
+    public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<void> {
         // Clear it from cache if needed.
         if (this._statsCache[vehicle.id] != null) {
             this._statsCache[vehicle.id] = null;

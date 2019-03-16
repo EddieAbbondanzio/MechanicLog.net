@@ -173,13 +173,9 @@ export default class Feedback extends UserMixin {
         this.isLoading = true;
         const result = await this.$userStore.sendFeedback(new UserFeedback(this.type, this.message));
 
-        if (result.hasSome()) {
-            this.$refs.errorPopup.show(result.getSome().message);
-        } else {
-            this.status = 'sent';
-            this.type = -1;
-            this.message = '';
-        }
+        this.status = 'sent';
+        this.type = -1;
+        this.message = '';
 
         this.isLoading = false;
     }

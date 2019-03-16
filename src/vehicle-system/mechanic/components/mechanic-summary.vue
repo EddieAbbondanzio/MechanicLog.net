@@ -154,12 +154,7 @@ export default class MechanicSummary extends MechanicMixin {
      */
     protected async onEdit(newMechanic: Mechanic): Promise<void> {
         const taskResult = await this.$mechanicStore.updateMechanic(newMechanic);
-
-        if (taskResult.hasSome()) {
-            this.$emit('error', taskResult.getSome());
-        } else {
-            this.$emit('edit', newMechanic);
-        }
+        this.$emit('edit', newMechanic);
     }
 
     /**

@@ -9,14 +9,8 @@ export class SubscriptionPlanService extends Service {
     /**
      * Get all of the subscriptions from the backend.
      */
-    public async getAllPlans(): Promise<Either<SubscriptionPlan[], Error>> {
+    public async getAllPlans(): Promise<SubscriptionPlan[]> {
         const apiResponse = await this._httpClient.get('/v1/subscription/plan');
-
-        if (apiResponse.isLeft()) {
-            return Either.left(apiResponse.getLeft().data.map((p: any) => SubscriptionPlan.fromRaw(p)));
-        } else {
-            return Either.right(apiResponse.getRight());
-        }
+        return apiResponse.data.map((p: any) => SubscriptionPlan.fromRaw(p));
     }
 }
-

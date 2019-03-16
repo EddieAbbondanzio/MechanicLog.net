@@ -61,7 +61,7 @@ export class ServiceRegistry {
      * @param type The symbol to register it under.
      * @param instance The instance to register.
      */
-    public static register<T extends Service>(type: ServiceType, instance: T): void {
+    private static register<T extends Service>(type: ServiceType, instance: T): void {
         this._store[type] = instance;
     }
 }

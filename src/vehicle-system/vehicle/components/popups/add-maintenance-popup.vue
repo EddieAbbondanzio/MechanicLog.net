@@ -285,7 +285,7 @@ export default class AddMaintenancePopup extends MechanicMixin implements Popup 
             },
         });
 
-        this.mechanics = await (await this.$mechanicStore.getMechanics()).do(async (mechanics) => mechanics, async (error) => []);
+        this.mechanics = await this.$mechanicStore.getMechanics();
         this.availableServices = this.serviceList;
     }
 

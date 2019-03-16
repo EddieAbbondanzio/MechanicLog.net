@@ -1,6 +1,6 @@
 <template>
     <form-container title="Login">
-        <b-alert :variant="message.variant" :show="message.text != null">{{ message.text }}</b-alert>
+        <b-alert variant="danger" :show="message.length > 0">{{ message }}</b-alert>
 
         <div class="form-group">
             <label for="email-textbox">Email</label>
@@ -90,10 +90,7 @@ export default class LoginForm extends UserMixin {
      */
     public rememberMe!: boolean;
 
-    public message!: {
-        variant: string;
-        text: Nullable<string>;
-    };
+    public message: string = '';
 
     /**
      * Properties are assigned in created to prevent weird undefined errors.
@@ -102,7 +99,6 @@ export default class LoginForm extends UserMixin {
         this.email = '';
         this.password = '';
         this.rememberMe = false;
-        this.message = { variant: 'success', text: null };
     }
 
     /**
@@ -118,17 +114,14 @@ export default class LoginForm extends UserMixin {
             return;
         }
 
-        const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
+        try {
+            const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
 
-        if (u.isRight()) {
-            this.message.text = u.getRight().message;
-            this.message.variant = 'danger';
-            submitButton.reset();
-
-            this.$forceUpdate();
-        } else {
             // Propogate the event to the parent (page)
-            this.$emit('login', u.getLeft());
+            this.$emit('login', u);
+        } catch (error) {
+            this.message = error.message;
+            submitButton.reset();
         }
     }
 }

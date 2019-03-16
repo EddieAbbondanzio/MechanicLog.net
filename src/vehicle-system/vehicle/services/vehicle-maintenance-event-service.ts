@@ -3,9 +3,6 @@ import { User } from '@/user-system/entities/user';
 import { MaintenanceEvent } from '../entities/maintenance-event';
 import { Either } from '@/core/common/monads/either';
 import { Vehicle } from '../entities/vehicle';
-import { Maybe } from '@/core/common/monads/maybe';
-import { HttpResponse } from '@/core/http/http-response';
-import { HttpError } from '@/core/http/service-error';
 import { MaintenanceEventStats } from '../entities/maintenance-event-stats';
 /**
  * API service for getting services of vehicles.
@@ -16,26 +13,11 @@ export class VehicleMaintenanceEventService extends Service {
      * @param user The user that own's the vhicle.
      * @param vehicle The vehicle to get all the services for.
      */
-    public async getAllForVehicle(user: User, vehicle: Vehicle): Promise<Either<MaintenanceEvent[], HttpError>> {
+    public async getAllForVehicle(user: User, vehicle: Vehicle): Promise<MaintenanceEvent[]> {
         const apiResponse = await this._httpClient.get(`/v1/vehicle/${vehicle.id}/maintenance`, user.authToken);
 
-        if (apiResponse.isLeft()) {
-            const events: MaintenanceEvent[] = [];
-
-            for (const raw of apiResponse.getLeft().data) {
-                const event = await MaintenanceEvent.fromRaw(raw);
-
-                if (event.isRight()) {
-                    return Either.right(event.getRight());
-                }
-
-                events.push(event.getLeft());
-            }
-
-            return Either.left(events);
-        } else {
-            return Either.right(apiResponse.getRight());
-        }
+        const events = await Promise.all(apiResponse.data.map((m: any) => MaintenanceEvent.fromRaw(m)));
+        return (events as unknown) as MaintenanceEvent[];
     }
 
     /**
@@ -43,14 +25,9 @@ export class VehicleMaintenanceEventService extends Service {
      * @param user The active user.
      * @param vehicle The vehicle to get stats for.
      */
-    public async getStatsForVehicle(user: User, vehicle: Vehicle): Promise<Either<MaintenanceEventStats, HttpError>> {
+    public async getStatsForVehicle(user: User, vehicle: Vehicle): Promise<MaintenanceEventStats> {
         const apiResponse = await this._httpClient.get(`/v1/vehicle/${vehicle.id}/maintenance/stats`, user.authToken);
-
-        if (apiResponse.isLeft()) {
-            return Either.left(MaintenanceEventStats.fromRaw(apiResponse.getLeft().data));
-        } else {
-            return Either.right(apiResponse.getRight());
-        }
+        return MaintenanceEventStats.fromRaw(apiResponse.data);
     }
 
     /**
@@ -59,15 +36,9 @@ export class VehicleMaintenanceEventService extends Service {
      * @param vehicle The vehicle to add it to.
      * @param event The event to add.
      */
-    public async addEventForVehicle(user: User, vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
+    public async addEventForVehicle(user: User, vehicle: Vehicle, event: MaintenanceEvent): Promise<void> {
         const apiResponse = await this._httpClient.post(`/v1/vehicle/${vehicle.id}/maintenance`, event, user.authToken);
-
-        if (apiResponse.isLeft()) {
-            event.id = apiResponse.getLeft().data.id;
-            return Maybe.none();
-        } else {
-            return Maybe.some(apiResponse.getRight());
-        }
+        event.id = apiResponse.data.id;
     }
 
     /**
@@ -76,13 +47,7 @@ export class VehicleMaintenanceEventService extends Service {
      * @param vehicle The vehicle.
      * @param event The event to delete.
      */
-    public async deleteEventForVehicle(user: User, vehicle: Vehicle, event: MaintenanceEvent): Promise<Maybe<HttpError>> {
-        const apiResponse = await this._httpClient.delete(`/v1/vehicle/${vehicle.id}/maintenance/${event.id}`, user.authToken);
-
-        if (apiResponse.isLeft()) {
-            return Maybe.none();
-        } else {
-            return Maybe.some(apiResponse.getRight());
-        }
+    public async deleteEventForVehicle(user: User, vehicle: Vehicle, event: MaintenanceEvent): Promise<void> {
+        await this._httpClient.delete(`/v1/vehicle/${vehicle.id}/maintenance/${event.id}`, user.authToken);
     }
 }

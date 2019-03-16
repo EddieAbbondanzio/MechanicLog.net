@@ -6,8 +6,6 @@ import { ServiceType } from '@/core/services/service-type';
 import { Dictionary } from '@/core/common/dictionary';
 import { VehicleMake } from '../entities/vehicle-make';
 import { VehicleModel } from '../entities/vehicle-model';
-import { HttpError } from '@/core/http/service-error';
-import { Either } from '@/core/common/monads/either';
 import { User } from '@/user-system/entities/user';
 
 /**
@@ -36,18 +34,13 @@ export class VehicleModelStore extends StoreModule {
      * Get all the models for a specific make.
      * @param make The make to get the models for.
      */
-    public async getModelsForMake(make: VehicleMake): Promise<Either<VehicleModel[], HttpError>> {
+    public async getModelsForMake(make: VehicleMake): Promise<VehicleModel[]> {
         if (this._modelCache[make.name] != null) {
-            return Either.left(this._modelCache[make.name]);
+            return this._modelCache[make.name];
         }
 
         const models = await this._modelService.getAllModelsForMake(User.CURRENT!, make);
-
-        if (models.isRight()) {
-            return Either.right(models.getRight());
-        }
-
-        this._modelCache[make.name] = models.getLeft();
-        return Either.left(models.getLeft());
+        this._modelCache[make.name] = models;
+        return models;
     }
 }

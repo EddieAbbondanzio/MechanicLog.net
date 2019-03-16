@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
 import { HttpResponse } from './http-response';
-import { HttpError } from './service-error';
 import { Either } from '../common/monads/either';
 
 /**
@@ -13,13 +12,21 @@ export class HttpClient {
     private _axios: AxiosInstance;
 
     /**
+     * Transformer to pass the errors through to clean them up for
+     * the handler.
+     */
+    private _errorTransformer?: (error: Error) => Error;
+
+    /**
      * Create a new HTTP client.
      * @param baseUrl The base URL the HTTP client works with.
      */
-    constructor(baseUrl?: string) {
+    constructor(options: { baseUrl?: string; errorTransformer?: (error: Error) => Error }) {
         this._axios = axios.create({
-            baseURL: baseUrl,
+            baseURL: options.baseUrl,
         });
+
+        this._errorTransformer = options.errorTransformer;
     }
 
     /**
@@ -28,21 +35,23 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async get(url: string, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
+    public async get(url: string, authToken?: string): Promise<HttpResponse> {
         try {
             if (authToken != null) {
-                return Either.left(
-                    await this._axios.get(url, {
-                        headers: {
-                            Authorization: `Bearer ${authToken}`,
-                        },
-                    })
-                );
+                return await this._axios.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                });
             } else {
-                return Either.left(await this._axios.get(url));
+                return await this._axios.get(url);
             }
         } catch (error) {
-            return Either.right(new HttpError(error.response.status, error.response.data.errorMsg));
+            if (this._errorTransformer != null) {
+                throw this._errorTransformer(error);
+            } else {
+                throw error;
+            }
         }
     }
 
@@ -52,20 +61,23 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async head(url: string, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
+    public async head(url: string, authToken?: string): Promise<HttpResponse> {
         try {
             if (authToken != null) {
-                return Either.left(
-                await this._axios.head(url, {
+                return await this._axios.head(url, {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     },
-                }));
+                });
             } else {
-                return Either.left(await this._axios.head(url));
+                return await this._axios.head(url);
             }
         } catch (error) {
-            return Either.right(new HttpError(error.response.status, error.response.data.errorMsg));
+            if (this._errorTransformer != null) {
+                throw this._errorTransformer(error);
+            } else {
+                throw error;
+            }
         }
     }
 
@@ -76,19 +88,23 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async put(url: string, body?: any, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
+    public async put(url: string, body?: any, authToken?: string): Promise<HttpResponse> {
         try {
             if (authToken != null) {
-                return Either.left(await this._axios.put(url, body, {
+                return await this._axios.put(url, body, {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     },
-                }));
+                });
             } else {
-                return Either.left(await this._axios.put(url, body));
+                return await this._axios.put(url, body);
             }
         } catch (error) {
-            return Either.right(new HttpError(error.response.status, error.response.data.errorMsg));
+            if (this._errorTransformer != null) {
+                throw this._errorTransformer(error);
+            } else {
+                throw error;
+            }
         }
     }
 
@@ -99,19 +115,23 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async post(url: string, body?: any, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
+    public async post(url: string, body?: any, authToken?: string): Promise<HttpResponse> {
         try {
             if (authToken != null) {
-                return Either.left(await this._axios.post(url, body, {
+                return await this._axios.post(url, body, {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     },
-                }));
+                });
             } else {
-                return Either.left(await this._axios.post(url, body));
+                return await this._axios.post(url, body);
             }
         } catch (error) {
-            return Either.right(new HttpError(error.response.status, error.response.data.errorMsg));
+            if (this._errorTransformer != null) {
+                throw this._errorTransformer(error);
+            } else {
+                throw error;
+            }
         }
     }
 
@@ -122,19 +142,23 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async patch(url: string, body?: any, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
+    public async patch(url: string, body?: any, authToken?: string): Promise<HttpResponse> {
         try {
             if (authToken != null) {
-                return Either.left(await this._axios.patch(url, body, {
+                return await this._axios.patch(url, body, {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     },
-                }));
+                });
             } else {
-                return Either.left(await this._axios.patch(url, body));
+                return await this._axios.patch(url, body);
             }
         } catch (error) {
-            return Either.right(new HttpError(error.response.status, error.response.data.errorMsg));
+            if (this._errorTransformer != null) {
+                throw this._errorTransformer(error);
+            } else {
+                throw error;
+            }
         }
     }
 
@@ -144,19 +168,23 @@ export class HttpClient {
      * @param authToken The JWT to authenticate with.
      * @returns The response.
      */
-    public async delete(url: string, authToken?: string): Promise<Either<HttpResponse, HttpError>> {
+    public async delete(url: string, authToken?: string): Promise<HttpResponse> {
         try {
             if (authToken != null) {
-                return Either.left(await this._axios.delete(url, {
+                return await this._axios.delete(url, {
                     headers: {
                         Authorization: `Bearer ${authToken}`,
                     },
-                }));
+                });
             } else {
-                return Either.left(await this._axios.delete(url));
+                return await this._axios.delete(url);
             }
         } catch (error) {
-            return Either.right(new HttpError(error.response.status, error.response.data.errorMsg));
+            if (this._errorTransformer != null) {
+                throw this._errorTransformer(error);
+            } else {
+                throw error;
+            }
         }
     }
 }

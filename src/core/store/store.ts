@@ -50,7 +50,7 @@ export class Store {
      * Register a module with the store.
      * @param module The module to register with the store.
      */
-    public static register<TModule extends StoreModule>(module: TModule): void {
+    private static register<TModule extends StoreModule>(module: TModule): void {
         if (this._modules[module.namespace] != null) {
             throw new Error(`Module overlap. Module with namespace ${module.namespace} has already been registered.`);
         }
@@ -58,4 +58,3 @@ export class Store {
         this._modules[module.namespace] = module;
     }
 }
-

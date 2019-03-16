@@ -190,26 +190,11 @@ export default class Maintenance extends VehicleMixin {
      */
     public async created(): Promise<void> {
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
-        this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)).getLeft();
+        this.vehicle = await this.$vehicleStore.getVehicle(vehicleId);
 
         if (this.vehicle != null) {
-            (await this.$vehicleStore.getMaintenanceEvents(this.vehicle!)).do(
-                async (events) => {
-                    this.events = events;
-                },
-                async (error) => {
-                    this.$refs.errorPopup.show(error.message);
-                }
-            );
-
-            (await this.$vehicleStore.getMaintenanceEventStats(this.vehicle)).do(
-                async (stats) => {
-                    this.stats = stats;
-                },
-                async (error) => {
-                    this.$refs.errorPopup.show(error.message);
-                }
-            );
+            this.events = await this.$vehicleStore.getMaintenanceEvents(this.vehicle);
+            this.stats = await this.$vehicleStore.getMaintenanceEventStats(this.vehicle);
         }
 
         this.$forceUpdate();
@@ -219,13 +204,7 @@ export default class Maintenance extends VehicleMixin {
      * User wants to update the vehicle.
      */
     public async onVehicleEdit(vehicle: Vehicle): Promise<void> {
-        const result = await this.$vehicleStore.updateVehicle(vehicle);
-
-        if (result.hasSome()) {
-            this.$refs.errorPopup.show(result.getSome().message);
-        } else {
-            this.vehicle = vehicle;
-        }
+        await this.$vehicleStore.updateVehicle(vehicle);
     }
 
     /**
@@ -239,24 +218,9 @@ export default class Maintenance extends VehicleMixin {
      * Event handler for when a maintenance event is added to the vehicle.
      */
     public async onMaintenanceAdd(maintenance: MaintenanceEvent): Promise<void> {
-        const result = await this.$vehicleStore.addMaintenanceEvent(this.vehicle!, maintenance);
-
-        if (result.hasSome()) {
-            this.$refs.errorPopup.show(result.getSome().message);
-            return;
-        } else {
-            this.events.push(maintenance);
-        }
-
-        (await this.$vehicleStore.getMaintenanceEventStats(this.vehicle!)).do(
-            async (stats) => {
-                this.stats = stats;
-            },
-            async (error) => {
-                this.$refs.errorPopup.show(error.message);
-            }
-        );
-
+        await this.$vehicleStore.addMaintenanceEvent(this.vehicle!, maintenance);
+        this.events.push(maintenance);
+        this.stats = await this.$vehicleStore.getMaintenanceEventStats(this.vehicle!);
         this.$forceUpdate();
     }
 
@@ -268,24 +232,10 @@ export default class Maintenance extends VehicleMixin {
 
         if (index !== -1) {
             const result = await this.$vehicleStore.deleteMaintenanceEvent(this.vehicle!, maintenance);
-
-            if (result.hasSome()) {
-                this.$refs.errorPopup.show(result.getSome().message);
-                return;
-            } else {
-                this.events.splice(index, 1);
-            }
+            this.events.splice(index, 1);
         }
 
-        (await this.$vehicleStore.getMaintenanceEventStats(this.vehicle!)).do(
-            async (stats) => {
-                this.stats = stats;
-            },
-            async (error) => {
-                this.$refs.errorPopup.show(error.message);
-            }
-        );
-
+        this.stats = await this.$vehicleStore.getMaintenanceEventStats(this.vehicle!);
         this.$forceUpdate();
     }
 }

@@ -5,7 +5,6 @@ import { Nullable } from '@/core/common/monads/nullable';
 import { VehicleMake } from '../entities/vehicle-make';
 import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
-import { HttpError } from '@/core/http/service-error';
 import { User } from '@/user-system/entities/user';
 import { Either } from '@/core/common/monads/either';
 
@@ -31,17 +30,12 @@ export class VehicleMakeStore extends StoreModule {
     /**
      * Get all the vehicle makes.
      */
-    public async getMakes(): Promise<Either<VehicleMake[], HttpError>> {
+    public async getMakes(): Promise<VehicleMake[]> {
         if (this._makeCache == null) {
             const apiResponse = await this._makeService.getAllMakes(User.CURRENT!);
-
-            if (apiResponse.isLeft()) {
-                this._makeCache = apiResponse.getLeft();
-            } else {
-                return apiResponse;
-            }
+            this._makeCache = apiResponse;
         }
 
-        return Either.left(this._makeCache!);
+        return this._makeCache;
     }
 }

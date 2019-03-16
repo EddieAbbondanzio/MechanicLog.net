@@ -53,4 +53,13 @@ export class User {
             return this.name;
         }
     }
+
+    /**
+     * Rebuild a user from it's raw object.
+     * @param token The JWT of the user.
+     * @param raw The raw user object.
+     */
+    public static fromRaw(token: string, raw: any): User {
+        return new User(token, raw.name, raw.email, raw.isVerified);
+    }
 }

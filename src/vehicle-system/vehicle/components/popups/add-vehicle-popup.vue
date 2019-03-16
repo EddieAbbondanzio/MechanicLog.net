@@ -324,14 +324,7 @@ export default class AddVehiclePopup extends VehicleMixin {
         });
 
         // Pull in the makes from the database
-        this.makes = await (await this.$vehicleMakeStore.getMakes()).do(
-            async (makes) => {
-                return makes.map((m) => m.name);
-            },
-            async (error) => {
-                return [];
-            }
-        );
+        this.makes = (await this.$vehicleMakeStore.getMakes()).map((m: VehicleMake) => m.name);
     }
 
     /**
@@ -340,21 +333,14 @@ export default class AddVehiclePopup extends VehicleMixin {
     public async onMakeBlur(): Promise<void> {
         // Pull in the models
         if (this.make != null) {
-            const makeCode = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make);
+            const makeCode = (await this.$vehicleMakeStore.getMakes()).find((m) => m.name === this.make);
 
             // User never selected anything.
             if (makeCode == null) {
                 return;
             }
 
-            this.models = await (await this.$vehicleModelStore.getModelsForMake(makeCode)).do(
-                async (models) => {
-                    return models.map((m) => m.name);
-                },
-                async (error) => {
-                    return [];
-                }
-            );
+            this.models = (await this.$vehicleModelStore.getModelsForMake(makeCode)).map((m: VehicleModel) => m.name);
         }
 
         this.model = null;
@@ -411,8 +397,8 @@ export default class AddVehiclePopup extends VehicleMixin {
             return;
         }
 
-        const make = (await this.$vehicleMakeStore.getMakes()).getLeft().find((m) => m.name === this.make)!;
-        const model = (await this.$vehicleModelStore.getModelsForMake(make)).getLeft().find((m) => m.name === this.model)!;
+        const make = (await this.$vehicleMakeStore.getMakes()).find((m) => m.name === this.make)!;
+        const model = (await this.$vehicleModelStore.getModelsForMake(make)).find((m) => m.name === this.model)!;
 
         const vehicle = Vehicle.fromInput({
             year: this.year,

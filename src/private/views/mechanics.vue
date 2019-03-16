@@ -88,12 +88,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import MechanicSummary from '@/vehicle-system/mechanic/components/mechanic-summary.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
-import { HttpError } from '@/core/http/service-error';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup.vue';
 import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
+import { ServiceError } from '@/core/common/errors/service-error';
 
 /**
  * List of all the mechanics the user has.
@@ -127,14 +127,7 @@ export default class Mechanics extends MechanicMixin {
      * On page load go out and try to get all of the mechanics from the backend.
      */
     public async mounted(): Promise<void> {
-        (await this.$mechanicStore.getMechanics()).do(
-            async (mechanics) => {
-                this.mechanics = mechanics;
-            },
-            async (error) => {
-                this.mechanics = [];
-            }
-        );
+        this.mechanics = await this.$mechanicStore.getMechanics();
     }
 
     public onAddClick(): void {
@@ -146,12 +139,6 @@ export default class Mechanics extends MechanicMixin {
      */
     public async onMechanicAdd(mechanic: Mechanic): Promise<void> {
         const result = await this.$mechanicStore.addMechanic(mechanic);
-
-        // Errored out.
-        if (result.hasSome()) {
-            this.$refs.errorPopup.message = result.getSome().message;
-        }
-
         this.$forceUpdate();
     }
 
@@ -172,8 +159,8 @@ export default class Mechanics extends MechanicMixin {
     /**
      * On an error, display it to the user.
      */
-    public onError(error: HttpError) {
-        this.$refs.errorPopup.show(error.message);
+    public onError(error: ServiceError) {
+        this.$refs.errorPopup.show(error.errorList[0]);
     }
 }
 </script>

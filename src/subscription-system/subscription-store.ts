@@ -53,35 +53,24 @@ export class SubscriptionStore extends StoreModule {
     /**
      * Get all of the available subscription plans.
      */
-    public async getPlans(): Promise<Either<SubscriptionPlan[], Error>> {
+    public async getPlans(): Promise<SubscriptionPlan[]> {
         if (this._planCache == null) {
-            const apiResult = await this._subscriptionPlanService.getAllPlans();
-
-            if (apiResult.isLeft()) {
-                this._planCache = apiResult.getLeft();
-            } else {
-                return apiResult;
-            }
+            this._planCache = await this._subscriptionPlanService.getAllPlans();
         }
 
-        return Either.left(this._planCache);
+        return this._planCache;
     }
 
     /**
      * Get the subscription of the user.
      */
-    public async getSubscription(): Promise<Either<Subscription, Error>> {
+    public async getSubscription(): Promise<Subscription> {
         if (this._subscriptionCache == null) {
-            const apiResult = await this._subscriptionService.getSubscription();
-
-            if (apiResult.isLeft()) {
-                this._subscriptionCache = apiResult.getLeft();
-            } else {
-                return apiResult;
-            }
+            const subscription = await this._subscriptionService.getSubscription();
+            this._subscriptionCache = subscription;
         }
 
-        return Either.left(this._subscriptionCache);
+        return this._subscriptionCache;
     }
 
     /**
@@ -89,30 +78,17 @@ export class SubscriptionStore extends StoreModule {
      * @param subscription The subscription to update.
      * @param newPlan The plan to switch to.
      */
-    public async changeSubscriptionPlan(subscription: Subscription, newPlan: SubscriptionPlan): Promise<Maybe<Error>> {
-        const apiResult = await this._subscriptionService.changeSubscriptionPlan(subscription, newPlan);
-
-        if (apiResult.hasSome()) {
-            return Maybe.some(apiResult.getSome());
-        }
-
+    public async changeSubscriptionPlan(subscription: Subscription, newPlan: SubscriptionPlan): Promise<void> {
+        await this._subscriptionService.changeSubscriptionPlan(subscription, newPlan);
         this._subscriptionCache = subscription;
-        return Maybe.none();
     }
 
     /**
      * Cancel a user's subscription.
      * @param subscription The subscription to cancel.
      */
-    public async cancelSubscription(subscription: Subscription): Promise<Maybe<Error>> {
-        const apiResult = await this._subscriptionService.cancelSubscription(subscription);
-
-        // Error out.
-        if (apiResult.hasSome()) {
-            return Maybe.some(apiResult.getSome());
-        }
-
+    public async cancelSubscription(subscription: Subscription): Promise<void> {
+        await this._subscriptionService.cancelSubscription(subscription);
         this._subscriptionCache = subscription;
-        return Maybe.none();
     }
 }

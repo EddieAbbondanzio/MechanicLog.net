@@ -2,7 +2,6 @@ import { StoreModule } from '@/core/store/store-module';
 import { StoreModuleNamespace } from '@/core/store/store-module-namespace';
 import { Either } from '@/core/common/monads/either';
 import { User } from './entities/user';
-import { HttpError } from '@/core/http/service-error';
 import { UserRegistration } from './services/auth/user-registration';
 import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
@@ -26,7 +25,7 @@ export class UserStore extends StoreModule {
     /**
      * The underlying user service to the database.
      */
-    private _userService!: UserService;
+    private _userService: UserService;
 
     /**
      * The underlying auth service to the database.
@@ -46,22 +45,12 @@ export class UserStore extends StoreModule {
      * @param remmeberMe If they want to be saved. (by Jesus of course)
      * @returns The logged in user.
      */
-    public async login(email: string, password: string, rememberMe: boolean): Promise<Either<User, HttpError>> {
-        const loginResponse = await this._authService.login(email, password, rememberMe);
+    public async login(email: string, password: string, rememberMe: boolean): Promise<User> {
+        const token = await this._authService.login(email, password, rememberMe);
+        const user = await this._userService.getUserFromToken(token);
 
-        // Error out
-        if (loginResponse.isRight()) {
-            return Either.right(loginResponse.getRight());
-        }
-
-        const userResponse = await this._userService.getUserFromToken(loginResponse.getLeft());
-
-        if (userResponse.isRight()) {
-            return Either.right(userResponse.getRight());
-        }
-
-        User.CURRENT = userResponse.getLeft();
-        return Either.left(userResponse.getLeft());
+        User.CURRENT = user;
+        return user;
     }
 
     /**
@@ -70,21 +59,12 @@ export class UserStore extends StoreModule {
      * @param authToken The auth token of the user.
      * @returns The logged in user.
      */
-    public async relogin(authToken: string): Promise<Either<User, HttpError>> {
-        const loginResponse = await this._authService.relogin(authToken);
+    public async relogin(authToken: string): Promise<User> {
+        const token = await this._authService.relogin(authToken);
+        const user = await this._userService.getUserFromToken(token);
 
-        if (loginResponse.isRight()) {
-            return Either.right(loginResponse.getRight());
-        }
-
-        const userResponse = await this._userService.getUserFromToken(loginResponse.getLeft());
-
-        if (userResponse.isRight()) {
-            return Either.right(userResponse.getRight());
-        }
-
-        User.CURRENT = userResponse.getLeft();
-        return Either.left(userResponse.getLeft());
+        User.CURRENT = user;
+        return user;
     }
 
     /**
@@ -98,21 +78,12 @@ export class UserStore extends StoreModule {
      * Register a new user with the system.
      * @param registration The new user's registration info.
      */
-    public async register(registration: UserRegistration): Promise<Either<User, HttpError>> {
-        const registerResponse = await this._authService.register(registration);
+    public async register(registration: UserRegistration): Promise<User> {
+        const token = await this._authService.register(registration);
+        const user = await this._userService.getUserFromToken(token);
 
-        if (registerResponse.isRight()) {
-            return Either.right(registerResponse.getRight());
-        }
-
-        const userResponse = await this._userService.getUserFromToken(registerResponse.getLeft());
-
-        if (userResponse.isRight()) {
-            return Either.right(userResponse.getRight());
-        }
-
-        User.CURRENT = userResponse.getLeft();
-        return Either.left(userResponse.getLeft());
+        User.CURRENT = user;
+        return user;
     }
 
     /**
@@ -120,7 +91,7 @@ export class UserStore extends StoreModule {
      * to do this once.
      * @param emailToken The email token of the user.
      */
-    public async verifyEmail(emailToken: string): Promise<Maybe<HttpError>> {
+    public async verifyEmail(emailToken: string): Promise<void> {
         return this._authService.verifyEmail(User.CURRENT!, emailToken);
     }
 
@@ -128,7 +99,7 @@ export class UserStore extends StoreModule {
      * Update the logged in user's email and name..
      * @param info The new info of the user.
      */
-    public async updateInfo(info: { name: Nullable<string>; email: Nullable<string> }): Promise<Maybe<HttpError>> {
+    public async updateInfo(info: { name: Nullable<string>; email: Nullable<string> }): Promise<void> {
         if (info.name != null) {
             User.CURRENT!.name = info.name;
         }
@@ -145,7 +116,7 @@ export class UserStore extends StoreModule {
      * email them a reset code.
      * @param email The email of the user.
      */
-    public async requestPasswordReset(email: string): Promise<Maybe<HttpError>> {
+    public async requestPasswordReset(email: string): Promise<void> {
         return this._authService.requestPasswordReset(email);
     }
 
@@ -153,7 +124,7 @@ export class UserStore extends StoreModule {
      * Reset the password of a user using the code they were emailed.
      * @param passwordReset The password reset info.
      */
-    public async resetPassword(passwordReset: UserPasswordReset): Promise<Maybe<HttpError>> {
+    public async resetPassword(passwordReset: UserPasswordReset): Promise<void> {
         return this._authService.resetPassword(passwordReset);
     }
 
@@ -162,7 +133,7 @@ export class UserStore extends StoreModule {
      * their password.
      * @param passwordUpdate The password update info.
      */
-    public async updatePassword(passwordUpdate: UserPasswordUpdate): Promise<Maybe<HttpError>> {
+    public async updatePassword(passwordUpdate: UserPasswordUpdate): Promise<void> {
         return this._authService.updatePassword(User.CURRENT!, passwordUpdate);
     }
 
@@ -170,7 +141,7 @@ export class UserStore extends StoreModule {
      * Send some feedback to the backend.
      * @param feedback The feedback to send.
      */
-    public async sendFeedback(feedback: UserFeedback): Promise<Maybe<HttpError>> {
+    public async sendFeedback(feedback: UserFeedback): Promise<void> {
         return this._userService.sendFeedback(User.CURRENT!, feedback);
     }
 }

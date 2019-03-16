@@ -1,9 +1,9 @@
 <style lang="scss" scoped>
-    .subscription-plan-info {
-        div {
-            padding-bottom: 0.25em;
-        }
+.subscription-plan-info {
+    div {
+        padding-bottom: 0.25em;
     }
+}
 </style>
 
 
@@ -74,7 +74,7 @@
                         >{{ isLoading ? 'Updating' : 'Update' }}</b-btn>
                     </card-container>
                 </div>
-            </div> -->
+            </div>-->
         </div>
     </div>
 </template>
@@ -108,11 +108,7 @@ export default class Susbcription extends SubscriptionMixin {
     public subscription: Nullable<Subscription> = null;
 
     public async created(): Promise<void> {
-        const result = await this.$subscriptionStore.getSubscription();
-
-        if (result.isLeft()) {
-            this.subscription = result.getLeft();
-        }
+        this.subscription = await this.$subscriptionStore.getSubscription();
     }
 
     /**

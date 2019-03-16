@@ -180,14 +180,10 @@ export default class SignUpForm extends UserMixin {
                 password: this.password,
             });
 
-            if (u.isRight()) {
-                this.errorMessage = u.getRight().message;
-            } else {
-                this.successMessage = 'Success. Redirecting...';
-                this.errorMessage = '';
+            this.successMessage = 'Success. Redirecting...';
+            this.errorMessage = '';
 
-                this.$emit('registered', u);
-            }
+            this.$emit('registered', u);
         } catch (error) {
             // Alert the user of what went wrong
             this.errorMessage = error.message;
