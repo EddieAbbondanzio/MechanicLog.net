@@ -13,23 +13,23 @@
         <h3 class="font-weight-bold text-light d-inline-block">MechanicLog</h3>
 
         <div class="float-right">
-            <user-widget />
+            <user-widget/>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import UserWidget from '@/private/components/user-bar/user-widget.vue';
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import UserWidget from '@/private/components/title-bar/title-bar-user-widget.vue';
 
 /**
  * Bar atop the page that has the user, and site logo in it.
  */
 @Component({
-    name: "user-bar",
+    name: 'title-bar',
     components: {
         UserWidget,
-    }
+    },
 })
-export default class UserBar extends Vue {}
+export default class TitleBar extends Vue {}
 </script>

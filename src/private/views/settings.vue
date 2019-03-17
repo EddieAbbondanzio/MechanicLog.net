@@ -2,16 +2,11 @@
 
 
 <template>
-    <div class="h-100">
+    <page-content>
         <error-popup ref="errorPopup"/>
 
-        <div>
-            <div
-                class="w-100 bg-white shadow px-3 py-3 border-bottom align-middle d-flex align-items-center"
-                style="height:78px;"
-            >
-                <h3 class="py-0 my-0 d-inline-block">Settings</h3>
-            </div>
+        <div slot="tool-bar">
+            <span class="text-muted">Settings</span>
         </div>
 
         <div class="container-fluid">
@@ -140,7 +135,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </page-content>
 </template>
 
 <script lang="ts">
@@ -152,6 +147,7 @@ import { Nullable } from '@/core/common/monads/nullable';
 import { UserMixin } from '@/user-system/user-mixin';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import * as HttpStatusCodes from 'http-status-codes';
+import PageContent from '@/private/components/layout/page-content.vue';
 
 /**
  * Settings page for updating the user.
@@ -162,6 +158,7 @@ import * as HttpStatusCodes from 'http-status-codes';
         CardContainer,
         ErrorPopup,
         LoadingBar,
+        PageContent,
     },
 })
 export default class Settings extends UserMixin {

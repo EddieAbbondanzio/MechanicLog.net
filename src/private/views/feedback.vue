@@ -1,14 +1,9 @@
 <template>
-    <div class="h-100">
+    <page-content>
         <error-popup ref="errorPopup"/>
 
-        <div>
-            <div
-                class="w-100 bg-white shadow px-3 py-3 border-bottom align-middle d-flex align-items-center"
-                style="height:78px;"
-            >
-                <h3 class="py-0 my-0 d-inline-block">User Feedback</h3>
-            </div>
+        <div slot="tool-bar">
+            <span class="text-muted">Feedback</span>
         </div>
 
         <div class="container-fluid">
@@ -93,7 +88,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </page-content>
 </template>
 
 <script lang="ts">
@@ -104,6 +99,7 @@ import { UserMixin } from '@/user-system/user-mixin';
 import { UserFeedback } from '@/user-system/entities/user-feedback';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
+import PageContent from '@/private/components/layout/page-content.vue';
 
 @Component({
     name: 'feedback',
@@ -111,6 +107,7 @@ import LoadingBar from '@/core/components/ux/loading-bar.vue';
         CardContainer,
         ErrorPopup,
         LoadingBar,
+        PageContent,
     },
 })
 export default class Feedback extends UserMixin {

@@ -1,18 +1,23 @@
 <template>
-    <div class="h-100">
+    <page-content>
         <error-popup ref="errorPopup"/>
         <add-mechanic-popup ref="addPopup" @add="onMechanicAdd"/>
 
-        <garage-bar>
-            <div class="d-inline-block pb2 pb-sm-0 pr-2">
-                <b-btn variant="success" style="height: 40px" @click="onAddClick">
-                    <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
-                    <span style="vertical-align: middle;">Add Mechanic</span>
-                </b-btn>
+        <div
+            slot="tool-bar"
+            class="d-flex flex-row align-items-center justify-content-between w-100"
+        >
+            <div>
+                <span class="text-muted">Garage > Mechanics</span>
             </div>
-        </garage-bar>
 
-        <div class="container-fluid pt-3" style="height: calc(100% - 78px)">
+            <b-btn variant="success" style="height: 40px" @click="onAddClick">
+                <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                <span style="vertical-align: middle;">Add Mechanic</span>
+            </b-btn>
+        </div>
+
+        <div class="container-fluid p-0 m-0">
             <div class="row">
                 <div class="col-12">
                     <card-container>
@@ -80,7 +85,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </page-content>
 </template>
 
 <script lang="ts">
@@ -94,6 +99,7 @@ import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-
 import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { ServiceError } from '@/core/common/errors/service-error';
+import PageContent from '@/private/components/layout/page-content.vue';
 
 /**
  * List of all the mechanics the user has.
@@ -107,6 +113,7 @@ import { ServiceError } from '@/core/common/errors/service-error';
         MaterialIcon,
         GarageBar,
         CardContainer,
+        PageContent,
     },
 })
 export default class Mechanics extends MechanicMixin {
@@ -159,8 +166,8 @@ export default class Mechanics extends MechanicMixin {
     /**
      * On an error, display it to the user.
      */
-    public onError(error: ServiceError) {
-        this.$refs.errorPopup.show(error.errorList[0]);
+    public onError(error: Error) {
+        this.$refs.errorPopup.show(error.message);
     }
 }
 </script>

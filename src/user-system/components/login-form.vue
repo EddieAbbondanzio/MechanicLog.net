@@ -60,6 +60,7 @@ import FormContainer from '@/core/components/form/form-container.vue';
 import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { Nullable } from '@/core/common/monads/nullable';
 import AutoComplete from '@/core/components/inputs/auto-complete.vue';
+import { AuthenticationError } from '@/core/common/errors/authentication-error';
 
 /**
  * Login form to allow a user to sign in.
@@ -120,7 +121,12 @@ export default class LoginForm extends UserMixin {
             // Propogate the event to the parent (page)
             this.$emit('login', u);
         } catch (error) {
-            this.message = error.message;
+            if (error instanceof AuthenticationError) {
+                this.message = 'Invalid email and/or password.';
+            } else {
+                this.message = 'An unknown error occured. Please try again later.';
+            }
+
             submitButton.reset();
         }
     }

@@ -161,8 +161,12 @@ export default class MechanicSummary extends MechanicMixin {
      * Event handler for when the user has finished deleting the mechanic.
      */
     protected async onDelete(): Promise<void> {
-        await this.$mechanicStore.deleteMechanic(this.mechanic);
-        this.$emit('delete', this.mechanic);
+        try {
+            await this.$mechanicStore.deleteMechanic(this.mechanic);
+            this.$emit('delete', this.mechanic);
+        } catch (error) {
+            this.$emit('error', error);
+        }
     }
 
     protected mechanicTypeToString(type: MechanicType) {

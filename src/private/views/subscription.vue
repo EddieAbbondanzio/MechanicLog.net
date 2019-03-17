@@ -8,16 +8,11 @@
 
 
 <template>
-    <div class="h-100">
+    <page-content>
         <error-popup ref="errorPopup"/>
 
-        <div>
-            <div
-                class="w-100 bg-white shadow px-3 py-3 border-bottom align-middle d-flex align-items-center"
-                style="height:78px;"
-            >
-                <h3 class="py-0 my-0 d-inline-block">Subscription</h3>
-            </div>
+        <div slot="tool-bar">
+            <span class="text-muted">Subscription</span>
         </div>
 
         <div class="container-fluid">
@@ -82,7 +77,7 @@
                 </div>
             </div>-->
         </div>
-    </div>
+    </page-content>
 </template>
 
 <script lang="ts">
@@ -96,6 +91,7 @@ import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { SubscriptionMixin } from '@/subscription-system/subscription-mixin.ts';
 import { Subscription } from '@/subscription-system/entities/subscription';
 import { SubscriptionStatus } from '@/subscription-system/entities/subscription-status';
+import PageContent from '@/private/components/layout/page-content.vue';
 
 /**
  * Settings page for updating the user.
@@ -106,6 +102,7 @@ import { SubscriptionStatus } from '@/subscription-system/entities/subscription-
         CardContainer,
         ErrorPopup,
         LoadingBar,
+        PageContent,
     },
 })
 export default class Susbcription extends SubscriptionMixin {

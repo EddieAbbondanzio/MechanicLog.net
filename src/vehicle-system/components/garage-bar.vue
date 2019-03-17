@@ -1,8 +1,8 @@
 <template>
-    <div class="px-3 pt-3 border-bottom shadow w-100" style="height: 78px; position: relative">
-        <garage-bar-tab name="Vehicles" :route="{ name: 'vehicles' }" icon="directions_car"/>
-        <garage-bar-tab name="Mechanics" :route="{ name: 'mechanics' }" icon="build"/>
-
+    <div
+        class="px-3 pt-3 border-bottom shadow w-100 bg-white"
+        style="height: 78px; position: relative"
+    >
         <div class="float-right">
             <slot></slot>
         </div>

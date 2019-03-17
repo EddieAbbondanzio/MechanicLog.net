@@ -1,26 +1,36 @@
-<style lang="scss">
+<style lang="scss" scoped>
 .side-bar {
-    height: calc(100vh - 64px);
     width: 256px;
-    position: relative;
-    top: 0px;
-    display: inline-block;
-    float: left;
+}
+
+.side-bar-section-header {
+    font-size: 1.5em !important;
 }
 </style>
 
 <template>
-    <nav class="side-bar bg-light border-right py-4 align-bottom">
+    <nav class="side-bar bg-light border-right py-4 align-bottom px-2">
+        <div>
+            <!-- Garage Section Header -->
+            <div class="side-bar-section-header pb-1 mb-2 d-flex flex-row">
+                <material-icon
+                    icon="time_to_leave"
+                    size="md"
+                    color="dark"
+                    class="pr-2 align-self-center"
+                />Garage
+            </div>
 
-        
-        <!-- <side-bar-button name="Dashboard" route="dashboard" icon="dashboard"/> -->
-        <side-bar-button name="Garage" route="vehicles" icon="time_to_leave" />
+            <side-bar-button name="Vehicles" route="vehicles"/>
+            <side-bar-button name="Mechanics" route="mechanics"/>
+        </div>
     </nav>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import SideBarButton from './side-bar-button.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
  * Side bar used on the dashboard pages.
@@ -29,8 +39,8 @@ import SideBarButton from './side-bar-button.vue';
     name: 'side-bar',
     components: {
         SideBarButton,
+        MaterialIcon,
     },
 })
-export default class SideBar extends Vue {
-}
+export default class SideBar extends Vue {}
 </script>

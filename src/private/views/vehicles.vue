@@ -2,19 +2,26 @@
 </style>
 
 <template>
-    <div class="h-100">
+    <page-content>
         <error-popup ref="errorPopup"/>
         <add-vehicle-popup ref="addPopup" @add="onVehicleAdd"/>
 
-        <garage-bar>
-            <div class="d-inline-block align-middle">
+        <div
+            slot="tool-bar"
+            class="d-flex flex-row align-items-center justify-content-between w-100"
+        >
+            <div class="text-muted">
+                <span>Garage > Vehicles</span>
+            </div>
+
+            <div>
                 <div class="d-inline-block pb2 pb-sm-0 pr-2">
                     <!-- Button on screen -->
                     <b-btn
                         variant="success"
                         @click="onAddClick"
                         style="height: 40px"
-                        :disabled="canAddVehicle"
+                        :disabled="isAddDisabled"
                     >
                         <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
                         <span style="vertical-align: middle;">Add Vehicle</span>
@@ -44,9 +51,9 @@
                     </div>
                 </div>
             </div>
-        </garage-bar>
+        </div>
 
-        <div class="container-fluid pt-3" style="height: calc(100% - 78px)">
+        <div class="container-fluid p-0 m-0">
             <div class="row">
                 <div class="col-12">
                     <card-container>
@@ -109,7 +116,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </page-content>
 </template>
 
 <script lang="ts">
@@ -123,6 +130,7 @@ import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
+import PageContent from '@/private/components/layout/page-content.vue';
 
 /**
  * Garage page.
@@ -134,8 +142,8 @@ import { User } from '@/user-system/entities/user';
         MaterialIcon,
         AddVehiclePopup,
         ErrorPopup,
-        GarageBar,
         CardContainer,
+        PageContent,
     },
 })
 export default class Vehicles extends VehicleMixin {
@@ -147,10 +155,22 @@ export default class Vehicles extends VehicleMixin {
         errorPopup: ErrorPopup;
     };
 
+    /**
+     * If the add button is enabled or not.
+     */
+    public isAddDisabled: boolean = false;
+
+    /**
+     * The vehicles being displayed
+     */
     public vehicles: Vehicle[] = [];
 
+    /**
+     * Event handler for when the component is mounted.
+     */
     public async mounted(): Promise<void> {
         this.vehicles = await this.$vehicleStore.getVehicles();
+        this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;
     }
     /**
      * Event handler to process when the user wants to change how their ordering
@@ -175,13 +195,6 @@ export default class Vehicles extends VehicleMixin {
                 this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.mileage > b.mileage ? -1 : 1));
                 break;
         }
-    }
-
-    /**
-     * If the user can add any new vehicles.
-     */
-    public canAddVehicle(): boolean {
-        return this.vehicles.length < User.CURRENT!.subscription.plan.vehicleCount;
     }
 
     public onAddClick(): void {

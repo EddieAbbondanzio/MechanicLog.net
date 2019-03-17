@@ -15,18 +15,18 @@ export class HttpClient {
      * Transformer to pass the errors through to clean them up for
      * the handler.
      */
-    private _errorTransformer?: (error: Error) => Error;
+    private errorParser?: (error: Error) => Error;
 
     /**
      * Create a new HTTP client.
      * @param baseUrl The base URL the HTTP client works with.
      */
-    constructor(options: { baseUrl?: string; errorTransformer?: (error: Error) => Error }) {
+    constructor(options: { baseUrl?: string; errorParser?: (error: Error) => Error }) {
         this._axios = axios.create({
             baseURL: options.baseUrl,
         });
 
-        this._errorTransformer = options.errorTransformer;
+        this.errorParser = options.errorParser;
     }
 
     /**
@@ -47,8 +47,8 @@ export class HttpClient {
                 return await this._axios.get(url);
             }
         } catch (error) {
-            if (this._errorTransformer != null) {
-                throw this._errorTransformer(error);
+            if (this.errorParser != null) {
+                throw this.errorParser(error);
             } else {
                 throw error;
             }
@@ -73,8 +73,8 @@ export class HttpClient {
                 return await this._axios.head(url);
             }
         } catch (error) {
-            if (this._errorTransformer != null) {
-                throw this._errorTransformer(error);
+            if (this.errorParser != null) {
+                throw this.errorParser(error);
             } else {
                 throw error;
             }
@@ -100,8 +100,8 @@ export class HttpClient {
                 return await this._axios.put(url, body);
             }
         } catch (error) {
-            if (this._errorTransformer != null) {
-                throw this._errorTransformer(error);
+            if (this.errorParser != null) {
+                throw this.errorParser(error);
             } else {
                 throw error;
             }
@@ -127,8 +127,8 @@ export class HttpClient {
                 return await this._axios.post(url, body);
             }
         } catch (error) {
-            if (this._errorTransformer != null) {
-                throw this._errorTransformer(error);
+            if (this.errorParser != null) {
+                throw this.errorParser(error);
             } else {
                 throw error;
             }
@@ -154,8 +154,8 @@ export class HttpClient {
                 return await this._axios.patch(url, body);
             }
         } catch (error) {
-            if (this._errorTransformer != null) {
-                throw this._errorTransformer(error);
+            if (this.errorParser != null) {
+                throw this.errorParser(error);
             } else {
                 throw error;
             }
@@ -180,8 +180,8 @@ export class HttpClient {
                 return await this._axios.delete(url);
             }
         } catch (error) {
-            if (this._errorTransformer != null) {
-                throw this._errorTransformer(error);
+            if (this.errorParser != null) {
+                throw this.errorParser(error);
             } else {
                 throw error;
             }
