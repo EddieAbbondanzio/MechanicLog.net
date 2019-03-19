@@ -1,6 +1,6 @@
 <style lang="scss">
-@import "./public/bootstrap/_functions.scss";
-@import "./public/bootstrap/_variables.scss";
+@import './public/bootstrap/_functions.scss';
+@import './public/bootstrap/_variables.scss';
 
 .vehicle-summary {
     cursor: pointer;
@@ -34,7 +34,7 @@
             <div class="row">
                 <router-link
                     class="text-muted vehicle-summary col-10 col-lg-11"
-                    :to="{ name: 'maintenance', params: { vehicleId: vehicle.id }}"
+                    :to="{ name: 'vehicle-information', params: { vehicleId: vehicle.id }}"
                 >
                     <!-- Columns -->
                     <div class="row">
@@ -43,9 +43,7 @@
                         </div>
 
                         <div class="col-4 col-lg-3 py-2">
-                            <span
-                                style="line-height: 39px;"
-                            >{{ vehicle.toString() }}</span>
+                            <span style="line-height: 39px;">{{ vehicle.toString() }}</span>
                         </div>
 
                         <div class="col-3 col-lg-2 py-2">
@@ -67,7 +65,9 @@
                 </router-link>
 
                 <!-- More Options Button -->
-                <div class="col-2 col-lg-1 py-2 vehicle-options-button text-center d-table align-middle">
+                <div
+                    class="col-2 col-lg-1 py-2 vehicle-options-button text-center d-table align-middle"
+                >
                     <div class="d-table-cell">
                         <b-dropdown variant="link" no-caret>
                             <div slot="button-content">
@@ -103,23 +103,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
-import { Vehicle } from "@/vehicle-system/vehicle/entities/vehicle";
-import MaterialIcon from "@/core/components/material-icon.vue";
-import DeleteVehicleConfirmPopup from "@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue";
-import EditVehiclePopup from "@/vehicle-system/vehicle/components/popups/edit-vehicle-popup.vue";
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import MaterialIcon from '@/core/components/material-icon.vue';
+import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue';
+import EditVehiclePopup from '@/vehicle-system/vehicle/components/popups/edit-vehicle-popup.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 
 /**
  * Component that summarizes the details of a vehicle.
  */
 @Component({
-    name: "vehicle-summary",
+    name: 'vehicle-summary',
     components: {
         MaterialIcon,
         DeleteVehicleConfirmPopup,
-        EditVehiclePopup
-    }
+        EditVehiclePopup,
+    },
 })
 export default class VehicleSummary extends VehicleMixin {
     /**
@@ -130,13 +130,9 @@ export default class VehicleSummary extends VehicleMixin {
 
     public get title() {
         if (this.vehicle.name != null) {
-            return `${this.vehicle.name} - ${this.vehicle.year} ${
-                this.vehicle.make
-            } ${this.vehicle.model}`;
+            return `${this.vehicle.name} - ${this.vehicle.year} ${this.vehicle.make} ${this.vehicle.model}`;
         } else {
-            return `${this.vehicle.year} ${this.vehicle.make} ${
-                this.vehicle.model
-            }`;
+            return `${this.vehicle.year} ${this.vehicle.make} ${this.vehicle.model}`;
         }
     }
 

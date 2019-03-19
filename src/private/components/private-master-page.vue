@@ -5,11 +5,11 @@
 </style>
 
 <template>
-    <div class="d-flex flex-column flex-grow-1" style="min-height: 100vh;">
+    <div class="d-flex flex-column" style="min-height: 100vh;">
         <title-bar/>
 
-        <div class="d-flex flex-row flex-grow-1 h-100">
-            <side-bar class="align-self-stretch"/>
+        <div class="d-flex flex-row align-self-stretch h-100">
+            <side-bar class="d-flex flex-column align-self-stretch"/>
             <div class="bg-light align-self-stretch w-100">
                 <router-view></router-view>
             </div>

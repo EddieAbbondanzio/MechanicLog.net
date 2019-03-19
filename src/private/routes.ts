@@ -42,8 +42,7 @@ export const privateRoutes: RouteConfig = {
         {
             name: 'garage',
             path: '/garage',
-            component: () =>
-                import('@/vehicle-system/components/garage-container.vue'),
+            component: () => import('@/vehicle-system/components/garage-container.vue'),
             children: [
                 {
                     path: 'vehicles',
@@ -54,9 +53,9 @@ export const privateRoutes: RouteConfig = {
                     },
                 },
                 {
-                    path: 'vehicles/:vehicleId/maintenance',
-                    name: 'maintenance',
-                    component: () => import('./views/maintenance.vue'),
+                    path: 'vehicles/:vehicleId/vehicle-information',
+                    name: 'vehicle-information',
+                    component: () => import('./views/vehicle-information.vue'),
                     meta: {
                         authRequired: true,
                     },

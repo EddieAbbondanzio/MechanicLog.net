@@ -127,9 +127,9 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import AddVehiclePopup from '@/vehicle-system/vehicle/components/popups/add-vehicle-popup.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
-import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
+import ToolBar from '../components/tool-bar/tool-bar.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
 
 /**

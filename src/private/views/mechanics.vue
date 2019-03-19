@@ -96,7 +96,6 @@ import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-popup.vue';
-import GarageBar from '@/vehicle-system/components/garage-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { ServiceError } from '@/core/common/errors/service-error';
 import PageContent from '@/private/components/layout/page-content.vue';
@@ -111,7 +110,6 @@ import PageContent from '@/private/components/layout/page-content.vue';
         MechanicSummary,
         ErrorPopup,
         MaterialIcon,
-        GarageBar,
         CardContainer,
         PageContent,
     },

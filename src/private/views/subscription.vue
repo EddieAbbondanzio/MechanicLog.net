@@ -112,7 +112,6 @@ export default class Susbcription extends SubscriptionMixin {
 
     public async created(): Promise<void> {
         this.subscription = await this.$subscriptionStore.getSubscription();
-        console.log(this.subscription);
     }
 
     /**

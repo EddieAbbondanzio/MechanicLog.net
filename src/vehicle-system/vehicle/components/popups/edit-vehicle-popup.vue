@@ -69,7 +69,7 @@
 
             <!-- NickName Textbox -->
             <div class="form-group">
-                <label for="name-textbox">Name</label>
+                <label class="required" for="name-textbox">Name</label>
                 <input
                     type="text"
                     class="form-control"
@@ -77,26 +77,18 @@
                     placeholder="Daily Driver"
                     v-model="name"
                     name="nickName"
-                    v-validate="'max:32'"
+                    v-validate="'required|max:32'"
                 >
                 <b-form-invalid-feedback>{{ errors.first('nickName') }}</b-form-invalid-feedback>
                 <small>A nickname can be used to help identify vehicles easier.</small>
             </div>
         </form>
-        
+
         <div slot="footer">
-            <b-button
-                variant="warning"
-                class="float-left"
-                @click="onCancelClick"
-            >Cancel</b-button>
+            <b-button variant="warning" class="float-left" @click="onCancelClick">Cancel</b-button>
 
             <!-- Create Button -->
-            <b-button
-                variant="primary"
-                class="float-right"
-                @click="onConfirmClick"
-            >Confirm</b-button>
+            <b-button variant="primary" class="float-right" @click="onConfirmClick">Confirm</b-button>
         </div>
     </popup-container>
 </template>

@@ -145,7 +145,7 @@
 
                         <!-- Nickname -->
                         <b-form-group>
-                            <label for="add-vehicle-name-textbox">Nickname or Label</label>
+                            <label class="required" for="add-vehicle-name-textbox">Nickname or Label</label>
                             <b-form-input
                                 type="text"
                                 id="add-vehicle-name-textbox"
@@ -153,7 +153,7 @@
                                 v-model="name"
                                 name="addVehicleName"
                                 data-vv-scope="tab3"
-                                v-validate="'max:32'"
+                                v-validate="'required|max:32'"
                             />
                             <b-form-invalid-feedback
                                 class="d-block"
@@ -320,6 +320,10 @@ export default class AddVehiclePopup extends VehicleMixin {
                 },
                 addVehiclePlate: {
                     max: 'License plate number must be 10 characters or less.',
+                },
+                addVehicleName: {
+                    required: 'Vehicle name is required.',
+                    max: 'Vehicle name must be 32 characters or less.',
                 },
             },
         });

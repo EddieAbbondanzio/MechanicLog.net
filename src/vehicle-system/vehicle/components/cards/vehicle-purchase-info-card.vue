@@ -2,7 +2,7 @@
 @import './public/bootstrap/_functions.scss';
 @import './public/bootstrap/_variables.scss';
 
-.vehicle-detail-edit {
+.vehicle-purchase-info-edit {
     &:hover {
         background-color: $gray-200 !important;
     }
@@ -23,7 +23,7 @@
             />
         </a>
 
-        <h4>Details
+        <h4>Purchase Info
             <br>
             <small class="text-muted">{{ vehicle.mileage.toLocaleString() }} Miles</small>
         </h4>
@@ -47,7 +47,7 @@
             <div class="col-5">{{ vehicle.vin }}</div>
         </div>
 
-        <edit-vehicle-popup :vehicle="vehicle" ref="editPopup" @edit="onEdit"/>
+        <!-- <edit-vehicle-popup :vehicle="vehicle" ref="editPopup" @edit="onEdit"/> -->
     </card-container>
 </template>
 
@@ -60,7 +60,7 @@ import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import EditVehiclePopup from '@/vehicle-system/vehicle/components/popups/edit-vehicle-popup.vue';
 
 /**
- * Card that shows off the details of a vehicle.
+ * Card that shows off the purchase information
  */
 @Component({
     name: 'vehicle-details-card',
@@ -70,7 +70,7 @@ import EditVehiclePopup from '@/vehicle-system/vehicle/components/popups/edit-ve
         EditVehiclePopup,
     },
 })
-export default class VehicleDetailsCard extends VehicleMixin {
+export default class VehiclePurchaseInfoCard extends VehicleMixin {
     public $refs!: {
         editPopup: EditVehiclePopup;
     };

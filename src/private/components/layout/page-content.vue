@@ -1,10 +1,10 @@
 <template>
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column h-100">
         <tool-bar>
             <slot name="tool-bar"></slot>
         </tool-bar>
 
-        <div class="p-3">
+        <div class="p-3 h-100">
             <slot></slot>
         </div>
     </div>
