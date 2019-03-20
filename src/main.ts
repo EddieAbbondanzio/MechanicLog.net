@@ -28,6 +28,18 @@ Vue.use(VeeValidate, {
 Vue.use(BootstrapVue);
 Vue.use(VueStripeCheckout, 'pk_test_pAE8iUOuNnFxmQRYITJsHiiT');
 
+Vue.filter('formatDate', (value: Date) => {
+    if (value != null) {
+        return value.toLocaleDateString();
+    }
+});
+
+Vue.filter('currency', (value: number) => {
+    if (value != null) {
+        return `$${value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`;
+    }
+});
+
 const v: Vue = new Vue({
     router,
     render: (h) => h(App),

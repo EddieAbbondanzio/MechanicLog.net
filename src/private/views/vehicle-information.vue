@@ -51,7 +51,7 @@
 </style>
 
 <template>
-    <page-content>
+    <page-content v-if="vehicle != null">
         <error-popup ref="errorPopup"/>
 
         <div
@@ -73,7 +73,6 @@
                             <material-icon icon="camera_alt" color="secondary" size="xl"/>
                         </div>
                     </div>
-
                     <div>
                         <h1 class="pb-0 mb-0">{{ vehicle.name }}</h1>
                         <h3
@@ -94,15 +93,20 @@
                             :class="{ 'vehicle-information-tab': activeTab != 2, 'vehicle-information-tab-active': activeTab == 2, 'p-2': true, 'mx-1': true, 'rounded': true  }"
                             @click="onTabClick(2)"
                         >Maintenance</div>
-                        <!-- <div
+                        <div
                             :class="{ 'vehicle-information-tab': activeTab != 3, 'vehicle-information-tab-active': activeTab == 3, 'p-2': true, 'mx-1': true, 'rounded': true  }"
                             @click="onTabClick(3)"
-                        >Fuel Mileage</div>-->
+                        >Fuel Mileage</div>
                     </div>
 
                     <div class="py-3">
                         <div v-if="activeTab == 1">
-                            <vehicle-information-tab :vehicle="vehicle"/>
+                            <vehicle-information-tab
+                                :vehicle="vehicle"
+                                :purchaseInfo="purchaseInfo"
+                                @editDetails="onDetailsEdit"
+                                @editPurchaseInfo="onPurchaseInfoEdit"
+                            />
                         </div>
                         <div v-if="activeTab == 2">
                             <vehicle-maintenance-tab :vehicle="vehicle"/>
@@ -132,6 +136,7 @@ import PageContent from '@/private/components/layout/page-content.vue';
 import VehicleInformationTab from '@/vehicle-system/vehicle/components/tabs/vehicle-information-tab.vue';
 import VehicleMaintenanceTab from '@/vehicle-system/vehicle/components/tabs/vehicle-maintenance-tab.vue';
 import VehicleFuelMileageTab from '@/vehicle-system/vehicle/components/tabs/vehicle-fuel-mileage-tab.vue';
+import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
 
 /**
  * Maintenance history page.
@@ -162,6 +167,8 @@ export default class VehicleInformation extends VehicleMixin {
      */
     public vehicle: Vehicle = null!;
 
+    public purchaseInfo: Nullable<VehiclePurchaseInfo> = null;
+
     public activeTab: number = 1;
 
     /**
@@ -170,12 +177,22 @@ export default class VehicleInformation extends VehicleMixin {
     public async created(): Promise<void> {
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
         this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)) as Vehicle;
-
+        this.purchaseInfo = await this.$vehiclePurchaseInfoStore.getVehiclePurchaseInfo(this.vehicle);
         this.$forceUpdate();
     }
 
     public async onTabClick(index: number) {
         this.activeTab = index;
+    }
+
+    public async onDetailsEdit(vehicle: Vehicle) {
+        this.vehicle = vehicle;
+        this.$forceUpdate();
+    }
+
+    public async onPurchaseInfoEdit(purchaseInfo: VehiclePurchaseInfo) {
+        this.purchaseInfo = purchaseInfo;
+        this.$forceUpdate();
     }
 }
 </script>

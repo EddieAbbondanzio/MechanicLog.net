@@ -1,4 +1,3 @@
-
 /**
  * Service identifiers for business layer services.
  */
@@ -8,6 +7,7 @@ export enum ServiceType {
     Vehicle,
     VehicleMake,
     VehicleModel,
+    VehiclePurchaseInfo,
     Mechanic,
     MaintenanceEvent,
     Logger,

@@ -29,22 +29,22 @@
         </h4>
 
         <div class="row">
-            <div class="col-1 text-muted">Year</div>
-            <div class="col-5">{{ vehicle.year }}</div>
-            <div class="col-1 text-muted">Color</div>
-            <div class="col-5">{{ vehicle.color }}</div>
+            <div class="col-2 text-muted">Year</div>
+            <div class="col-4">{{ vehicle.year }}</div>
+            <div class="col-2 text-muted">Color</div>
+            <div class="col-4">{{ vehicle.color }}</div>
         </div>
         <div class="row">
-            <div class="col-1 text-muted">Make</div>
-            <div class="col-5">{{ vehicle.make.name }}</div>
-            <div class="col-1 text-muted">Plate</div>
-            <div class="col-5">{{ vehicle.licensePlate }}</div>
+            <div class="col-2 text-muted">Make</div>
+            <div class="col-4">{{ vehicle.make.name }}</div>
+            <div class="col-2 text-muted">Plate</div>
+            <div class="col-4">{{ vehicle.licensePlate }}</div>
         </div>
         <div class="row">
-            <div class="col-1 text-muted">Model</div>
-            <div class="col-5">{{ vehicle.model.name }}</div>
-            <div class="col-1 text-muted">VIN</div>
-            <div class="col-5">{{ vehicle.vin }}</div>
+            <div class="col-2 text-muted">Model</div>
+            <div class="col-4">{{ vehicle.model.name }}</div>
+            <div class="col-2 text-muted">VIN</div>
+            <div class="col-4">{{ vehicle.vin }}</div>
         </div>
 
         <edit-vehicle-popup :vehicle="vehicle" ref="editPopup" @edit="onEdit"/>
@@ -92,6 +92,7 @@ export default class VehicleDetailsCard extends VehicleMixin {
      * Event handler for when the popup finishes editing.
      */
     public async onEdit(vehicle: Vehicle): Promise<void> {
+        await this.$vehicleStore.updateVehicle(vehicle);
         this.$emit('edit', vehicle);
     }
 }

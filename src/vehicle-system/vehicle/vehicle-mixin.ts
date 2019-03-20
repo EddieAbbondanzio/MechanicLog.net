@@ -4,6 +4,7 @@ import Component from 'vue-class-component';
 import { VehicleStore } from './store/vehicle-store';
 import { VehicleMakeStore } from './store/vehicle-make-store';
 import { VehicleModelStore } from './store/vehicle-model-store';
+import { VehiclePurchaseInfoStore } from './store/vehicle-purchase-info-store';
 
 /**
  * Mixin for common vehicle properties
@@ -26,11 +27,17 @@ export class VehicleMixin extends Vue {
     protected $vehicleModelStore!: VehicleModelStore;
 
     /**
+     * The purchase info of a vehicle.
+     */
+    protected $vehiclePurchaseInfoStore!: VehiclePurchaseInfoStore;
+
+    /**
      * When the mixin is created, pull in the store.
      */
     public created(): void {
         this.$vehicleStore = Store.resolve<VehicleStore>('vehicle');
         this.$vehicleMakeStore = Store.resolve<VehicleMakeStore>('vehicleMake');
         this.$vehicleModelStore = Store.resolve('vehicleModel');
+        this.$vehiclePurchaseInfoStore = Store.resolve('vehiclePurchaseInfo');
     }
 }

@@ -13,41 +13,39 @@
 </style>
 
 <template>
-    <card-container>
+    <card-container v-if="purchaseInfo != null">
+        <edit-vehicle-purchase-info-popup :purchaseInfo="purchaseInfo" ref="popup" @edit="onEdit"/>
+
         <a href="#" @click="onEditClick">
             <material-icon
                 icon="edit"
                 color="muted"
                 size="md"
-                class="float-right vehicle-detail-edit p-1 rounded"
+                class="float-right vehicle-purchase-info-edit p-1 rounded"
             />
         </a>
 
-        <h4>Purchase Info
-            <br>
-            <small class="text-muted">{{ vehicle.mileage.toLocaleString() }} Miles</small>
-        </h4>
+        <h4>Purchase Info</h4>
 
         <div class="row">
-            <div class="col-1 text-muted">Year</div>
-            <div class="col-5">{{ vehicle.year }}</div>
-            <div class="col-1 text-muted">Color</div>
-            <div class="col-5">{{ vehicle.color }}</div>
+            <div class="col-2 text-muted">Date</div>
+            <div class="col-5">{{ purchaseInfo.purchaseDate | formatDate }}</div>
         </div>
         <div class="row">
-            <div class="col-1 text-muted">Make</div>
-            <div class="col-5">{{ vehicle.make.name }}</div>
-            <div class="col-1 text-muted">Plate</div>
-            <div class="col-5">{{ vehicle.licensePlate }}</div>
+            <div class="col-2 text-muted">Mileage</div>
+            <div class="col-5">{{ purchaseInfo.purchaseMileage }}</div>
         </div>
         <div class="row">
-            <div class="col-1 text-muted">Model</div>
-            <div class="col-5">{{ vehicle.model.name }}</div>
-            <div class="col-1 text-muted">VIN</div>
-            <div class="col-5">{{ vehicle.vin }}</div>
+            <div class="col-2 text-muted">Price</div>
+            <div class="col-5">{{ purchaseInfo.purchasePrice | currency }}</div>
         </div>
-
-        <!-- <edit-vehicle-popup :vehicle="vehicle" ref="editPopup" @edit="onEdit"/> -->
+        <div class="row">
+            <div class="col-2 text-muted">Seller Name</div>
+            <div class="col-5">{{ purchaseInfo.sellerName }}</div>
+        </div>
+    </card-container>
+    <card-container v-else>
+        <h4>Purchase Info</h4>
     </card-container>
 </template>
 
@@ -58,21 +56,26 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
 import EditVehiclePopup from '@/vehicle-system/vehicle/components/popups/edit-vehicle-popup.vue';
+import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
+import { Nullable } from '@/core/common/monads/nullable';
+import { User } from '@/user-system/entities/user';
+import EditVehiclePurchaseInfoPopup from '@/vehicle-system/vehicle/components/popups/edit-vehicle-purchase-info-popup.vue';
 
 /**
  * Card that shows off the purchase information
  */
 @Component({
-    name: 'vehicle-details-card',
+    name: 'vehicle-purchase-info-card',
     components: {
         CardContainer,
         MaterialIcon,
         EditVehiclePopup,
+        EditVehiclePurchaseInfoPopup,
     },
 })
 export default class VehiclePurchaseInfoCard extends VehicleMixin {
     public $refs!: {
-        editPopup: EditVehiclePopup;
+        popup: EditVehiclePurchaseInfoPopup;
     };
 
     /**
@@ -82,17 +85,22 @@ export default class VehiclePurchaseInfoCard extends VehicleMixin {
     public vehicle!: Vehicle;
 
     /**
-     * Event handler for when the user wants to edit the vehicle details.
+     * The purchase info to render.
      */
-    public async onEditClick(): Promise<void> {
-        this.$refs.editPopup.show();
+    @Prop()
+    private purchaseInfo!: Nullable<VehiclePurchaseInfo>;
+
+    public mounted(): void {
+        console.log(this.purchaseInfo);
     }
 
-    /**
-     * Event handler for when the popup finishes editing.
-     */
-    public async onEdit(vehicle: Vehicle): Promise<void> {
-        this.$emit('edit', vehicle);
+    public async onEditClick(): Promise<void> {
+        this.$refs.popup.show();
+    }
+
+    public async onEdit(purchaseInfo: VehiclePurchaseInfo): Promise<void> {
+        await this.$vehiclePurchaseInfoStore.updateVehiclePurchaseInfo(purchaseInfo);
+        this.$emit('edit', purchaseInfo);
     }
 }
 </script>

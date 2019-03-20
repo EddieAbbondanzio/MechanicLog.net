@@ -4,6 +4,7 @@ import * as HttpStatusCodes from 'http-status-codes';
 import { ValidationError } from '../common/errors/validation-error';
 import { SubscriptionExpiredError } from '../common/errors/subscription-expired-error';
 import { AuthenticationError } from '../common/errors/authentication-error';
+import { NotFoundError } from '../common/errors/not-found-error';
 
 /**
  * Service abstraction for managing api end points.
@@ -29,6 +30,8 @@ export class Service {
                         return new ValidationError((error as any).response.data.errors);
                     case HttpStatusCodes.PAYMENT_REQUIRED:
                         return new SubscriptionExpiredError();
+                    case HttpStatusCodes.NOT_FOUND:
+                        return new NotFoundError((error as any).response.data.errors[0]);
                     default:
                         return new ServiceError((error as any).response.status, (error as any).response.data.errors);
                 }
