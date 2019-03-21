@@ -13,4 +13,5 @@ export enum ServiceType {
     Logger,
     Subscription,
     SubscriptionPlan,
+    FuelTrip,
 }

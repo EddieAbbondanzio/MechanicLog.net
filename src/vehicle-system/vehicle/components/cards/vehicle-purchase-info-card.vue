@@ -27,22 +27,28 @@
 
         <h4>Purchase Info</h4>
 
-        <div v-if="purchaseInfo != null" class="container-fluid mx-0 px-0">
+        <div class="container-fluid mx-0 px-0">
             <div class="row">
                 <div class="col-2 text-muted">Date</div>
-                <div class="col-5">{{ purchaseInfo.purchaseDate | formatDate }}</div>
+                <div
+                    class="col-5"
+                    v-if="purchaseInfo != null"
+                >{{ purchaseInfo.purchaseDate | formatDate }}</div>
             </div>
             <div class="row">
                 <div class="col-2 text-muted">Mileage</div>
-                <div class="col-5">{{ purchaseInfo.purchaseMileage }}</div>
+                <div class="col-5" v-if="purchaseInfo != null">{{ purchaseInfo.purchaseMileage }}</div>
             </div>
             <div class="row">
                 <div class="col-2 text-muted">Price</div>
-                <div class="col-5">{{ purchaseInfo.purchasePrice | currency }}</div>
+                <div
+                    class="col-5"
+                    v-if="purchaseInfo != null"
+                >{{ purchaseInfo.purchasePrice | currency }}</div>
             </div>
             <div class="row">
                 <div class="col-2 text-muted">Seller Name</div>
-                <div class="col-5">{{ purchaseInfo.sellerName }}</div>
+                <div class="col-5" v-if="purchaseInfo != null">{{ purchaseInfo.sellerName }}</div>
             </div>
         </div>
     </card-container>
@@ -100,9 +106,8 @@ export default class VehiclePurchaseInfoCard extends VehicleMixin {
             throw new Error('No vehicle purchase info');
         }
 
-        if (purchaseInfo.id == 0) {
+        if (purchaseInfo.id === 0) {
             const c = purchaseInfo.clone();
-            console.log(c);
             await this.$vehiclePurchaseInfoStore.addVehiclePurchaseInfo(this.vehicle, c);
             this.$emit('edit', c);
         }

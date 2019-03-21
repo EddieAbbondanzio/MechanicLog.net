@@ -7,6 +7,7 @@
 <template>
     <div class="d-flex flex-column" style="min-height: 100vh;">
         <title-bar/>
+        <error-popup ref="errorPopup" />
 
         <div class="d-flex flex-row align-self-stretch h-100">
             <side-bar class="d-flex flex-column align-self-stretch"/>
@@ -23,6 +24,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import TitleBar from '../components/title-bar/title-bar.vue';
 import SideBar from '../components/side-bar/side-bar.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
+import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
 
 /**
@@ -34,14 +36,27 @@ import { EventBus } from '@/core/event/event-bus';
         SideBar,
         TitleBar,
         LoadingBar,
+        ErrorPopup,
     },
 })
 export default class PrivateMasterPage extends Vue {
+    public $refs!: {
+        errorPopup: ErrorPopup,
+    }
+
     public loadingCount: number = 0;
 
+    /**
+     * Prepare by subscribing to the event bus.
+     */
     public created(): void {
+        EventBus.on('error', this.onError);
         EventBus.on('loading', this.onLoading);
         EventBus.on('loaded', this.onLoaded);
+    }
+    
+    public async onError(error: string): Promise<void> {
+        this.$refs.errorPopup.show(error);
     }
 
     public async onLoading(): Promise<void> {

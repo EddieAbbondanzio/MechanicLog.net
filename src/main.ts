@@ -24,6 +24,7 @@ Vue.use(VeeValidate, {
         invalid: 'is-invalid',
     },
     events: 'blur',
+    fieldsBagName: '$fields',
 });
 Vue.use(BootstrapVue);
 Vue.use(VueStripeCheckout, 'pk_test_pAE8iUOuNnFxmQRYITJsHiiT');

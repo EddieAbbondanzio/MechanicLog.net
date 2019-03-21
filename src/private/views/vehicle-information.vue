@@ -99,7 +99,7 @@
                         >Fuel Mileage</div>
                     </div>
 
-                    <div class="py-3">
+                    <div class="py-3 d-flex flex-column flex-fill">
                         <div v-if="activeTab == 1">
                             <vehicle-information-tab
                                 :vehicle="vehicle"
@@ -177,15 +177,14 @@ export default class VehicleInformation extends VehicleMixin {
     /**
      * On page load, pull in the vehicle.
      */
-    public async mounted(): Promise<void> {
-        console.log('child mounted');
+    public async created(): Promise<void> {
         EventBus.emit('loading');
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
         this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)) as Vehicle;
         try {
             this.purchaseInfo = await this.$vehiclePurchaseInfoStore.getVehiclePurchaseInfo(this.vehicle);
         } catch {
-            this.purchaseInfo = new VehiclePurchaseInfo(this.vehicle.id, null, null, null, null);
+            this.purchaseInfo = new VehiclePurchaseInfo(this.vehicle.id);
         }
 
         EventBus.emit('loaded');
