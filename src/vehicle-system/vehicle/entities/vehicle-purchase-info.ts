@@ -14,17 +14,17 @@ export class VehiclePurchaseInfo {
     /**
      * The date the vehicle was purchased on.
      */
-    public purchaseDate: Date;
+    public purchaseDate: Nullable<Date>;
 
     /**
      * The mileage it was purchased at.
      */
-    public purchaseMileage: number;
+    public purchaseMileage: Nullable<number>;
 
     /**
      * The price paid for the vehicle.
      */
-    public purchasePrice: number;
+    public purchasePrice: Nullable<number>;
 
     /**
      * The name of who sold it.
@@ -40,8 +40,14 @@ export class VehiclePurchaseInfo {
      * @param purchasePrice The price of purchase
      * @param sellerName The name of the seller.
      */
-    constructor(id: number, vehicleId: number, purchaseDate: Date, purchaseMileage: number, purchasePrice: number, sellerName: Nullable<string> = null) {
-        this.id = id;
+    constructor(
+        vehicleId: number,
+        purchaseDate: Nullable<Date> = null,
+        purchaseMileage: Nullable<number> = null,
+        purchasePrice: Nullable<number> = null,
+        sellerName: Nullable<string> = null
+    ) {
+        this.id = 0;
         this.vehicleId = vehicleId;
         this.purchaseDate = purchaseDate;
         this.purchaseMileage = purchaseMileage;
@@ -49,11 +55,19 @@ export class VehiclePurchaseInfo {
         this.sellerName = sellerName;
     }
 
+    public clone(): VehiclePurchaseInfo {
+        const c = new VehiclePurchaseInfo(this.vehicleId, this.purchaseDate, this.purchaseMileage, this.purchasePrice, this.sellerName);
+        c.id = this.id;
+        return c;
+    }
+
     /**
      * Rebuild the vehicle purchase info from it's raw counterpart.
      * @param raw The raw object to parse.
      */
     public static fromRaw(raw: any): VehiclePurchaseInfo {
-        return new VehiclePurchaseInfo(raw.id, raw.vehicleId, new Date(raw.purchaseDate), raw.purchaseMileage, raw.purchasePrice, raw.sellerName || null);
+        const vpi = new VehiclePurchaseInfo(raw.vehicleId, new Date(raw.purchaseDate), raw.purchaseMileage, raw.purchasePrice, raw.sellerName || null);
+        vpi.id = raw.id;
+        return vpi;
     }
 }

@@ -10,12 +10,6 @@
         </div>
 
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 mx-0 px-0">
-                    <loading-bar v-if="isLoading"/>
-                </div>
-            </div>
-
             <div class="row py-3">
                 <div class="col-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
                     <card-container>
@@ -145,9 +139,9 @@ import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
 import { Nullable } from '@/core/common/monads/nullable';
 import { UserMixin } from '@/user-system/user-mixin';
-import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import * as HttpStatusCodes from 'http-status-codes';
 import PageContent from '@/private/components/layout/page-content.vue';
+import { EventBus } from '@/core/event/event-bus';
 
 /**
  * Settings page for updating the user.
@@ -157,7 +151,6 @@ import PageContent from '@/private/components/layout/page-content.vue';
     components: {
         CardContainer,
         ErrorPopup,
-        LoadingBar,
         PageContent,
     },
 })
@@ -194,9 +187,6 @@ export default class Settings extends UserMixin {
      */
     public currentPassword: Nullable<string> = null;
 
-    /**
-     * If the form is loading.
-     */
     public isLoading: boolean = false;
 
     /**
@@ -238,9 +228,9 @@ export default class Settings extends UserMixin {
             return;
         }
 
+        EventBus.emit('loading');
         this.isLoading = true;
         await this.$userStore.updateInfo({ name: this.name, email: this.email });
-        this.isLoading = false;
 
         if (this.newPassword != null) {
             try {
@@ -254,6 +244,7 @@ export default class Settings extends UserMixin {
         }
 
         this.isLoading = false;
+        EventBus.emit('loaded');
     }
 
     /**

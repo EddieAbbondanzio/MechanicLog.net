@@ -13,6 +13,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ToolBar from '@/private/components/tool-bar/tool-bar.vue';
+import { EventBus } from '@/core/event/event-bus';
 
 @Component({
     name: 'page-content',

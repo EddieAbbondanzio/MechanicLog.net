@@ -13,7 +13,7 @@
 </style>
 
 <template>
-    <card-container v-if="purchaseInfo != null">
+    <card-container>
         <edit-vehicle-purchase-info-popup :purchaseInfo="purchaseInfo" ref="popup" @edit="onEdit"/>
 
         <a href="#" @click="onEditClick">
@@ -27,29 +27,29 @@
 
         <h4>Purchase Info</h4>
 
-        <div class="row">
-            <div class="col-2 text-muted">Date</div>
-            <div class="col-5">{{ purchaseInfo.purchaseDate | formatDate }}</div>
+        <div v-if="purchaseInfo != null" class="container-fluid mx-0 px-0">
+            <div class="row">
+                <div class="col-2 text-muted">Date</div>
+                <div class="col-5">{{ purchaseInfo.purchaseDate | formatDate }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 text-muted">Mileage</div>
+                <div class="col-5">{{ purchaseInfo.purchaseMileage }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 text-muted">Price</div>
+                <div class="col-5">{{ purchaseInfo.purchasePrice | currency }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 text-muted">Seller Name</div>
+                <div class="col-5">{{ purchaseInfo.sellerName }}</div>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-2 text-muted">Mileage</div>
-            <div class="col-5">{{ purchaseInfo.purchaseMileage }}</div>
-        </div>
-        <div class="row">
-            <div class="col-2 text-muted">Price</div>
-            <div class="col-5">{{ purchaseInfo.purchasePrice | currency }}</div>
-        </div>
-        <div class="row">
-            <div class="col-2 text-muted">Seller Name</div>
-            <div class="col-5">{{ purchaseInfo.sellerName }}</div>
-        </div>
-    </card-container>
-    <card-container v-else>
-        <h4>Purchase Info</h4>
     </card-container>
 </template>
 
 <script lang="ts">
+import LoadingIcon from '@/core/components/ux/loading-icon.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
@@ -71,6 +71,7 @@ import EditVehiclePurchaseInfoPopup from '@/vehicle-system/vehicle/components/po
         MaterialIcon,
         EditVehiclePopup,
         EditVehiclePurchaseInfoPopup,
+        LoadingIcon,
     },
 })
 export default class VehiclePurchaseInfoCard extends VehicleMixin {
@@ -90,15 +91,21 @@ export default class VehiclePurchaseInfoCard extends VehicleMixin {
     @Prop()
     private purchaseInfo!: Nullable<VehiclePurchaseInfo>;
 
-    public mounted(): void {
-        console.log(this.purchaseInfo);
-    }
-
     public async onEditClick(): Promise<void> {
         this.$refs.popup.show();
     }
 
     public async onEdit(purchaseInfo: VehiclePurchaseInfo): Promise<void> {
+        if (this.purchaseInfo == null) {
+            throw new Error('No vehicle purchase info');
+        }
+
+        if (purchaseInfo.id == 0) {
+            const c = purchaseInfo.clone();
+            console.log(c);
+            await this.$vehiclePurchaseInfoStore.addVehiclePurchaseInfo(this.vehicle, c);
+            this.$emit('edit', c);
+        }
         await this.$vehiclePurchaseInfoStore.updateVehiclePurchaseInfo(purchaseInfo);
         this.$emit('edit', purchaseInfo);
     }

@@ -137,6 +137,8 @@ import VehicleInformationTab from '@/vehicle-system/vehicle/components/tabs/vehi
 import VehicleMaintenanceTab from '@/vehicle-system/vehicle/components/tabs/vehicle-maintenance-tab.vue';
 import VehicleFuelMileageTab from '@/vehicle-system/vehicle/components/tabs/vehicle-fuel-mileage-tab.vue';
 import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
+import LoadingBar from '@/core/components/ux/loading-bar.vue';
+import { EventBus } from '@/core/event/event-bus';
 
 /**
  * Maintenance history page.
@@ -152,6 +154,7 @@ import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-p
         VehicleInformationTab,
         VehicleMaintenanceTab,
         VehicleFuelMileageTab,
+        LoadingBar,
     },
 })
 export default class VehicleInformation extends VehicleMixin {
@@ -174,10 +177,18 @@ export default class VehicleInformation extends VehicleMixin {
     /**
      * On page load, pull in the vehicle.
      */
-    public async created(): Promise<void> {
+    public async mounted(): Promise<void> {
+        console.log('child mounted');
+        EventBus.emit('loading');
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
         this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)) as Vehicle;
-        this.purchaseInfo = await this.$vehiclePurchaseInfoStore.getVehiclePurchaseInfo(this.vehicle);
+        try {
+            this.purchaseInfo = await this.$vehiclePurchaseInfoStore.getVehiclePurchaseInfo(this.vehicle);
+        } catch {
+            this.purchaseInfo = new VehiclePurchaseInfo(this.vehicle.id, null, null, null, null);
+        }
+
+        EventBus.emit('loaded');
         this.$forceUpdate();
     }
 

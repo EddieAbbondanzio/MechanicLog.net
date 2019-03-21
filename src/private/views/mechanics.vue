@@ -99,6 +99,7 @@ import AddMechanicPopup from '@/vehicle-system/mechanic/components/add-mechanic-
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { ServiceError } from '@/core/common/errors/service-error';
 import PageContent from '@/private/components/layout/page-content.vue';
+import { EventBus } from '@/core/event/event-bus';
 
 /**
  * List of all the mechanics the user has.
@@ -132,7 +133,9 @@ export default class Mechanics extends MechanicMixin {
      * On page load go out and try to get all of the mechanics from the backend.
      */
     public async mounted(): Promise<void> {
+        EventBus.emit('loading');
         this.mechanics = await this.$mechanicStore.getMechanics();
+        EventBus.emit('loaded');
     }
 
     public onAddClick(): void {
@@ -143,7 +146,9 @@ export default class Mechanics extends MechanicMixin {
      * On an new add, force an update of the screen.
      */
     public async onMechanicAdd(mechanic: Mechanic): Promise<void> {
+        EventBus.emit('loading');
         const result = await this.$mechanicStore.addMechanic(mechanic);
+        EventBus.emit('loaded');
         this.$forceUpdate();
     }
 

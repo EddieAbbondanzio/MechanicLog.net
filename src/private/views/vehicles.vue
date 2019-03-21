@@ -131,6 +131,7 @@ import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
 import ToolBar from '../components/tool-bar/tool-bar.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
+import { EventBus } from '@/core/event/event-bus';
 
 /**
  * Garage page.
@@ -169,8 +170,10 @@ export default class Vehicles extends VehicleMixin {
      * Event handler for when the component is mounted.
      */
     public async mounted(): Promise<void> {
+        EventBus.emit('loading');
         this.vehicles = await this.$vehicleStore.getVehicles();
         this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;
+        EventBus.emit('loaded');
     }
     /**
      * Event handler to process when the user wants to change how their ordering
@@ -202,7 +205,9 @@ export default class Vehicles extends VehicleMixin {
     }
 
     public async onVehicleAdd(vehicle: Vehicle): Promise<void> {
+        EventBus.emit('loading');
         await this.$vehicleStore.addVehicle(vehicle);
+        EventBus.emit('loaded');
     }
 
     /**

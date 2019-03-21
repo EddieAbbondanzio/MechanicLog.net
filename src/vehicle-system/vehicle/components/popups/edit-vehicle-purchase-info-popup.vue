@@ -45,7 +45,7 @@
                     class="form-control"
                     id="price-textbox"
                     placeholder="2499"
-                    v-model="price"
+                    v-model.number="price"
                     name="price"
                     v-validate="'required|min_value:0'"
                 >
@@ -154,7 +154,10 @@ export default class EditVehiclePurchaseInfoPopup extends Vue {
      * Show the popup on the screen.
      */
     public show(): void {
-        this.date = this.purchaseInfo.purchaseDate.toISOString().slice(0, 10);
+        if (this.purchaseInfo.purchaseDate != null) {
+            this.date = this.purchaseInfo.purchaseDate.toISOString().slice(0, 10);
+        }
+
         this.mileage = this.purchaseInfo.purchaseMileage;
         this.price = this.purchaseInfo.purchasePrice;
         this.sellerName = this.purchaseInfo.sellerName;
@@ -187,13 +190,14 @@ export default class EditVehiclePurchaseInfoPopup extends Vue {
         }
 
         const purchaseInfo = new VehiclePurchaseInfo(
-            this.purchaseInfo.id,
             this.purchaseInfo.vehicleId,
             this.purchaseInfo.purchaseDate,
             this.purchaseInfo.purchaseMileage,
             this.purchaseInfo.purchasePrice,
             this.purchaseInfo.sellerName
         );
+
+        purchaseInfo.id = this.purchaseInfo.id;
 
         if (this.date != null) {
             purchaseInfo.purchaseDate = new Date(this.date);

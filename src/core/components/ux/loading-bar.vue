@@ -2,10 +2,10 @@
 /* Progress Bar */
 .progress {
     position: relative;
-    height: 4px;
+    height: 6px;
     display: block;
     width: 100%;
-    background-color: #c2f7f2;
+    background-color: #fff9c4; //#c2f7f2;
     background-clip: padding-box;
     margin: 0;
     overflow: hidden;
@@ -13,7 +13,7 @@
 }
 
 .progress .indeterminate {
-    background-color: #17A2B8;
+    background-color: #fdd835; //#17a2b8;
 }
 .progress .indeterminate:before {
     content: '';
