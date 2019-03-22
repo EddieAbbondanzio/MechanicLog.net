@@ -5,6 +5,7 @@
     <page-content>
         <error-popup ref="errorPopup"/>
         <add-vehicle-popup ref="addPopup" @add="onVehicleAdd"/>
+        <delete-vehicle-confirm-popup ref="deletePopup" @delete="onDelete"/>
 
         <div
             slot="tool-bar"
@@ -17,105 +18,61 @@
             <div>
                 <div class="d-inline-block pb2 pb-sm-0 pr-2">
                     <!-- Button on screen -->
-                    <b-btn
-                        variant="success"
-                        @click="onAddClick"
-                        style="height: 40px"
-                        :disabled="isAddDisabled"
-                    >
-                        <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
-                        <span style="vertical-align: middle;">Add Vehicle</span>
-                    </b-btn>
-                </div>
-
-                <div class="d-inline-block align-middle">
-                    <!-- Sort By -->
-                    <div class="input-group" style="height: 40px;">
-                        <div class="input-group-prepend">
-                            <label
-                                class="input-group-text bg-primary text-light"
-                                for="inputGroupSelect01"
-                            >Order By:</label>
-                        </div>
-                        <select
-                            class="custom-select bg-white border-muted border-rounded-0"
-                            style="height: 40px;"
-                            id="inputGroupSelect01"
-                            @change="onOrderByChanged"
-                        >
-                            <option selected>Name</option>
-                            <option value="Year">Year</option>
-                            <option value="Make">Make</option>
-                            <option value="Mileage">Mileage</option>
-                        </select>
-                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="container-fluid p-0 m-0">
-            <div class="row">
-                <div class="col-12">
-                    <card-container>
-                        <!-- Sexy HR -->
-                        <div class="row">
-                            <div class="col-12 pb-2">
-                                <!-- <hr style="height: 4px; border: none;" class="bg-light"> -->
-                                <span class="text-muted">VEHICLES</span>
-                            </div>
-                        </div>
+        <card-container style="height: auto!important;">
+            <div class="mb-3 clearfix">
+                <h2 class="float-left">Vehicles</h2>
 
-                        <div class="row pb-2">
-                            <div class="col-10 col-lg-11">
-                                <div class="row">
-                                    <div class="col-2">
-                                        <span>Nickname</span>
-                                    </div>
-
-                                    <div class="col-4 col-lg-3">
-                                        <span>Year/Make/Model</span>
-                                    </div>
-
-                                    <div class="col-3 col-lg-2">
-                                        <span>Mileage</span>
-                                    </div>
-
-                                    <div class="col-2">
-                                        <span>Color</span>
-                                    </div>
-
-                                    <div class="col-2 d-none d-lg-block">
-                                        <span>VIN</span>
-                                    </div>
-
-                                    <div class="col-1 d-none d-lg-block">
-                                        <span>Plate</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12 py-0 my-0">
-                                <hr class="my-0 py-0 bg-secondary" style="height 4px;">
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-12">
-                                <vehicle-summary
-                                    v-for="vehicle in vehicles"
-                                    :vehicle="vehicle"
-                                    :key="vehicle.name"
-                                    @edit="onVehicleEdit"
-                                    @delete="onVehicleDelete"
-                                />
-                            </div>
-                        </div>
-                    </card-container>
-                </div>
+                <b-btn
+                    class="float-right"
+                    variant="success"
+                    @click="onAddClick"
+                    style="height: 40px"
+                    :disabled="isAddDisabled"
+                >
+                    <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                    <span style="vertical-align: middle;">Add Vehicle</span>
+                </b-btn>
             </div>
-        </div>
+
+            <b-table
+                :fields="columnNames"
+                :items="vehicles"
+                :busy="isLoading"
+                hover
+                @row-clicked="onRowClick"
+                style="cursor: pointer;"
+            >
+                <template slot="name" slot-scope="row">{{ row.value }}</template>
+                <template slot="year" slot-scope="row">{{ row.value }}</template>
+                <template slot="make" slot-scope="row">{{ row.value }}</template>
+                <template slot="model" slot-scope="row">{{ row.value }}</template>
+                <template slot="mileage" slot-scope="row">{{ row.value }}</template>
+                <template slot="color" slot-scope="row">{{ row.value }}</template>
+                <template slot="vin" slot-scope="row">{{ row.value }}</template>
+                <template slot="licensePlate" slot-scope="row">{{ row.value }}</template>
+                <template slot="options" slot-scope="row">
+                    <b-dropdown no-caret variant="link" class="maintenance-options">
+                        <div slot="button-content">
+                            <material-icon
+                                icon="more_vert"
+                                color="muted"
+                                size="md"
+                                class="align-middle m-0 p-0"
+                            />
+                        </div>
+                        <b-dropdown-item
+                            href="#"
+                            class="text-danger"
+                            @click="onDeleteClick(row.item.id)"
+                        >Delete</b-dropdown-item>
+                    </b-dropdown>
+                </template>
+            </b-table>
+        </card-container>
     </page-content>
 </template>
 
@@ -132,6 +89,7 @@ import { User } from '@/user-system/entities/user';
 import ToolBar from '../components/tool-bar/tool-bar.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
 import { EventBus } from '@/core/event/event-bus';
+import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue';
 
 /**
  * Garage page.
@@ -145,15 +103,29 @@ import { EventBus } from '@/core/event/event-bus';
         ErrorPopup,
         CardContainer,
         PageContent,
+        DeleteVehicleConfirmPopup,
     },
 })
 export default class Vehicles extends VehicleMixin {
+    public readonly columnNames = [
+        { key: 'name', label: 'Nickname', class: 'align-middle', sortable: true },
+        { key: 'year', label: 'Year', class: 'align-middle', sortable: true },
+        { key: 'make', label: 'Make', class: 'align-middle', sortable: true, formatter: (val: { name: string }) => val.name },
+        { key: 'model', label: 'Model', class: 'align-middle', formatter: (val: { name: string }) => val.name },
+        { key: 'mileage', label: 'Odometer', class: 'align-middle' },
+        { key: 'color', label: 'Color', class: 'align-middle' },
+        { key: 'vin', label: 'VIN', class: 'align-middle' },
+        { key: 'licensePlate', label: 'License plate', class: 'align-middle' },
+        { key: 'options', label: 'Options', class: 'align-middle' },
+    ];
+
     /**
      * References to children components.
      */
     public $refs!: {
         addPopup: AddVehiclePopup;
         errorPopup: ErrorPopup;
+        deletePopup: DeleteVehicleConfirmPopup;
     };
 
     /**
@@ -166,6 +138,10 @@ export default class Vehicles extends VehicleMixin {
      */
     public vehicles: Vehicle[] = [];
 
+    public isLoading: boolean = false;
+
+    public deleteId: number = -1;
+
     /**
      * Event handler for when the component is mounted.
      */
@@ -175,29 +151,9 @@ export default class Vehicles extends VehicleMixin {
         this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;
         EventBus.emit('loaded');
     }
-    /**
-     * Event handler to process when the user wants to change how their ordering
-     * their vehicles by.
-     */
-    public onOrderByChanged(event: any): void {
-        switch (event.target.value) {
-            case 'Name':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) => {
-                    const aName: string = a.name || '';
-                    const bName: string = b.name || '';
-                    return aName.localeCompare(bName);
-                });
-                break;
-            case 'Year':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.year > b.year ? -1 : 1));
-                break;
-            case 'Make':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) => a.make.name.localeCompare(b.make.name));
-                break;
-            case 'Mileage':
-                this.vehicles.sort((a: Vehicle, b: Vehicle) => (a.mileage > b.mileage ? -1 : 1));
-                break;
-        }
+
+    public async onRowClick(item: any, index: number, event: any) {
+        this.$router.push({ name: 'vehicle-information', params: { vehicleId: this.vehicles[index].id! } as any });
     }
 
     public onAddClick(): void {
@@ -206,22 +162,31 @@ export default class Vehicles extends VehicleMixin {
 
     public async onVehicleAdd(vehicle: Vehicle): Promise<void> {
         EventBus.emit('loading');
+        this.isLoading = true;
         await this.$vehicleStore.addVehicle(vehicle);
+        this.isLoading = false;
         EventBus.emit('loaded');
     }
 
-    /**
-     * Event handler listening for an update on a vehicle.
-     */
-    public onVehicleEdit(vehicle: Vehicle) {
-        this.$forceUpdate();
+    public onDeleteClick(id: number): void {
+        this.deleteId = id;
+        this.$refs.deletePopup.show();
     }
 
-    /**
-     * Event handler listening for a delete on a vehicle.
-     */
-    public onVehicleDelete(vehicle: Vehicle) {
-        this.$forceUpdate();
+    public async onDelete(): Promise<void> {
+        EventBus.emit('loading');
+        this.isLoading = true;
+
+        try {
+            const index = this.vehicles.findIndex((v) => v.id === this.deleteId);
+            await this.$vehicleStore.deleteVehicle(this.vehicles[index]);
+        } catch (error) {
+            this.$refs.errorPopup.show(error.message);
+        }
+
+        this.isLoading = false;
+        EventBus.emit('loaded');
+        this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;
     }
 }
 </script>

@@ -6,7 +6,7 @@
         size="lg"
         headerColor="primary"
     >
-        <form>
+        <form v-if="mechanic != null">
             <b-card no-body border-variant="white">
                 <b-tabs v-model="activeStep">
                     <b-tab title="Contact Info" class="py-4" @click="onTabClick">
@@ -19,7 +19,7 @@
                                 id="name-textbox"
                                 placeholder="Mike's Mechanic Shop"
                                 ref="nameTextbox"
-                                v-model="name"
+                                v-model="mechanic.name"
                                 name="editMechanicName"
                                 v-validate="'required|max:32'"
                             >
@@ -30,7 +30,7 @@
                             <label class="required" for="edit-type-dropdown">Type</label>
                             <b-form-select
                                 id="edit-type-dropdown"
-                                v-model="type"
+                                v-model="mechanic.type"
                                 :options="typeOptions"
                                 ref="editMechanicType"
                                 name="editMechanicType"
@@ -47,7 +47,7 @@
                                 id="phone-textbox"
                                 placeholder="555-123-1234"
                                 ref="phoneTextbox"
-                                v-model="phone"
+                                v-model="mechanic.phone"
                                 name="editMechanicPhone"
                                 v-validate="'max:16|phone-number'"
                             >
@@ -71,7 +71,7 @@
                                 id="address-textbox"
                                 placeholder="123 Wallaby Lane"
                                 ref="addressField"
-                                v-model="address"
+                                v-model="mechanic.address"
                                 name="editMechanicAddress"
                                 v-validate="'max:32'"
                             >
@@ -87,7 +87,7 @@
                                 id="city-textbox"
                                 placeholder="Boston"
                                 ref="cityTextbox"
-                                v-model="city"
+                                v-model="mechanic.city"
                                 name="editMechanicCity"
                                 v-validate="'max:32'"
                             >
@@ -103,7 +103,7 @@
                                 id="state-textbox"
                                 placeholder="MA"
                                 ref="stateTextbox"
-                                v-model="state"
+                                v-model="mechanic.state"
                                 name="editMechanicState"
                                 v-validate="'length:2'"
                             >
@@ -119,7 +119,7 @@
                                 id="zip-textbox"
                                 placeholder="12345"
                                 ref="zipTextbox"
-                                v-model="zip"
+                                v-model="mechanic.zip"
                                 name="editMechanicZip"
                                 v-validate="'max:10|zip-code'"
                             >
@@ -192,8 +192,7 @@ export default class EditMechanicPopup extends Vue {
     /**
      * The mechanic being editted.
      */
-    @Prop()
-    public mechanic!: Mechanic;
+    public mechanic: Mechanic = new Mechanic('null', 0);
 
     /**
      * Type options for the mechanic type select field.
@@ -219,52 +218,9 @@ export default class EditMechanicPopup extends Vue {
      */
     public lastStep!: number;
 
-    /**
-     * The name of the shop.
-     */
-    public name!: string;
-
-    /**
-     * The type of mechanic they are.
-     */
-    public type!: MechanicType;
-
-    /**
-     * The phone number of the shop.
-     */
-    public phone!: string;
-
-    /**
-     * The address of the shop.
-     */
-    public address!: string;
-
-    /**
-     * The city of the shop.
-     */
-    public city!: string;
-
-    /**
-     * The 2 character abbreviation state of the shop.
-     */
-    public state!: string;
-
-    /**
-     * The ZIP code in #####, or #####-#### formant.
-     */
-    public zip!: string;
-
     public created(): void {
         this.activeStep = 0;
         this.lastStep = 0;
-
-        this.name = this.mechanic.name;
-        this.type = this.mechanic.type;
-        this.phone = this.mechanic.phone || '';
-        this.address = this.mechanic.address || '';
-        this.city = this.mechanic.city || '';
-        this.state = this.mechanic.state || '';
-        this.zip = this.mechanic.zip || '';
 
         // prettier-ignore
         this.$validator.localize('en', {
@@ -334,19 +290,7 @@ export default class EditMechanicPopup extends Vue {
         const isValid: boolean = await this.$validator.validate();
 
         if (isValid) {
-            const mechanic: Mechanic = Mechanic.fromInput({
-                name: this.name,
-                type: this.type,
-                phone: this.phone,
-                address: this.address,
-                city: this.city,
-                state: this.state,
-                zip: this.zip,
-            });
-
-            mechanic.id = this.mechanic.id;
-
-            this.$emit('edit', mechanic);
+            this.$emit('edit', this.mechanic);
             this.hide();
         }
 
@@ -356,7 +300,8 @@ export default class EditMechanicPopup extends Vue {
     /**
      * Show the popup on screen.
      */
-    public show(): void {
+    public show(mechanic: Mechanic): void {
+        this.mechanic = mechanic;
         this.activeStep = 0;
         this.lastStep = 0;
         this.$validator.reset();

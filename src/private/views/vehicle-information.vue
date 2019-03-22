@@ -65,14 +65,14 @@
             <div class="row pb-3">
                 <div class="col-12 d-flex flex-row align-items-center">
                     <!-- Car Picture -->
-                    <div class="d-inline-block pr-4">
+                    <!-- <div class="d-inline-block pr-4">
                         <div
                             class="rounded-circle border d-flex flex-row align-items-center justify-content-center bg-white"
                             style="height: 120px; width: 120px;"
                         >
                             <material-icon icon="camera_alt" color="secondary" size="xl"/>
                         </div>
-                    </div>
+                    </div>-->
                     <div>
                         <h1 class="pb-0 mb-0">{{ vehicle.name }}</h1>
                         <h3

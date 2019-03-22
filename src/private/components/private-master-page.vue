@@ -7,7 +7,7 @@
 <template>
     <div class="d-flex flex-column" style="min-height: 100vh;">
         <title-bar/>
-        <error-popup ref="errorPopup" />
+        <error-popup ref="errorPopup"/>
 
         <div class="d-flex flex-row align-self-stretch h-100">
             <side-bar class="d-flex flex-column align-self-stretch"/>
@@ -41,8 +41,8 @@ import { EventBus } from '@/core/event/event-bus';
 })
 export default class PrivateMasterPage extends Vue {
     public $refs!: {
-        errorPopup: ErrorPopup,
-    }
+        errorPopup: ErrorPopup;
+    };
 
     public loadingCount: number = 0;
 
@@ -54,7 +54,7 @@ export default class PrivateMasterPage extends Vue {
         EventBus.on('loading', this.onLoading);
         EventBus.on('loaded', this.onLoaded);
     }
-    
+
     public async onError(error: string): Promise<void> {
         this.$refs.errorPopup.show(error);
     }

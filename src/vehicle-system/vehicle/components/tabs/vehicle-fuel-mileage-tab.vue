@@ -1,47 +1,99 @@
+<style lang="scss" scoped>
+.stat-card {
+    height: 128px !important;
+    // border-left-width: 12px !important;
+}
+</style>
+
 <template>
-    <card-container class="h-100 w-100">
-        <add-fuel-trip-popup ref="addPopup" :vehicle="vehicle" @add="onAdd"/>
-        <delete-fuel-trip-confirmation-popup ref="deletePopup" @delete="onDelete"/>
-        <div class="mb-3 clearfix">
-            <h2 class="float-left">Fuel</h2>
-
-            <b-btn
-                variant="success"
-                style="height: 40px"
-                class="rounded float-right"
-                @click="onAddClick"
-            >
-                <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
-                <span style="vertical-align: middle;">Add</span>
-            </b-btn>
+    <div class="row px-3">
+        <div class="col-12 px-0 mx-0">
+            <div class="row">
+                <div class="col-6 pr-2 col-lg-3 pb-2 pb-lg-0">
+                    <stat-card
+                        title="Average MPG"
+                        icon="local_gas_station"
+                        :text="getAverageFuelDistanceRatio()"
+                        color="warning"
+                    />
+                </div>
+                <div class="col-6 col-lg-3 pl-2 px-lg-2 pb-2 pb-lg-0">
+                    <stat-card
+                        title="Average Cost Per Gallon"
+                        icon="attach_money"
+                        :text="getAverageFuelUnitPrice() | currency"
+                        color="success"
+                    />
+                </div>
+                <div class="col-6 col-lg-3 pr-2 px-lg-2 pt-2 pt-lg-0">
+                    <stat-card
+                        title="Lifetime Fuel Cost"
+                        icon="timeline"
+                        :text="getLifetimeCost() | currency"
+                        color="info"
+                    />
+                </div>
+                <div class="col-6 col-lg-3 pl-2 pt-2 pt-lg-0">
+                    <stat-card
+                        title="Lifetime Fuel Consumed"
+                        icon="trending_up"
+                        :text="getLifetimeFuelConsumed() + ' gal.'"
+                        color="danger"
+                    />
+                </div>
+            </div>
         </div>
-        <b-table :items="fuelTrips" :fields="columnNames" :busy="isLoading">
-            <template slot="date" slot-scope="row">{{ row.value }}</template>
-            <template slot="pricePerUnit" slot-scope="row">{{ row.value }}</template>
-            <template slot="fuelUnits" slot-scope="row">{{ row.value }}</template>
-            <template slot="distanceTravelled" slot-scope="row">{{ row.value }}</template>
-            <template slot="fuelDistanceRatio" slot-scope="row">{{ row.value }}</template>
-            <template slot="cost" slot-scope="row">{{ row.value }}</template>
-            <template slot="options" slot-scope="row">
-                <b-dropdown no-caret variant="link" class="maintenance-options">
-                    <div slot="button-content">
-                        <material-icon
-                            icon="more_horiz"
-                            color="muted"
-                            size="md"
-                            class="align-middle m-0 p-0"
-                        />
-                    </div>
 
-                    <b-dropdown-item
-                        href="#"
-                        class="text-danger"
-                        @click="onDeleteClick(row.item.id)"
-                    >Delete</b-dropdown-item>
-                </b-dropdown>
-            </template>
-        </b-table>
-    </card-container>
+        <card-container class="row px-0 mx-0 mt-3 w-100">
+            <div class="col-12">
+                <add-fuel-trip-popup ref="addPopup" :vehicle="vehicle" @add="onAdd"/>
+                <delete-fuel-trip-confirmation-popup ref="deletePopup" @delete="onDelete"/>
+                <div class="mb-3 clearfix">
+                    <h2 class="float-left">Fuel Fillups</h2>
+
+                    <b-btn
+                        variant="success"
+                        style="height: 40px"
+                        class="rounded float-right"
+                        @click="onAddClick"
+                    >
+                        <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
+                        <span style="vertical-align: middle;">Add Fillup</span>
+                    </b-btn>
+                </div>
+
+                <!-- Table -->
+                <b-table :items="fuelTrips" :fields="columnNames" :busy="isLoading">
+                    <template slot="date" slot-scope="row">{{ row.value }}</template>
+                    <template slot="pricePerUnit" slot-scope="row">{{ row.value }}</template>
+                    <template slot="fuelUnits" slot-scope="row">{{ row.value }}</template>
+                    <template slot="distanceTravelled" slot-scope="row">{{ row.value }}</template>
+                    <template slot="cost" slot-scope="row">{{ row.value }}</template>
+                    <template slot="fuelDistanceRatio" slot-scope="row">
+                        <span>{{ row.value }}</span>
+                    </template>
+                    <template slot="options" slot-scope="row">
+                        <b-dropdown no-caret variant="link" class="maintenance-options">
+                            <div slot="button-content">
+                                <material-icon
+                                    icon="more_vert"
+                                    color="muted"
+                                    size="md"
+                                    class="align-middle m-0 p-0"
+                                />
+                            </div>
+
+                            <b-dropdown-item
+                                href="#"
+                                class="text-danger"
+                                @click="onDeleteClick(row.item.id)"
+                            >Delete</b-dropdown-item>
+                        </b-dropdown>
+                    </template>
+                </b-table>
+            </div>
+        </card-container>
+    </div>
 </template>
 
 <script lang="ts">
@@ -54,6 +106,7 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import AddFuelTripPopup from '@/vehicle-system/vehicle/components/popups/add-fuel-trip-popup.vue';
 import DeleteFuelTripConfirmationPopup from '@/vehicle-system/vehicle/components/popups/delete-fuel-trip-confirmation-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
+import StatCard from '@/vehicle-system/components/stat-card.vue';
 
 @Component({
     name: 'vehicle-fuel-mileage-tab',
@@ -62,6 +115,7 @@ import { EventBus } from '@/core/event/event-bus';
         MaterialIcon,
         AddFuelTripPopup,
         DeleteFuelTripConfirmationPopup,
+        StatCard,
     },
 })
 export default class VehicleFuelMileageTab extends VehicleMixin {
@@ -79,6 +133,9 @@ export default class VehicleFuelMileageTab extends VehicleMixin {
     @Prop()
     public vehicle!: Vehicle;
 
+    /**
+     * The ID of the vehicle to delete.
+     */
     public idToDelete: number = 0;
 
     /**
@@ -91,8 +148,8 @@ export default class VehicleFuelMileageTab extends VehicleMixin {
         { key: 'pricePerUnit', label: 'Price Per Gallon', class: 'align-middle', formatter: (val: number) => `$${val.toFixed(2)}`, sortable: true },
         { key: 'fuelUnits', label: 'Gallons', class: 'align-middle', sortable: true },
         { key: 'distanceTravelled', label: 'Miles', class: 'align-middle', sortable: true },
-        { key: 'fuelDistanceRatio', label: 'MPG', class: 'align-middle', formatter: (val: number) => val.toFixed(2), sortable: true },
         { key: 'cost', label: 'Cost', class: 'align-middle', formatter: (val: number) => `$${val.toFixed(2)}`, sortable: true },
+        { key: 'fuelDistanceRatio', label: 'MPG', class: 'align-middle', formatter: (val: number) => val.toFixed(2), sortable: true },
         { key: 'options', label: 'Options', class: 'align-middle' },
     ];
     /**
@@ -164,6 +221,42 @@ export default class VehicleFuelMileageTab extends VehicleMixin {
         EventBus.emit('loaded');
         this.isLoading = false;
         this.idToDelete = 0;
+    }
+
+    /**
+     * Compute the average MPG.
+     */
+    public getAverageFuelDistanceRatio(): number {
+        if (this.fuelTrips.length === 0) {
+            return 0;
+        }
+
+        return this.fuelTrips.map((f: FuelTrip) => f.fuelDistanceRatio).reduce((a: number, b: number) => a + b) / this.fuelTrips.length;
+    }
+
+    public getAverageFuelUnitPrice(): number {
+        if (this.fuelTrips.length === 0) {
+            return 0;
+        }
+
+        return this.fuelTrips.map((f: FuelTrip) => f.pricePerUnit).reduce((a, b) => a + b) / this.fuelTrips.length;
+    }
+
+    /**
+     * Compute the total cost spent on gas.
+     */
+    public getLifetimeCost(): number {
+        if (this.fuelTrips.length === 0) {
+            return 0;
+        }
+        return this.fuelTrips.map((f: FuelTrip) => f.cost).reduce((a: number, b: number) => a + b);
+    }
+
+    public getLifetimeFuelConsumed(): number {
+        if (this.fuelTrips.length === 0) {
+            return 0;
+        }
+        return this.fuelTrips.map((f: FuelTrip) => f.fuelUnits).reduce((a, b) => a + b);
     }
 }
 </script>
