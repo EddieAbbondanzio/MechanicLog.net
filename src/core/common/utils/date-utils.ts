@@ -6,7 +6,7 @@ export class StringUtils {
      * Convert the date into a user friendly MM/dd/YYYY strng.
      * @param date The date to convert.
      */
-    public static toFormattedString(date: Date) {
+    public static toFormattedDateString(date: Date) {
         const year = date.getFullYear();
 
         let month = (1 + date.getMonth()).toString();

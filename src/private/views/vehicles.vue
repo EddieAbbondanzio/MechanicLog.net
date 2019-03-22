@@ -50,7 +50,7 @@
                 <template slot="year" slot-scope="row">{{ row.value }}</template>
                 <template slot="make" slot-scope="row">{{ row.value }}</template>
                 <template slot="model" slot-scope="row">{{ row.value }}</template>
-                <template slot="mileage" slot-scope="row">{{ row.value }}</template>
+                <template slot="mileage" slot-scope="row">{{ row.value | number }}</template>
                 <template slot="color" slot-scope="row">{{ row.value }}</template>
                 <template slot="vin" slot-scope="row">{{ row.value }}</template>
                 <template slot="licensePlate" slot-scope="row">{{ row.value }}</template>
@@ -79,7 +79,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
-import VehicleSummary from '@/vehicle-system/vehicle/components/vehicle-summary.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import AddVehiclePopup from '@/vehicle-system/vehicle/components/popups/add-vehicle-popup.vue';
 import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
@@ -97,7 +96,6 @@ import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/popup
 @Component({
     name: 'vehicles',
     components: {
-        VehicleSummary,
         MaterialIcon,
         AddVehiclePopup,
         ErrorPopup,

@@ -36,7 +36,7 @@
 
                 <b-table :fields="columnNames" :items="events" :busy="isBusy">
                     <template slot="mileage" slot-scope="row">{{ row.value }}</template>
-                    <template slot="date" slot-scope="row">{{ row.value | formatDate }}</template>
+                    <template slot="date" slot-scope="row">{{ row.value | date }}</template>
                     <template slot="mechanic" slot-scope="row">{{ row.value.name }}</template>
                     <template slot="services" slot-scope="row">{{ row.value }}</template>
                     <template slot="totalCost" slot-scope="row">{{ row.value | currency }}</template>
@@ -74,7 +74,6 @@ import { Nullable } from '@/core/common/monads/nullable';
 import AddMaintenancePopup from '@/vehicle-system/vehicle/components/popups/add-maintenance-popup.vue';
 import { MaintenanceService } from '@/vehicle-system/vehicle/entities/maintenance-service';
 import { MaintenanceEvent } from '@/vehicle-system/vehicle/entities/maintenance-event';
-import MaintenanceSummary from '@/vehicle-system/vehicle/components/maintenance-summary.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import VehicleDetailsCard from '@/vehicle-system/vehicle/components/cards/vehicle-details-card.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
@@ -90,7 +89,6 @@ import DeleteMaintenanceConfirmPopup from '@/vehicle-system/vehicle/components/p
     components: {
         MaterialIcon,
         AddMaintenancePopup,
-        MaintenanceSummary,
         CardContainer,
         VehicleDetailsCard,
         ErrorPopup,

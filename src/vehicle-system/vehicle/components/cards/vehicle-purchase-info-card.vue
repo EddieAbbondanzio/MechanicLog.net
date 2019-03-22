@@ -33,7 +33,7 @@
                 <div
                     class="col-5"
                     v-if="purchaseInfo != null"
-                >{{ purchaseInfo.purchaseDate | formatDate }}</div>
+                >{{ purchaseInfo.purchaseDate | date }}</div>
             </div>
             <div class="row">
                 <div class="col-2 text-muted">Mileage</div>
