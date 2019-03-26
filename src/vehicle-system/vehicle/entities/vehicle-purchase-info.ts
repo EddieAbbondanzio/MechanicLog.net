@@ -19,7 +19,7 @@ export class VehiclePurchaseInfo {
     /**
      * The mileage it was purchased at.
      */
-    public purchaseMileage: Nullable<number>;
+    public purchaseOdometer: Nullable<number>;
 
     /**
      * The price paid for the vehicle.
@@ -50,13 +50,13 @@ export class VehiclePurchaseInfo {
         this.id = 0;
         this.vehicleId = vehicleId;
         this.purchaseDate = purchaseDate;
-        this.purchaseMileage = purchaseMileage;
+        this.purchaseOdometer = purchaseMileage;
         this.purchasePrice = purchasePrice;
         this.sellerName = sellerName;
     }
 
     public clone(): VehiclePurchaseInfo {
-        const c = new VehiclePurchaseInfo(this.vehicleId, this.purchaseDate, this.purchaseMileage, this.purchasePrice, this.sellerName);
+        const c = new VehiclePurchaseInfo(this.vehicleId, this.purchaseDate, this.purchaseOdometer, this.purchasePrice, this.sellerName);
         c.id = this.id;
         return c;
     }
@@ -66,7 +66,7 @@ export class VehiclePurchaseInfo {
      * @param raw The raw object to parse.
      */
     public static fromRaw(raw: any): VehiclePurchaseInfo {
-        const vpi = new VehiclePurchaseInfo(raw.vehicleId, new Date(raw.purchaseDate), raw.purchaseMileage, raw.purchasePrice, raw.sellerName || null);
+        const vpi = new VehiclePurchaseInfo(raw.vehicleId, new Date(raw.purchaseDate), raw.purchaseOdometer, raw.purchasePrice, raw.sellerName || null);
         vpi.id = raw.id;
         return vpi;
     }

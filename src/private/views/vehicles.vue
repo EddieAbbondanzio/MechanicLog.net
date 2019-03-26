@@ -89,6 +89,7 @@ import ToolBar from '../components/tool-bar/tool-bar.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
 import { EventBus } from '@/core/event/event-bus';
 import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue';
+import { UnitSystem } from '@/vehicle-system/common/unit-system';
 
 /**
  * Garage page.
@@ -110,7 +111,7 @@ export default class Vehicles extends VehicleMixin {
         { key: 'year', label: 'Year', class: 'align-middle', sortable: true },
         { key: 'make', label: 'Make', class: 'align-middle', sortable: true, formatter: (val: { name: string }) => val.name },
         { key: 'model', label: 'Model', class: 'align-middle', formatter: (val: { name: string }) => val.name },
-        { key: 'mileage', label: 'Odometer', class: 'align-middle' },
+        { key: 'odometer', label: 'Odometer', class: 'align-middle' },
         { key: 'color', label: 'Color', class: 'align-middle' },
         { key: 'vin', label: 'VIN', class: 'align-middle' },
         { key: 'licensePlate', label: 'License plate', class: 'align-middle' },
@@ -151,6 +152,10 @@ export default class Vehicles extends VehicleMixin {
     }
 
     public async onRowClick(item: any, index: number, event: any) {
+        if (this.deleteId !== -1) {
+            return;
+        }
+
         this.$router.push({ name: 'vehicle-information', params: { vehicleId: this.vehicles[index].id! } as any });
     }
 
@@ -158,10 +163,14 @@ export default class Vehicles extends VehicleMixin {
         this.$refs.addPopup.show();
     }
 
-    public async onVehicleAdd(vehicle: Vehicle): Promise<void> {
+    public async onVehicleAdd(info: { vehicle: Vehicle; settings: { unitSystem: UnitSystem } }): Promise<void> {
         EventBus.emit('loading');
         this.isLoading = true;
-        await this.$vehicleStore.addVehicle(vehicle);
+        try {
+            await this.$vehicleStore.addVehicle(info.vehicle, info.settings);
+        } catch (error) {
+            EventBus.emit('error', error.message);
+        }
         this.isLoading = false;
         EventBus.emit('loaded');
     }
@@ -182,6 +191,7 @@ export default class Vehicles extends VehicleMixin {
             this.$refs.errorPopup.show(error.message);
         }
 
+        this.deleteId = -1;
         this.isLoading = false;
         EventBus.emit('loaded');
         this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;

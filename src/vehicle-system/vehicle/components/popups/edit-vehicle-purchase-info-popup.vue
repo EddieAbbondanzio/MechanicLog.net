@@ -158,7 +158,7 @@ export default class EditVehiclePurchaseInfoPopup extends Vue {
             this.date = this.purchaseInfo.purchaseDate.toISOString().slice(0, 10);
         }
 
-        this.mileage = this.purchaseInfo.purchaseMileage;
+        this.mileage = this.purchaseInfo.purchaseOdometer;
         this.price = this.purchaseInfo.purchasePrice;
         this.sellerName = this.purchaseInfo.sellerName;
 
@@ -192,7 +192,7 @@ export default class EditVehiclePurchaseInfoPopup extends Vue {
         const purchaseInfo = new VehiclePurchaseInfo(
             this.purchaseInfo.vehicleId,
             this.purchaseInfo.purchaseDate,
-            this.purchaseInfo.purchaseMileage,
+            this.purchaseInfo.purchaseOdometer,
             this.purchaseInfo.purchasePrice,
             this.purchaseInfo.sellerName
         );
@@ -204,7 +204,7 @@ export default class EditVehiclePurchaseInfoPopup extends Vue {
         }
 
         if (this.mileage != null) {
-            purchaseInfo.purchaseMileage = this.mileage;
+            purchaseInfo.purchaseOdometer = this.mileage;
         }
 
         if (this.price != null) {

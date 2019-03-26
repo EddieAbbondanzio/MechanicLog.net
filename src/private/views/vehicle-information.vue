@@ -96,7 +96,7 @@
                         <div
                             :class="{ 'vehicle-information-tab': activeTab != 3, 'vehicle-information-tab-active': activeTab == 3, 'p-2': true, 'mx-1': true, 'rounded': true  }"
                             @click="onTabClick(3)"
-                        >Fuel Mileage</div>
+                        >Fuel Economy</div>
                     </div>
 
                     <div class="py-3 d-flex flex-column flex-fill">

@@ -2,6 +2,7 @@ import { MaintenanceEvent } from './maintenance-event';
 import { VehicleMake } from './vehicle-make';
 import { VehicleModel } from './vehicle-model';
 import { Nullable } from '@/core/common/monads/nullable';
+import { TransmissionType } from './transmission-type';
 
 /**
  * A motor vehicle.
@@ -35,7 +36,7 @@ export class Vehicle {
     /**
      * How many miles the car has on it.
      */
-    public mileage: number;
+    public odometer: number;
 
     /**
      * The nickname of the car.
@@ -58,6 +59,11 @@ export class Vehicle {
     public vin: Nullable<string>;
 
     /**
+     * The type of transmission it has.
+     */
+    public transmissionType: TransmissionType;
+
+    /**
      * The maintenance history of the vehicle.
      */
     public maintenance: MaintenanceEvent[];
@@ -68,19 +74,20 @@ export class Vehicle {
      * @param year The model year of the car.
      * @param make The make of the car.
      * @param model The model of the car.
-     * @param mileage The current mileage.
+     * @param odometer The current mileage.
      */
-    constructor(year: number, make: VehicleMake, model: VehicleModel, mileage: number) {
+    constructor(year: number, make: VehicleMake, model: VehicleModel, odometer: number, transmissionType: TransmissionType) {
         this.id = 0;
         this.year = year;
         this.make = make;
         this.model = model;
-        this.mileage = mileage;
+        this.odometer = odometer;
         this.maintenance = [];
         this.name = null;
         this.licensePlate = null;
         this.color = null;
         this.vin = null;
+        this.transmissionType = transmissionType;
     }
 
     /**
@@ -95,8 +102,9 @@ export class Vehicle {
             name: this.name,
             vin: this.vin,
             licensePlate: this.licensePlate,
-            mileage: this.mileage,
+            odometer: this.odometer,
             color: this.color,
+            transmissionType: this.transmissionType,
         };
     }
 
@@ -116,7 +124,7 @@ export class Vehicle {
         const make = VehicleMake.fromRaw(raw.make);
         const model = VehicleModel.fromRaw(raw.model);
 
-        const v: Vehicle = new Vehicle(raw.year, make, model, raw.mileage);
+        const v: Vehicle = new Vehicle(raw.year, make, model, raw.odometer, raw.transmissionType);
         v.id = raw.id;
         v.name = raw.name;
         v.color = raw.color;
@@ -131,7 +139,7 @@ export class Vehicle {
      * @param input The raw input object.
      */
     public static fromInput(input: any): Vehicle {
-        const v: Vehicle = new Vehicle(input.year, input.make, input.model, input.mileage);
+        const v: Vehicle = new Vehicle(input.year, input.make, input.model, input.odometer, input.transmissionType);
         v.name = input.name !== '' ? input.name : null;
         v.color = input.color !== '' ? input.color : null;
         v.licensePlate = input.licensePlate !== '' ? input.licensePlate : null;

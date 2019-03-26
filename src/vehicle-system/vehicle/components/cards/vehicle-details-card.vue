@@ -23,9 +23,10 @@
             />
         </a>
 
-        <h4>Details
+        <h4>
+            Details
             <br>
-            <small class="text-muted">{{ vehicle.mileage.toLocaleString() }} Miles</small>
+            <small class="text-muted">{{ vehicle.odometer | number }} Miles</small>
         </h4>
 
         <div class="row">

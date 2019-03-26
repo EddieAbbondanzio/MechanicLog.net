@@ -9,17 +9,17 @@
         <form>
             <!-- Mileage Textbox-->
             <div class="form-group">
-                <label class="required" for="mileage-textbox">Mileage</label>
+                <label class="required" for="odometer-textbox">Odometer</label>
                 <input
                     type="text"
                     class="form-control"
-                    id="mileage-textbox"
+                    id="odometer-textbox"
                     placeholder="123000"
-                    v-model.number="mileage"
-                    name="mileage"
+                    v-model.number="odometer"
+                    name="odometer"
                     v-validate="'required|integer|min_value:0'"
                 >
-                <b-form-invalid-feedback>{{ errors.first('mileage') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('odometer') }}</b-form-invalid-feedback>
             </div>
 
             <!-- Color Textbox-->
@@ -134,7 +134,7 @@ export default class EditVehiclePopup extends Vue {
     /**
      * The current mileage of the vehicle.
      */
-    public mileage: Nullable<number> = null;
+    public odometer: Nullable<number> = null;
 
     /**
      * The paint color of the vehicle.
@@ -160,7 +160,7 @@ export default class EditVehiclePopup extends Vue {
         this.licensePlate = this.vehicle.licensePlate;
         this.vin = this.vehicle.vin;
         this.name = this.vehicle.name;
-        this.mileage = this.vehicle.mileage;
+        this.odometer = this.vehicle.odometer;
 
         this.$refs.popup.show();
     }
@@ -188,7 +188,7 @@ export default class EditVehiclePopup extends Vue {
             return;
         }
 
-        const vehicle: Vehicle = new Vehicle(this.vehicle.year, this.vehicle.make, this.vehicle.model, this.mileage || 0);
+        const vehicle: Vehicle = new Vehicle(this.vehicle.year, this.vehicle.make, this.vehicle.model, this.odometer || 0, this.vehicle.transmissionType);
 
         vehicle.id = this.vehicle.id;
         vehicle.name = this.name;

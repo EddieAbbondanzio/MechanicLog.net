@@ -29,7 +29,7 @@ export class MaintenanceEvent {
     /**
      * The mileage the event occured at.
      */
-    public mileage: number;
+    public odometer: number;
 
     /**
      * The date of the service.
@@ -59,16 +59,16 @@ export class MaintenanceEvent {
     /**
      * Create a new maintenance event.
      * @param id The ID of the event.
-     * @param mileage The mileage the event occured at.
+     * @param odometer The mileage the event occured at.
      * @param date The date of the event.
      * @param mechanic The mechanic who performed it.
      * @param services The services performed.
      */
-    constructor(mileage: number, date: Date, mechanic: Mechanic, services: MaintenanceService[] = []) {
+    constructor(odometer: number, date: Date, mechanic: Mechanic, services: MaintenanceService[] = []) {
         this.id = 0;
         this.userId = 0;
         this.vehicleId = 0;
-        this.mileage = mileage;
+        this.odometer = odometer;
         this.date = date;
         this.mechanic = mechanic;
         this.services = services;
@@ -91,7 +91,7 @@ export class MaintenanceEvent {
             services.push(await MaintenanceService.fromRaw(service));
         }
 
-        const event = new MaintenanceEvent(raw.mileage, new Date(raw.date), mechanic!, services);
+        const event = new MaintenanceEvent(raw.odometer, new Date(raw.date), mechanic!, services);
         event.id = raw.id;
         event.userId = raw.userId;
         event.vehicleId = raw.vehicleId;
@@ -106,7 +106,7 @@ export class MaintenanceEvent {
      */
     public toJSON(): any {
         return {
-            mileage: this.mileage,
+            odometer: this.odometer,
             date: this.date,
             label: this.label,
             mechanicId: this.mechanic.id,

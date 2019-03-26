@@ -35,7 +35,7 @@
                 </div>
 
                 <b-table :fields="columnNames" :items="events" :busy="isBusy">
-                    <template slot="mileage" slot-scope="row">{{ row.value }}</template>
+                    <template slot="odometer" slot-scope="row">{{ row.value | number }}</template>
                     <template slot="date" slot-scope="row">{{ row.value | date }}</template>
                     <template slot="mechanic" slot-scope="row">{{ row.value.name }}</template>
                     <template slot="services" slot-scope="row">{{ row.value }}</template>
@@ -97,7 +97,7 @@ import DeleteMaintenanceConfirmPopup from '@/vehicle-system/vehicle/components/p
 })
 export default class VehicleMaintenanceTab extends VehicleMixin {
     public readonly columnNames = [
-        { key: 'mileage', label: 'Mileage', class: 'align-middle', sortable: true },
+        { key: 'odometer', label: 'Odometer', class: 'align-middle', sortable: true },
         { key: 'date', label: 'Date', class: 'align-middle', sortable: true },
         { key: 'mechanic', label: 'Mechanic', class: 'align-middle', sortable: true },
         { key: 'services', label: 'Service(s)', class: 'align-middle', formatter: (val: MaintenanceService[]) => val.map((v) => v.description).join(', ') },

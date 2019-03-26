@@ -13,7 +13,7 @@
                     <stat-card
                         title="Average MPG"
                         icon="local_gas_station"
-                        :text="getAverageFuelDistanceRatio()"
+                        :text="getAverageFuelDistanceRatio() | number(2)"
                         color="warning"
                     />
                 </div>

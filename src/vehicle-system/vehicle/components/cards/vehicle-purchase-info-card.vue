@@ -37,7 +37,10 @@
             </div>
             <div class="row">
                 <div class="col-2 text-muted">Mileage</div>
-                <div class="col-5" v-if="purchaseInfo != null">{{ purchaseInfo.purchaseMileage }}</div>
+                <div
+                    class="col-5"
+                    v-if="purchaseInfo != null"
+                >{{ purchaseInfo.purchaseOdometer | number }}</div>
             </div>
             <div class="row">
                 <div class="col-2 text-muted">Price</div>

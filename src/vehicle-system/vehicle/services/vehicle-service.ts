@@ -3,6 +3,7 @@ import { User } from '@/user-system/entities/user';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import { VehicleMake } from '../entities/vehicle-make';
 import { VehicleModel } from '../entities/vehicle-model';
+import { UnitSystem } from '@/vehicle-system/common/unit-system';
 
 /**
  * Service for retrieving, and updating vehicles from the back end.
@@ -22,8 +23,11 @@ export class VehicleService extends Service {
      * @param user The user to add a vehicle for.
      * @param vehicle The vehicle to add.
      */
-    public async addVehicle(user: User, vehicle: Vehicle): Promise<void> {
-        const apiResponse = await this._httpClient.post('/v1/vehicle', vehicle, user.authToken);
+    public async addVehicle(user: User, vehicle: Vehicle, settings: { unitSystem: UnitSystem }): Promise<void> {
+        const raw = vehicle.toJSON();
+        (raw as any).unitSystem = settings.unitSystem;
+
+        const apiResponse = await this._httpClient.post('/v1/vehicle', raw, user.authToken);
         vehicle.id = apiResponse.data.id;
     }
 

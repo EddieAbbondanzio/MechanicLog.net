@@ -63,6 +63,26 @@
                                 class="d-block"
                             >{{ errors.first('tab1.addVehicleModel') }}</b-form-invalid-feedback>
                         </b-form-group>
+
+                        <b-form-group>
+                            <label
+                                class="required"
+                                for="add-vehicle-transmission-type-dropdown"
+                            >Transmission</label>
+
+                            <b-form-select
+                                v-model="transmissionType"
+                                :options="transmissionOptions"
+                                :disabled="make == null"
+                                ref="transmissionTypeDropDown"
+                                name="addTransmissionType"
+                                data-vv-scope="tab1"
+                                v-validate="'required'"
+                            />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab1.addTransmissionType') }}</b-form-invalid-feedback>
+                        </b-form-group>
                     </b-tab>
 
                     <!-- Registration -->
@@ -105,25 +125,22 @@
 
                     <!-- Details -->
                     <b-tab title="Details" class="py-4" @click="onTabClick">
-                        <!-- Current Mileage -->
+                        <!-- Current Odometer -->
                         <b-form-group>
-                            <label
-                                for="add-vehicle-mileage-textbox"
-                                class="required"
-                            >Current Mileage</label>
+                            <label for="add-vehicle-odometer-textbox" class="required">Odometer</label>
                             <b-form-input
                                 type="text"
-                                id="add-vehicle-mileage-textbox"
+                                id="add-vehicle-odometer-textbox"
                                 placeholder="49200"
-                                ref="mileageTextbox"
-                                v-model.number="mileage"
-                                name="addVehicleMileage"
+                                ref="odometerTextbox"
+                                v-model.number="odometer"
+                                name="addVehicleOdometer"
                                 data-vv-scope="tab3"
                                 v-validate="'required|integer|min_value:0'"
                             />
                             <b-form-invalid-feedback
                                 class="d-block"
-                            >{{ errors.first('tab3.addVehicleMileage') }}</b-form-invalid-feedback>
+                            >{{ errors.first('tab3.addVehicleOdometer') }}</b-form-invalid-feedback>
                         </b-form-group>
 
                         <!-- Color -->
@@ -160,13 +177,34 @@
                             >{{ errors.first('tab3.addVehicleName') }}</b-form-invalid-feedback>
                         </b-form-group>
                     </b-tab>
+
+                    <!-- Settings -->
+                    <b-tab title="Settings" class="py-4" @click="onTabClick">
+                        <b-form-group>
+                            <label
+                                class="required"
+                                for="add-vehicle-unit-system-dropdown"
+                            >Unit System</label>
+                            <b-form-select
+                                v-model="unitSystem"
+                                :options="unitSystemOptions"
+                                ref="unitSystemDropDown"
+                                name="addVehicleUnitSystem"
+                                data-vv-scope="tab4"
+                                v-validate="'required'"
+                            />
+                            <b-form-invalid-feedback
+                                class="d-block"
+                            >{{ errors.first('tab4.addVehicleUnitSystem') }}</b-form-invalid-feedback>
+                        </b-form-group>
+                    </b-tab>
                 </b-tabs>
             </b-card>
         </form>
 
         <hr>
 
-        <progress-tracker :current="activeStep + 1" :max="3"/>
+        <progress-tracker :current="activeStep + 1" :max="4"/>
 
         <!-- Previous Button -->
         <div slot="footer">
@@ -183,7 +221,7 @@
                 variant="success"
                 class="float-right"
                 @click="onNextClick"
-                v-if="activeStep < 2"
+                v-if="activeStep < 3"
             >Next</b-button>
 
             <!-- Create Button -->
@@ -204,6 +242,7 @@ import AutoComplete from '@/core/components/inputs/auto-complete.vue';
 import { VehicleModel } from '@/vehicle-system/vehicle/entities/vehicle-model';
 import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import { User } from '@/user-system/entities/user';
+import { UnitSystem } from '@/vehicle-system/common/unit-system';
 
 /**
  * Popup to add a new vehicle for the user.
@@ -222,13 +261,18 @@ export default class AddVehiclePopup extends VehicleMixin {
         popup: PopupContainer;
         yearTextbox: HTMLInputElement;
         vinTextbox: HTMLInputElement;
-        mileageTextbox: HTMLInputElement;
+        odometerTextbox: HTMLInputElement;
+        unitSystemDropDown: HTMLSelectElement;
     };
 
     public VEHICLE_MAX_MODEL_YEAR: number = Vehicle.MAX_MODEL_YEAR;
     public VEHICLE_MIN_MODEL_YEAR: number = Vehicle.MIN_MODEL_YEAR;
     public VEHICLE_VIN_MAX_LENGTH = Vehicle.MAX_VIN_LENGTH;
     public VEHICLE_LICENSE_PLATE_MAX_LENGTH = Vehicle.MAX_LICENSE_PLATE_LENGTH;
+
+    public transmissionOptions: { value: number; text: string }[] = [{ value: 0, text: 'Automatic' }, { value: 1, text: 'Manual' }, { value: 2, text: 'CVT' }];
+
+    public unitSystemOptions: { value: number; text: string }[] = [{ value: 0, text: 'Imperial (US)' }, { value: 1, text: 'Metric' }];
 
     /**
      * The current step the user is on.
@@ -267,6 +311,11 @@ export default class AddVehiclePopup extends VehicleMixin {
     public model: Nullable<string> = null;
 
     /**
+     * The type of transmission the vehicle has.
+     */
+    public transmissionType: Nullable<number> = null;
+
+    /**
      * The Vehicle Identification Number of the vehicle.
      */
     public vin: Nullable<string> = null;
@@ -277,9 +326,9 @@ export default class AddVehiclePopup extends VehicleMixin {
     public plate: Nullable<string> = null;
 
     /**
-     * The current mileage.
+     * The current odometer.
      */
-    public mileage: Nullable<number> = null;
+    public odometer: Nullable<number> = null;
 
     /**
      * The paint color of the vehicle.
@@ -290,6 +339,11 @@ export default class AddVehiclePopup extends VehicleMixin {
      * The name of the vehicle.
      */
     public name: Nullable<string> = null;
+
+    /**
+     * The measurement system to use.
+     */
+    public unitSystem: Nullable<UnitSystem> = null;
 
     /**
      * Event handler for when the component is created.
@@ -310,10 +364,13 @@ export default class AddVehiclePopup extends VehicleMixin {
                     required: 'Vehicle model is required.',
                     min_value: 'Vehicle model must be from the provided list.',
                 },
-                addVehicleMileage: {
-                    required: 'Vehicle mileage is required.',
-                    integer: 'Vehicle mileage must be an integer',
-                    min_value: 'Vehicle mileage must be greater than 0.',
+                addTransmissionType: {
+                    required: 'Vehicle transmission type is required.',
+                },
+                addVehicleOdometer: {
+                    required: 'Vehicle odometer is required.',
+                    integer: 'Vehicle odometer must be an integer',
+                    min_value: 'Vehicle odometer must be greater than 0.',
                 },
                 addVehicleVin: {
                     max: 'Vehicle Identification Number must be 17 characters or less.',
@@ -324,6 +381,9 @@ export default class AddVehiclePopup extends VehicleMixin {
                 addVehicleName: {
                     required: 'Vehicle name is required.',
                     max: 'Vehicle name must be 32 characters or less.',
+                },
+                addVehicleUnitSystem: {
+                    required: 'A unit system must be selected',
                 },
             },
         });
@@ -388,7 +448,12 @@ export default class AddVehiclePopup extends VehicleMixin {
                     break;
 
                 case 2:
-                    this.$refs.mileageTextbox.focus();
+                    this.$refs.odometerTextbox.focus();
+                    break;
+
+                case 3:
+                    // @ts-ignore
+                    this.$refs.unitSystemDropDown.$el.focus();
                     break;
             }
         });
@@ -409,14 +474,15 @@ export default class AddVehiclePopup extends VehicleMixin {
             year: this.year,
             make,
             model,
-            mileage: this.mileage,
+            odometer: this.odometer,
             name: this.name,
             color: this.color,
             licensePlate: this.plate,
             vin: this.vin,
+            transmissionType: this.transmissionType,
         });
 
-        this.$emit('add', vehicle);
+        this.$emit('add', { vehicle, settings: { unitSystem: this.unitSystem } });
         this.hide();
         this.$forceUpdate();
     }
@@ -424,8 +490,8 @@ export default class AddVehiclePopup extends VehicleMixin {
     /**
      * Show the popup on screen.
      */
-    public show(): void {
-        this.reset();
+    public async show(): Promise<void> {
+        await this.reset();
         this.$refs.popup.show();
     }
 
@@ -439,7 +505,7 @@ export default class AddVehiclePopup extends VehicleMixin {
     /**
      * Reset the component back to defaults.
      */
-    private reset(): void {
+    private async reset(): Promise<void> {
         this.activeStep = 0;
         this.lastStep = 0;
 
@@ -450,11 +516,13 @@ export default class AddVehiclePopup extends VehicleMixin {
         this.model = null;
         this.vin = null;
         this.plate = null;
-        this.mileage = null;
+        this.odometer = null;
         this.color = null;
         this.name = null;
+        this.unitSystem = null;
+        this.transmissionType = null;
 
-        this.$validator.reset();
+        await this.$validator.reset();
     }
 }
 </script>

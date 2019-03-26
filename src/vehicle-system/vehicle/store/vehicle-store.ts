@@ -12,6 +12,7 @@ import { VehicleMaintenanceEventService } from '../services/vehicle-maintenance-
 import { MaintenanceEvent } from '../entities/maintenance-event';
 import { MaintenanceEventStats } from '../entities/maintenance-event-stats';
 import { Dictionary } from '@/core/common/dictionary';
+import { UnitSystem } from '@/vehicle-system/common/unit-system';
 
 /**
  * Store for vehicles of the user.
@@ -70,8 +71,8 @@ export class VehicleStore extends StoreModule {
      * Add a new vehicle for the user to the backend.
      * @param vehicle the vehicle to add.
      */
-    public async addVehicle(vehicle: Vehicle): Promise<void> {
-        const apiResponse = await this._vehicleService.addVehicle(User.CURRENT!, vehicle);
+    public async addVehicle(vehicle: Vehicle, settings: { unitSystem: UnitSystem }): Promise<void> {
+        const apiResponse = await this._vehicleService.addVehicle(User.CURRENT!, vehicle, settings);
 
         // Update the local cache
         this._vehicleCache!.push(vehicle);

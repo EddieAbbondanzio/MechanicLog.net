@@ -12,6 +12,7 @@
             :header-bg-variant="headerColor"
             header-text-variant="white"
             footer-bg-variant="light"
+            no-close-on-backdrop
         >
             <div class="p-4">
                 <slot></slot>
