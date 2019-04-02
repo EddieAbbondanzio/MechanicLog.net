@@ -8,9 +8,6 @@ import { VehicleService } from '../services/vehicle-service';
 import { ServiceRegistry } from '@/core/services/service-registry';
 import { ServiceType } from '@/core/services/service-type';
 import { Nullable } from '@/core/common/monads/nullable';
-import { VehicleMaintenanceEventService } from '../services/vehicle-maintenance-event-service';
-import { MaintenanceEvent } from '../entities/maintenance-event';
-import { MaintenanceEventStats } from '../entities/maintenance-event-stats';
 import { Dictionary } from '@/core/common/dictionary';
 import { UnitSystem } from '@/vehicle-system/common/unit-system';
 
@@ -29,16 +26,9 @@ export class VehicleStore extends StoreModule {
     private _vehicleService: VehicleService;
 
     /**
-     * The underlying maintenance service to the backend.
-     */
-    private _maintenanceService: VehicleMaintenanceEventService;
-
-    /**
      * Cache of vehicles from the backend.
      */
     private _vehicleCache: Nullable<Vehicle[]>;
-
-    private _statsCache: Dictionary<Nullable<MaintenanceEventStats>>;
 
     /**
      * Create a new vehicle store.
@@ -46,9 +36,7 @@ export class VehicleStore extends StoreModule {
     constructor() {
         super();
         this._vehicleService = ServiceRegistry.resolve(ServiceType.Vehicle);
-        this._maintenanceService = ServiceRegistry.resolve(ServiceType.MaintenanceEvent);
         this._vehicleCache = null;
-        this._statsCache = {};
     }
 
     public async getVehicle(id: number): Promise<Nullable<Vehicle>> {
@@ -104,57 +92,5 @@ export class VehicleStore extends StoreModule {
         if (index !== -1) {
             this._vehicleCache!.splice(index, 1);
         }
-    }
-
-    /**
-     * Get all the maintenance events for a vehicle.
-     * @param vehicle The vehicle to get all the service events for.
-     */
-    public async getMaintenanceEvents(vehicle: Vehicle): Promise<MaintenanceEvent[]> {
-        return this._maintenanceService.getAllForVehicle(User.CURRENT!, vehicle);
-    }
-
-    /**
-     * Get the year to date, and month to date cost of a vehicle.
-     * @param vehicle The vehicle to get stats for.
-     */
-    public async getMaintenanceEventStats(vehicle: Vehicle): Promise<MaintenanceEventStats> {
-        // Did we already cache it?
-        if (this._statsCache[vehicle.id] != null) {
-            return this._statsCache[vehicle.id]!;
-        }
-
-        const stats = await this._maintenanceService.getStatsForVehicle(User.CURRENT!, vehicle);
-        this._statsCache[vehicle.id] = stats;
-
-        return stats;
-    }
-
-    /**
-     * Add a maintenance event to a vehicle.
-     * @param vehicle The vehicle to add it to.
-     * @param event The event to add.
-     */
-    public async addMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<void> {
-        // Clear it from cache if needed.
-        if (this._statsCache[vehicle.id] != null) {
-            this._statsCache[vehicle.id] = null;
-        }
-
-        return this._maintenanceService.addEventForVehicle(User.CURRENT!, vehicle, event);
-    }
-
-    /**
-     * Delete an event from a vehicle.
-     * @param vehicle The vehicle to delete it from.
-     * @param event The event to delete.
-     */
-    public async deleteMaintenanceEvent(vehicle: Vehicle, event: MaintenanceEvent): Promise<void> {
-        // Clear it from cache if needed.
-        if (this._statsCache[vehicle.id] != null) {
-            this._statsCache[vehicle.id] = null;
-        }
-
-        return this._maintenanceService.deleteEventForVehicle(User.CURRENT!, vehicle, event);
     }
 }

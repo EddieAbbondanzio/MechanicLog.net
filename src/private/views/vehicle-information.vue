@@ -131,7 +131,6 @@ import { Nullable } from '@/core/common/monads/nullable';
 import BackButton from '@/private/components/buttons/back-button.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
-import { MaintenanceEventStats } from '@/vehicle-system/vehicle/entities/maintenance-event-stats';
 import PageContent from '@/private/components/layout/page-content.vue';
 import VehicleInformationTab from '@/vehicle-system/vehicle/components/tabs/vehicle-information-tab.vue';
 import VehicleMaintenanceTab from '@/vehicle-system/vehicle/components/tabs/vehicle-maintenance-tab.vue';

@@ -1,4 +1,3 @@
-import { MaintenanceEvent } from './maintenance-event';
 import { VehicleMake } from './vehicle-make';
 import { VehicleModel } from './vehicle-model';
 import { Nullable } from '@/core/common/monads/nullable';
@@ -64,11 +63,6 @@ export class Vehicle {
     public transmissionType: TransmissionType;
 
     /**
-     * The maintenance history of the vehicle.
-     */
-    public maintenance: MaintenanceEvent[];
-
-    /**
      * Create a new vehicle.
      * @param name The nickname of the car.
      * @param year The model year of the car.
@@ -82,7 +76,6 @@ export class Vehicle {
         this.make = make;
         this.model = model;
         this.odometer = odometer;
-        this.maintenance = [];
         this.name = null;
         this.licensePlate = null;
         this.color = null;
