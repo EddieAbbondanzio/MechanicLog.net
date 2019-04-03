@@ -12,6 +12,7 @@ import { SubscriptionService } from '@/subscription-system/services/subscription
 import { SubscriptionPlanService } from '@/subscription-system/services/subscription-plan-service';
 import { VehiclePurchaseInfoService } from '@/vehicle-system/vehicle/services/vehicle-purchase-info-service';
 import { FuelTripService } from '@/vehicle-system/vehicle/services/fuel-trip-service';
+import { MaintenanceTagService } from '@/vehicle-system/vehicle/services/maintenance-tag-service';
 
 /**
  * Helper to locate, and register services for use later on.
@@ -36,6 +37,7 @@ export class ServiceRegistry {
         this.register(ServiceType.Subscription, new SubscriptionService(Store.backendUrl));
         this.register(ServiceType.SubscriptionPlan, new SubscriptionPlanService(Store.backendUrl));
         this.register(ServiceType.FuelTrip, new FuelTripService(Store.backendUrl));
+        this.register(ServiceType.MaintenanceTag, new MaintenanceTagService(Store.backendUrl));
     }
 
     /**
