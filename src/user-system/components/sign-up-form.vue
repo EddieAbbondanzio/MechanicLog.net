@@ -3,8 +3,8 @@
         title="Sign Up"
         description="Sign up now to start your free 60 day trial with MechanicLog. No commitment or financial details needed."
     >
-        <alert-message type="Success" v-if="successMessage.length > 0">{{ successMessage }}</alert-message>
-        <alert-message type="Danger" v-if="errorMessage.length > 0">{{ errorMessage }}</alert-message>
+        <b-alert variant="success" :show="successMessage.length > 0">{{ successMessage }}</b-alert>
+        <b-alert variant="danger" :show="errorMessage.length > 0">{{ errorMessage }}</b-alert>
 
         <!-- Real Name -->
         <div class="form-group">
@@ -21,6 +21,21 @@
             >
             <b-form-invalid-feedback>{{ errors.first('name') }}</b-form-invalid-feedback>
         </div>
+
+        <b-form-group>
+            <label class="required" for="username-textbox">Username</label>
+            <input
+                type="text"
+                class="form-control"
+                v-model="username"
+                id="username-textbox"
+                placeholder="HondaFan2000"
+                name="username"
+                v-validate="'required|alpha_num|min:4|max:32'"
+                data-vv-validate-on="blur"
+            >
+            <b-form-invalid-feedback>{{ errors.first('username') }}</b-form-invalid-feedback>
+        </b-form-group>
 
         <!-- Email Address -->
         <div class="form-group">
@@ -132,6 +147,8 @@ export default class SignUpForm extends UserMixin {
 
     public password!: string;
 
+    public username: string = '';
+
     public confirmPassword!: string;
 
     public iAgree!: boolean;
@@ -178,6 +195,7 @@ export default class SignUpForm extends UserMixin {
                 email: this.email,
                 name: this.name,
                 password: this.password,
+                username: this.username,
             });
 
             this.successMessage = 'Success. Redirecting...';

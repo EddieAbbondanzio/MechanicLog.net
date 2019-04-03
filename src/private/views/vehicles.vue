@@ -163,11 +163,11 @@ export default class Vehicles extends VehicleMixin {
         this.$refs.addPopup.show();
     }
 
-    public async onVehicleAdd(info: { vehicle: Vehicle; settings: { unitSystem: UnitSystem } }): Promise<void> {
+    public async onVehicleAdd(vehicle: Vehicle): Promise<void> {
         EventBus.emit('loading');
         this.isLoading = true;
         try {
-            await this.$vehicleStore.addVehicle(info.vehicle, info.settings);
+            await this.$vehicleStore.addVehicle(vehicle);
         } catch (error) {
             EventBus.emit('error', error.message);
         }

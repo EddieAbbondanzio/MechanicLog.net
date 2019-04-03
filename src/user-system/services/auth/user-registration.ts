@@ -13,6 +13,11 @@ export interface UserRegistration {
     name: string;
 
     /**
+     * The username of the user.
+     */
+    username: string;
+
+    /**
      * The desired password of the user.
      */
     password: string;

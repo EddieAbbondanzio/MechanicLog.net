@@ -26,6 +26,11 @@ export class User {
     public email: string;
 
     /**
+     * The username of the user.
+     */
+    public username: string;
+
+    /**
      * If the user has verified their email.
      */
     public isVerified: boolean;
@@ -42,11 +47,12 @@ export class User {
      * @param email The email address of the user.
      * @param isVerified If the user is verified.
      */
-    constructor(authToken: string, name: string, email: string, isVerified: boolean) {
-        this.authToken = authToken;
-        this.name = name;
-        this.email = email;
-        this.isVerified = isVerified;
+    constructor(options: { authToken: string; name: string; username: string; email: string; isVerified: boolean }) {
+        this.authToken = options.authToken;
+        this.name = options.name;
+        this.email = options.email;
+        this.isVerified = options.isVerified;
+        this.username = options.username;
     }
 
     /**
@@ -66,6 +72,6 @@ export class User {
      * @param raw The raw user object.
      */
     public static fromRaw(token: string, raw: any): User {
-        return new User(token, raw.name, raw.email, raw.isVerified);
+        return new User({ authToken: token, name: raw.name, email: raw.email, username: raw.username, isVerified: raw.isVerified });
     }
 }

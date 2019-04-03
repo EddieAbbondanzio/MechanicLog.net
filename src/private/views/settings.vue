@@ -18,6 +18,19 @@
 
                         <b-form>
                             <div class="form-group">
+                                <label for="name-textbox">Username</label>
+                                <input
+                                    v-model="username"
+                                    type="text"
+                                    class="form-control"
+                                    id="name-textbox"
+                                    placeholder
+                                    name="name"
+                                    readonly
+                                >
+                            </div>
+
+                            <div class="form-group">
                                 <label class="required" for="name-textbox">Name</label>
                                 <input
                                     v-model="name"
@@ -161,6 +174,11 @@ export default class Settings extends UserMixin {
     public $refs!: {
         errorPopup: ErrorPopup;
     };
+
+    /**
+     * The username of the user.
+     */
+    public username: string = User.CURRENT!.username;
 
     /**
      * The current name of the user.

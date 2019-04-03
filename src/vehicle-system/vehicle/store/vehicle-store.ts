@@ -59,8 +59,8 @@ export class VehicleStore extends StoreModule {
      * Add a new vehicle for the user to the backend.
      * @param vehicle the vehicle to add.
      */
-    public async addVehicle(vehicle: Vehicle, settings: { unitSystem: UnitSystem }): Promise<void> {
-        const apiResponse = await this._vehicleService.addVehicle(User.CURRENT!, vehicle, settings);
+    public async addVehicle(vehicle: Vehicle): Promise<void> {
+        const apiResponse = await this._vehicleService.addVehicle(User.CURRENT!, vehicle);
 
         // Update the local cache
         this._vehicleCache!.push(vehicle);

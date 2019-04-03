@@ -1,7 +1,7 @@
 /**
  * Utility methods for strings.
  */
-export class StringUtils {
+export class DateUtils {
     /**
      * Convert the date into a user friendly MM/dd/YYYY strng.
      * @param date The date to convert.

@@ -31,6 +31,6 @@ export class VehiclePurchaseInfoService extends Service {
      * @param purchaseInfo The purchase info to update.
      */
     public async updateVehiclePurchaseInfo(purchaseInfo: VehiclePurchaseInfo): Promise<void> {
-        const apiResponse = await this._httpClient.post(`/v1/vehicle/${purchaseInfo.vehicleId}/purchase-info`, purchaseInfo, User.CURRENT!.authToken);
+        const apiResponse = await this._httpClient.patch(`/v1/vehicle/${purchaseInfo.vehicleId}/purchase-info`, purchaseInfo, User.CURRENT!.authToken);
     }
 }

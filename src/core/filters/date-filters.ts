@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { DateUtils } from '../common/utils/date-utils';
 
 /**
  * Convert the date into a nice MM/DD/YYYY string.
@@ -8,5 +9,6 @@ Vue.filter('date', function(val: Date) {
         return '';
     }
 
-    return val.toLocaleDateString();
+    console.log(val);
+    return DateUtils.toFormattedDateString(val);
 });

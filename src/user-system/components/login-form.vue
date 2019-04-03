@@ -126,7 +126,8 @@ export default class LoginForm extends UserMixin {
             } else {
                 this.message = 'An unknown error occured. Please try again later.';
             }
-
+            
+            console.error(error);
             submitButton.reset();
         }
     }

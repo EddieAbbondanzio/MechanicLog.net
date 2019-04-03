@@ -177,34 +177,13 @@
                             >{{ errors.first('tab3.addVehicleName') }}</b-form-invalid-feedback>
                         </b-form-group>
                     </b-tab>
-
-                    <!-- Settings -->
-                    <b-tab title="Settings" class="py-4" @click="onTabClick">
-                        <b-form-group>
-                            <label
-                                class="required"
-                                for="add-vehicle-unit-system-dropdown"
-                            >Unit System</label>
-                            <b-form-select
-                                v-model="unitSystem"
-                                :options="unitSystemOptions"
-                                ref="unitSystemDropDown"
-                                name="addVehicleUnitSystem"
-                                data-vv-scope="tab4"
-                                v-validate="'required'"
-                            />
-                            <b-form-invalid-feedback
-                                class="d-block"
-                            >{{ errors.first('tab4.addVehicleUnitSystem') }}</b-form-invalid-feedback>
-                        </b-form-group>
-                    </b-tab>
                 </b-tabs>
             </b-card>
         </form>
 
         <hr>
 
-        <progress-tracker :current="activeStep + 1" :max="4"/>
+        <progress-tracker :current="activeStep + 1" :max="3"/>
 
         <!-- Previous Button -->
         <div slot="footer">
@@ -221,7 +200,7 @@
                 variant="success"
                 class="float-right"
                 @click="onNextClick"
-                v-if="activeStep < 3"
+                v-if="activeStep < 2"
             >Next</b-button>
 
             <!-- Create Button -->
@@ -341,11 +320,6 @@ export default class AddVehiclePopup extends VehicleMixin {
     public name: Nullable<string> = null;
 
     /**
-     * The measurement system to use.
-     */
-    public unitSystem: Nullable<UnitSystem> = null;
-
-    /**
      * Event handler for when the component is created.
      */
     public async created(): Promise<void> {
@@ -381,9 +355,6 @@ export default class AddVehiclePopup extends VehicleMixin {
                 addVehicleName: {
                     required: 'Vehicle name is required.',
                     max: 'Vehicle name must be 32 characters or less.',
-                },
-                addVehicleUnitSystem: {
-                    required: 'A unit system must be selected',
                 },
             },
         });
@@ -482,7 +453,7 @@ export default class AddVehiclePopup extends VehicleMixin {
             transmissionType: this.transmissionType,
         });
 
-        this.$emit('add', { vehicle, settings: { unitSystem: this.unitSystem } });
+        this.$emit('add', vehicle);
         this.hide();
         this.$forceUpdate();
     }
@@ -519,7 +490,6 @@ export default class AddVehiclePopup extends VehicleMixin {
         this.odometer = null;
         this.color = null;
         this.name = null;
-        this.unitSystem = null;
         this.transmissionType = null;
 
         await this.$validator.reset();

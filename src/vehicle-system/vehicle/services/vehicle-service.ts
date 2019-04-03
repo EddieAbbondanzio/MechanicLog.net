@@ -23,9 +23,8 @@ export class VehicleService extends Service {
      * @param user The user to add a vehicle for.
      * @param vehicle The vehicle to add.
      */
-    public async addVehicle(user: User, vehicle: Vehicle, settings: { unitSystem: UnitSystem }): Promise<void> {
+    public async addVehicle(user: User, vehicle: Vehicle): Promise<void> {
         const raw = vehicle.toJSON();
-        (raw as any).unitSystem = settings.unitSystem;
 
         const apiResponse = await this._httpClient.post('/v1/vehicle', raw, user.authToken);
         vehicle.id = apiResponse.data.id;
