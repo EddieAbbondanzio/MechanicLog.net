@@ -113,9 +113,10 @@ export default class VehiclePurchaseInfoCard extends VehicleMixin {
             const c = purchaseInfo.clone();
             await this.$vehiclePurchaseInfoStore.addVehiclePurchaseInfo(this.vehicle, c);
             this.$emit('edit', c);
+        } else {
+            await this.$vehiclePurchaseInfoStore.updateVehiclePurchaseInfo(purchaseInfo);
+            this.$emit('edit', purchaseInfo);
         }
-        await this.$vehiclePurchaseInfoStore.updateVehiclePurchaseInfo(purchaseInfo);
-        this.$emit('edit', purchaseInfo);
     }
 }
 </script>

@@ -24,6 +24,7 @@ export class VehiclePurchaseInfoService extends Service {
      */
     public async addVehiclePurchaseInfo(vehicle: Vehicle, purchaseInfo: VehiclePurchaseInfo): Promise<void> {
         const apiResponse = await this._httpClient.post(`/v1/vehicle/${vehicle.id}/purchase-info`, purchaseInfo, User.CURRENT!.authToken);
+        purchaseInfo.id = apiResponse.data.id;
     }
 
     /**

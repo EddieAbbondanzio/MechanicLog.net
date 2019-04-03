@@ -9,6 +9,5 @@ Vue.filter('date', function(val: Date) {
         return '';
     }
 
-    console.log(val);
     return DateUtils.toFormattedDateString(val);
 });
