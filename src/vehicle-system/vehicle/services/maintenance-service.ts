@@ -11,7 +11,7 @@ export class MaintenanceService extends Service {
      * Get the maintenance crecords of a vehcile.
      * @param vehicle THe vehicle to get htem for.
      */
-    public async getMaintenanceForVehicle(vehicle: Vehicle): Promise<Maintenance> {
+    public async getMaintenanceForVehicle(vehicle: Vehicle): Promise<Maintenance[]> {
         const apiResponse = await this._httpClient.get(`/v1/vehicle/${vehicle.id}/maintenance`, User.CURRENT!.authToken);
         return apiResponse.data.map((r: {}) => new Maintenance(r));
     }
