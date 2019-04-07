@@ -1,6 +1,6 @@
 <style lang="scss">
 .page-content {
-    height: 100vh;
+    height: calc(100vh - 64px);
 }
 </style>
 
@@ -9,7 +9,7 @@
         <title-bar/>
         <error-popup ref="errorPopup"/>
 
-        <div class="d-flex flex-row align-self-stretch h-100">
+        <div class="d-flex flex-row align-self-stretch page-content">
             <side-bar class="d-flex flex-column align-self-stretch"/>
             <div class="bg-light align-self-stretch w-100" style="position:relative;">
                 <loading-bar v-if="isLoading()" style="position: absolute;"/>

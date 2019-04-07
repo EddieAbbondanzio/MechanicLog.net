@@ -14,6 +14,7 @@
 <template>
     <div class="row px-3">
         <div class="col-12 px-0 mx-0">
+            <add-maintenance-popup ref="addMaintenancePopup"/>
             <error-popup ref="errorPopup"/>
 
             <!-- Table Header -->
@@ -23,11 +24,11 @@
 
                     <b-btn variant="success" style="height: 40px" class="rounded float-right">
                         <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
-                        <span style="vertical-align: middle;">Add Maintenance</span>
+                        <span style="vertical-align: middle;" @click="onAddClick">Add Maintenance</span>
                     </b-btn>
                 </div>
 
-                <b-table :fields="columnNames" :items="events" :busy="isBusy">
+                <b-table :fields="columnNames" :busy="isBusy">
                     <template slot="odometer" slot-scope="row">{{ row.value | number }}</template>
                     <template slot="date" slot-scope="row">{{ row.value | date }}</template>
                     <template slot="mechanic" slot-scope="row">{{ row.value.name }}</template>
@@ -64,6 +65,7 @@ import CardContainer from '@/core/components/cards/card-container.vue';
 import VehicleDetailsCard from '@/vehicle-system/vehicle/components/cards/vehicle-details-card.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
+import AddMaintenancePopup from '@/vehicle-system/vehicle/components/popups/add-maintenance-popup.vue';
 
 /**
  * Maintenance history page.
@@ -75,6 +77,7 @@ import { EventBus } from '@/core/event/event-bus';
         CardContainer,
         VehicleDetailsCard,
         ErrorPopup,
+        AddMaintenancePopup,
     },
 })
 export default class VehicleMaintenanceTab extends VehicleMixin {
@@ -90,6 +93,7 @@ export default class VehicleMaintenanceTab extends VehicleMixin {
      * Component references
      */
     public $refs!: {
+        addMaintenancePopup: AddMaintenancePopup;
         errorPopup: ErrorPopup;
     };
     /**
@@ -113,6 +117,10 @@ export default class VehicleMaintenanceTab extends VehicleMixin {
 
         this.isBusy = false;
         EventBus.emit('loaded');
+    }
+
+    public async onAddClick() {
+        this.$refs.addMaintenancePopup.show();
     }
 }
 </script>
