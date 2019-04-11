@@ -7,14 +7,14 @@
         id="addMaintenance"
         ref="popup"
         title="Add Maintenance"
-        size="lg"
+        size="xl"
         headerColor="primary"
     >
         <form>
             <b-card no-body border-variant="white">
                 <b-tabs v-model="activeStep">
                     <b-tab title="Parts" class="py-4" @click="onTabClick">
-                        <maintenance-parts-table/>
+                        <maintenance-parts-table ref="partsTable" @focus="onFocus" @blur="onBlur"/>
                     </b-tab>
 
                     <b-tab title="Labor" class="py-4" @click="onTabClick">
@@ -133,6 +133,7 @@
                 tabindex="-1"
                 @click="onPreviousClick"
                 v-if="activeStep > 0"
+                :disabled="isBusy"
             >Previous</b-button>
 
             <!-- Next Button -->
@@ -141,6 +142,7 @@
                 class="float-right"
                 @click="onNextClick"
                 v-if="activeStep < 4"
+                :disabled="isBusy"
             >Next</b-button>
 
             <!-- Create Button -->
@@ -184,6 +186,7 @@ export default class AddMaintenancePopup extends Vue {
 
     public $refs!: {
         popup: PopupContainer;
+        partsTable: MaintenancePartsTable;
     };
 
     /**
@@ -212,6 +215,11 @@ export default class AddMaintenancePopup extends Vue {
      */
     public description: Nullable<string> = null;
 
+    /**
+     * If the user is currently performing some kind of input.
+     */
+    public isBusy: boolean = false;
+
     public async created() {
         this.$validator.localize('en', {
             custom: {
@@ -229,7 +237,8 @@ export default class AddMaintenancePopup extends Vue {
 
     public async show() {
         await this.reset();
-        this.$refs.popup.show();
+        await this.$refs.popup.show();
+        this.$forceUpdate();
     }
 
     public async hide() {
@@ -246,6 +255,13 @@ export default class AddMaintenancePopup extends Vue {
      * Event handler for when the user cicks a tab.
      */
     public async onTabClick(): Promise<void> {
+        //If busy, go back to previous tab
+        if (this.isBusy) {
+            this.activeStep = this.lastStep;
+            console.log('active step is: ', this.activeStep);
+            return;
+        }
+
         if (await this.$validator.validateAll(`tab${this.lastStep + 1}`)) {
             // Gotta cache last tab somehow. $event is coming in undefined...
             this.lastStep = this.activeStep;
@@ -270,6 +286,20 @@ export default class AddMaintenancePopup extends Vue {
         if (await this.$validator.validateAll(`tab${this.activeStep + 1}`)) {
             this.activeStep++;
         }
+    }
+
+    /**
+     * User has started to interact with a child component.
+     */
+    protected async onFocus() {
+        this.isBusy = true;
+    }
+
+    /**
+     * User has stopped working with a child component.
+     */
+    protected async onBlur() {
+        this.isBusy = false;
     }
 }
 </script>

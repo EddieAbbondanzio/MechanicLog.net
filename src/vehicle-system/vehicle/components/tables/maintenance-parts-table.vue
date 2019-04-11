@@ -111,9 +111,9 @@ enum MaintenancePartsTableState {
 })
 export default class MaintenancePartsTable extends Vue {
     protected readonly columns = [
-        { key: 'quantity', label: 'Quantity', class: 'align-right w-20', thClass: 'required' },
-        { key: 'code', label: 'Description', class: 'align-left w-40', thClass: 'required' },
-        { key: 'cost', label: 'Cost', class: 'align-right w-20', thClass: 'required' },
+        { key: 'quantity', label: 'Quantity', class: 'align-right w-20', thClass: 'required text-nowrap' },
+        { key: 'code', label: 'Description', class: 'align-left w-40', thClass: 'required text-nowrap' },
+        { key: 'cost', label: 'Cost', class: 'align-right w-20', thClass: 'required text-nowrap' },
         { key: 'actions', label: 'Actions', class: 'align-left w-20' },
     ];
 
@@ -161,23 +161,13 @@ export default class MaintenancePartsTable extends Vue {
     }
 
     /**
-     * Set the parts of the table
-     */
-    public async setParts(parts: MaintenanceLine[]) {
-        if (parts.some((p) => p.type !== MaintenanceLineType.Part)) {
-            throw new Error('Only part lines can be displayed in the maintenance parts table.');
-        }
-
-        this.parts = parts;
-    }
-
-    /**
      * User wants to add a new part to the list.
      */
     protected async onAddClick() {
         this.state = MaintenancePartsTableState.Adding;
         this.parts.push({ type: MaintenanceLineType.Part });
         this.activeIndex = this.parts.length - 1;
+        this.$emit('focus');
     }
 
     /**
@@ -187,6 +177,7 @@ export default class MaintenancePartsTable extends Vue {
         this.state = MaintenancePartsTableState.Editing;
         this.activeIndex = index;
         this.backup = Object.assign({}, this.parts[this.activeIndex]);
+        this.$emit('focus');
     }
 
     /**
@@ -199,6 +190,7 @@ export default class MaintenancePartsTable extends Vue {
 
         this.activeIndex = -1;
         this.state = MaintenancePartsTableState.Standby;
+        this.$emit('blur');
     }
 
     /**
@@ -218,6 +210,8 @@ export default class MaintenancePartsTable extends Vue {
         }
 
         this.activeIndex = -1;
+        this.state = MaintenancePartsTableState.Standby;
+        this.$emit('blur');
     }
 
     /**
