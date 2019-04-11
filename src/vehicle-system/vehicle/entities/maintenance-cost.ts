@@ -25,6 +25,11 @@ export class MaintenanceCost {
     public otherCost!: number;
 
     /**
+     * The total cost of the maintenance.
+     */
+    public totalCost!: number;
+
+    /**
      * How the cost were calculated.
      */
     public calculationMethod!: MaintenanceCostCalculationMethod;
