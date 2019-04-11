@@ -19,27 +19,46 @@
         </div>
 
         <!-- Table -->
-        <b-table :fields="columns" :items="parts" class="mt-2">
+        <b-table :fields="columns" :items="parts" class="mt-2 table-layout-fixed">
             <template slot="quantity" slot-scope="data">
-                <div
-                    v-if="activeIndex == data.index"
-                    class="d-flex flex-column align-items-center h-100"
-                >
-                    <input type="text" v-model.number="data.item.quantity" class="w-100">
+                <div v-if="activeIndex == data.index">
+                    <input
+                        type="text"
+                        v-model.number="data.item.quantity"
+                        class="w-100 form-control"
+                        name="partQuantity"
+                        v-validate="'required|min_value:1|integer'"
+                    >
+
+                    <b-form-invalid-feedback>{{ errors.first('partQuantity') }}</b-form-invalid-feedback>
                 </div>
                 <div v-else>{{ data.item.quantity }}</div>
             </template>
             <template slot="code" slot-scope="data">
                 <div v-if="activeIndex == data.index">
-                    <input type="text" v-model="data.item.code" class="w-100">
+                    <input
+                        type="text"
+                        v-model="data.item.code"
+                        class="w-100 form-control"
+                        name="partCode"
+                        v-validate="'required|max:32'"
+                    >
+
+                    <b-form-invalid-feedback>{{ errors.first('partCode') }}</b-form-invalid-feedback>
                 </div>
-                <div v-else style="min-width: 0px;">
-                    <span class="text-truncate">{{ data.item.code }}</span>
-                </div>
+                <div v-else class="text-truncate" :title="data.item.code">{{ data.item.code }}</div>
             </template>
             <template slot="cost" slot-scope="data">
                 <div v-if="activeIndex == data.index">
-                    <input type="text" v-model.number="data.item.cost" class="w-100">
+                    <input
+                        type="text"
+                        v-model.number="data.item.cost"
+                        class="w-100 form-control"
+                        name="partCost"
+                        v-validate="'required|decimal:2'"
+                    >
+
+                    <b-form-invalid-feedback>{{ errors.first('partCost') }}</b-form-invalid-feedback>
                 </div>
                 <div v-else>{{ data.item.cost }}</div>
             </template>
@@ -72,6 +91,15 @@ import { MaintenanceLineType } from '../../entities/maintenance-line-type';
 import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
+ * State of the table. Not exported since only this component will ever use it.
+ */
+enum MaintenancePartsTableState {
+    Standby,
+    Adding,
+    Editing,
+}
+
+/**
  * Component for building parts list for a maintenance event. Allows users to add,
  * update, or delete part lines.
  */
@@ -83,16 +111,16 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 })
 export default class MaintenancePartsTable extends Vue {
     protected readonly columns = [
-        { key: 'quantity', label: 'Quantity', class: 'col-3 align-right' },
-        { key: 'code', label: 'Description', class: 'col-5 align-left' },
-        { key: 'cost', label: 'Cost', class: 'col-2 align-right' },
-        { key: 'actions', label: 'Actions', class: 'col-2 align-left' },
+        { key: 'quantity', label: 'Quantity', class: 'align-right w-20', thClass: 'required' },
+        { key: 'code', label: 'Description', class: 'align-left w-40', thClass: 'required' },
+        { key: 'cost', label: 'Cost', class: 'align-right w-20', thClass: 'required' },
+        { key: 'actions', label: 'Actions', class: 'align-left w-20' },
     ];
 
     /**
      * The part data being built
      */
-    protected readonly parts: Partial<MaintenanceLine>[] = [{ quantity: 1, code: 'O2 Sensor', cost: 129.99 }, { quantity: 5, code: 'Oil', cost: 29.99 }];
+    protected parts: Partial<MaintenanceLine>[] = [];
 
     /**
      * The index of the active item being editted.
@@ -105,9 +133,49 @@ export default class MaintenancePartsTable extends Vue {
     protected backup: Partial<MaintenanceLine> = {};
 
     /**
+     * The current state of the table.
+     */
+    protected state: MaintenancePartsTableState = MaintenancePartsTableState.Standby;
+
+    /**
+     * When the control is created, set up the validator.
+     */
+    public async created() {
+        this.$validator.localize('en', {
+            custom: {
+                partQuantity: {
+                    required: 'Part quantity is required.',
+                    integer: 'Part quantity must be an integer.',
+                    min_value: 'Part quantity must be greater than 0.',
+                },
+                partCode: {
+                    required: 'Part description is required.',
+                    max: 'Part description must be 32 characters or less.',
+                },
+                partCost: {
+                    required: 'Part cost is required.',
+                    decimal: 'Part cost must be 2 decimal places or less.',
+                },
+            },
+        });
+    }
+
+    /**
+     * Set the parts of the table
+     */
+    public async setParts(parts: MaintenanceLine[]) {
+        if (parts.some((p) => p.type !== MaintenanceLineType.Part)) {
+            throw new Error('Only part lines can be displayed in the maintenance parts table.');
+        }
+
+        this.parts = parts;
+    }
+
+    /**
      * User wants to add a new part to the list.
      */
     protected async onAddClick() {
+        this.state = MaintenancePartsTableState.Adding;
         this.parts.push({ type: MaintenanceLineType.Part });
         this.activeIndex = this.parts.length - 1;
     }
@@ -116,6 +184,7 @@ export default class MaintenancePartsTable extends Vue {
      * User wants to edit a row.
      */
     protected async onEditClick(index: number) {
+        this.state = MaintenancePartsTableState.Editing;
         this.activeIndex = index;
         this.backup = Object.assign({}, this.parts[this.activeIndex]);
     }
@@ -124,13 +193,30 @@ export default class MaintenancePartsTable extends Vue {
      * User wants to confirm their edit.
      */
     protected async onEditConfirm() {
+        if (!(await this.$validator.validateAll())) {
+            return;
+        }
+
         this.activeIndex = -1;
+        this.state = MaintenancePartsTableState.Standby;
     }
 
+    /**
+     * User wants to cancel adding to the table.
+     */
     protected async onEditCancel() {
-        this.parts[this.activeIndex].quantity = this.backup.quantity;
-        this.parts[this.activeIndex].code = this.backup.code;
-        this.parts[this.activeIndex].cost = this.backup.cost;
+        switch (this.state) {
+            case MaintenancePartsTableState.Adding:
+                this.parts.splice(this.parts.length - 1, 1);
+                break;
+
+            case MaintenancePartsTableState.Editing:
+                this.parts[this.activeIndex].quantity = this.backup.quantity;
+                this.parts[this.activeIndex].code = this.backup.code;
+                this.parts[this.activeIndex].cost = this.backup.cost;
+                break;
+        }
+
         this.activeIndex = -1;
     }
 

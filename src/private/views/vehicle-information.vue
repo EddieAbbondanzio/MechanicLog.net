@@ -173,17 +173,6 @@ export default class VehicleInformation extends VehicleMixin {
 
     public activeTab: number = 1;
 
-    public items = [
-        { isActive: true, age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-        { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' },
-    ];
-    public selectMode = 'multi';
-    public rowSelected() {
-        console.log('FUCK');
-    }
-
     /**
      * On page load, pull in the vehicle.
      */
