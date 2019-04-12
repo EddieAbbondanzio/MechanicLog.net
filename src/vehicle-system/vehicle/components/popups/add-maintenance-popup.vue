@@ -304,8 +304,17 @@ export default class AddMaintenancePopup extends Vue {
         this.isBusy = false;
         this.activeStep = 0;
         this.lastStep = 0;
+        this.others = [];
         this.parts = [];
         this.labor = [];
+        this.cost = new MaintenanceCost({ calculationMethod: MaintenanceCostCalculationMethod.Line });
+        this.date = null;
+        this.odometer = null;
+        this.description = null;
+
+        this.$refs.partsTable.reset();
+        this.$refs.othersTable.reset();
+        this.$refs.laborTable.reset();
     }
 
     /**

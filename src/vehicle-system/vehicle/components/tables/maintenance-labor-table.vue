@@ -144,6 +144,13 @@ export default class MaintenanceLaborTable extends Vue {
         this.labor = this.value;
     }
 
+    public reset() {
+        this.labor = [];
+        this.activeIndex = -1;
+        this.backup = {};
+        this.state = MaintenanceLaborTableState.Standby;
+    }
+
     /**
      * User wants to add a new labor to the list.
      */

@@ -165,6 +165,13 @@ export default class MaintenancePartsTable extends Vue {
         this.parts = this.value;
     }
 
+    public reset() {
+        this.parts = [];
+        this.activeIndex = -1;
+        this.backup = {};
+        this.state = MaintenancePartsTableState.Standby;
+    }
+
     /**
      * User wants to add a new part to the list.
      */

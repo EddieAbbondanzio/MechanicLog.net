@@ -144,6 +144,13 @@ export default class MaintenanceOthersTable extends Vue {
         this.others = this.value;
     }
 
+    public reset() {
+        this.others = [];
+        this.activeIndex = -1;
+        this.backup = {};
+        this.state = MaintenanceOthersTableState.Standby;
+    }
+
     /**
      * User wants to add a new other line to the list.
      */
