@@ -22,7 +22,7 @@ export class MaintenanceService extends Service {
      * @param maintenance THe maintenance to add.
      */
     public async addMantenanceForVehicle(vehicle: Vehicle, maintenance: Maintenance): Promise<void> {
-        const apiResponse = await this._httpClient.patch(`/v1/vehicle/${vehicle.id}/maintenance/${maintenance.id}}`, maintenance, User.CURRENT!.authToken);
+        const apiResponse = await this._httpClient.post(`/v1/vehicle/${vehicle.id}/maintenance`, maintenance, User.CURRENT!.authToken);
         maintenance.id = apiResponse.data.id;
     }
 

@@ -14,27 +14,31 @@
 <template>
     <div class="row px-3">
         <div class="col-12 px-0 mx-0">
-            <add-maintenance-popup ref="addMaintenancePopup"/>
+            <add-maintenance-popup ref="addMaintenancePopup" @add="onMaintenanceAdd"/>
             <error-popup ref="errorPopup"/>
+            <delete-maintenance-popup ref="deletePopup" @delete="onDelete"/>
 
             <!-- Table Header -->
             <card-container>
                 <div class="pb-3 clearfix">
                     <h2 class="float-left">Maintenance</h2>
 
-                    <b-btn variant="success" style="height: 40px" class="rounded float-right">
-                        <material-icon icon="add" size="md" style="vertical-align: bottom;"/>
-                        <span style="vertical-align: middle;" @click="onAddClick">Add Maintenance</span>
+                    <b-btn
+                        variant="success"
+                        style="height: 40px"
+                        class="rounded float-right"
+                        @click="onAddClick"
+                    >
+                        <material-icon icon="add" size="md" class="align-middle"/>
+                        <span class="align-middle">Add Maintenance</span>
                     </b-btn>
                 </div>
 
-                <b-table :fields="columnNames" :busy="isBusy">
-                    <template slot="odometer" slot-scope="row">{{ row.value | number }}</template>
-                    <template slot="date" slot-scope="row">{{ row.value | date }}</template>
-                    <template slot="mechanic" slot-scope="row">{{ row.value.name }}</template>
-                    <template slot="services" slot-scope="row">{{ row.value }}</template>
-                    <template slot="totalCost" slot-scope="row">{{ row.value | currency }}</template>
-                    <template slot="options">
+                <b-table :fields="columnNames" :items="maintenance" :busy="isBusy" hover>
+                    <template slot="odometer" slot-scope="row">{{ row.item.odometer | number }}</template>
+                    <template slot="date" slot-scope="row">{{ row.item.date | date }}</template>
+                    <template slot="description" slot-scope="row">{{ row.item.description }}</template>
+                    <template slot="options" slot-scope="row">
                         <b-dropdown no-caret variant="link" class="maintenance-options">
                             <div slot="button-content">
                                 <material-icon
@@ -45,7 +49,11 @@
                                 />
                             </div>
 
-                            <b-dropdown-item href="#" class="text-danger">Delete</b-dropdown-item>
+                            <b-dropdown-item
+                                href="#"
+                                class="text-danger"
+                                @click="onDeleteClick(row.item.id)"
+                            >Delete</b-dropdown-item>
                         </b-dropdown>
                     </template>
                 </b-table>
@@ -66,6 +74,8 @@ import VehicleDetailsCard from '@/vehicle-system/vehicle/components/cards/vehicl
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
 import AddMaintenancePopup from '@/vehicle-system/vehicle/components/popups/add-maintenance-popup.vue';
+import { Maintenance } from '../../entities/maintenance';
+import DeleteMaintenancePopup from '@/vehicle-system/vehicle/components/popups/delete-maintenance-popup.vue';
 
 /**
  * Maintenance history page.
@@ -78,14 +88,14 @@ import AddMaintenancePopup from '@/vehicle-system/vehicle/components/popups/add-
         VehicleDetailsCard,
         ErrorPopup,
         AddMaintenancePopup,
+        DeleteMaintenancePopup,
     },
 })
 export default class VehicleMaintenanceTab extends VehicleMixin {
     public readonly columnNames = [
         { key: 'odometer', label: 'Odometer', class: 'align-middle', sortable: true },
         { key: 'date', label: 'Date', class: 'align-middle', sortable: true },
-        { key: 'mechanic', label: 'Mechanic', class: 'align-middle', sortable: true },
-        { key: 'totalCost', label: 'Cost', class: 'align-middle', sortable: true },
+        { key: 'description', label: 'Description', class: 'align-left', softable: true },
         { key: 'options', label: 'Options', class: 'align-middle' },
     ];
 
@@ -95,11 +105,15 @@ export default class VehicleMaintenanceTab extends VehicleMixin {
     public $refs!: {
         addMaintenancePopup: AddMaintenancePopup;
         errorPopup: ErrorPopup;
+        deletePopup: DeleteMaintenancePopup;
     };
     /**
      * The vehicle being displayed
      */
-    public vehicle: Nullable<Vehicle> = null;
+    @Prop()
+    public vehicle!: Vehicle;
+
+    public maintenance: Maintenance[] = [];
 
     public isBusy: boolean = false;
 
@@ -111,16 +125,31 @@ export default class VehicleMaintenanceTab extends VehicleMixin {
     public async created(): Promise<void> {
         EventBus.emit('loading');
         this.isBusy = true;
-
-        const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
-        this.vehicle = await this.$vehicleStore.getVehicle(vehicleId);
-
+        this.maintenance = await this.$maintenanceStore.getMaintenanceForVehicle(this.vehicle);
         this.isBusy = false;
         EventBus.emit('loaded');
     }
 
     public async onAddClick() {
         this.$refs.addMaintenancePopup.show();
+    }
+
+    public async onMaintenanceAdd(maintenance: Maintenance) {
+        await this.$maintenanceStore.addMaintenanceForVehicle(this.vehicle, maintenance);
+    }
+
+    public async onDeleteClick(id: number) {
+        this.deleteId = id;
+        this.$refs.deletePopup.show();
+    }
+
+    public async onDelete() {
+        EventBus.emit('loading');
+        this.isBusy = true;
+        await this.$maintenanceStore.deleteMaintenanceForVehicle(this.vehicle, this.maintenance.find((m) => m.id === this.deleteId)!);
+        this.deleteId = -1;
+        this.isBusy = false;
+        EventBus.emit('loaded');
     }
 }
 </script>

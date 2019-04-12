@@ -75,6 +75,10 @@ export class MaintenanceStore extends StoreModule {
     public async addMaintenanceForVehicle(vehicle: Vehicle, maintenance: Maintenance): Promise<void> {
         await this._maintenanceService.addMantenanceForVehicle(vehicle, maintenance);
 
+        if (this._maintenanceCache[vehicle.id] == null) {
+            this._maintenanceCache[vehicle.id] = [];
+        }
+
         this._maintenanceCache[vehicle.id]!.push(maintenance);
     }
 
@@ -87,6 +91,7 @@ export class MaintenanceStore extends StoreModule {
         await this._maintenanceService.deleteMaintenance(vehicle, maintenance);
 
         // Trim the cache
-        this._maintenanceCache[vehicle.id]! = this._maintenanceCache[vehicle.id]!.filter((m) => m.id !== maintenance.id);
+        const index = this._maintenanceCache[vehicle.id]!.findIndex((m) => m.id === maintenance.id);
+        this._maintenanceCache[vehicle.id]!.splice(index, 1);
     }
 }

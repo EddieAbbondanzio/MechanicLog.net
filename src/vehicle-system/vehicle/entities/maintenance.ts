@@ -49,6 +49,11 @@ export class Maintenance {
      * @param opts The optional parameters.
      */
     constructor(opts: Partial<Maintenance> = {}) {
+        // Hack for now
+        if (typeof opts.date === 'string') {
+            opts.date = new Date(opts.date);
+        }
+
         Object.assign(this, opts);
     }
 }

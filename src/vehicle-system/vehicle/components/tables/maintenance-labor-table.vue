@@ -6,7 +6,7 @@
     <div>
         <!-- Header + Add Button -->
         <div class="pb-2" style="height: 40px;">
-            <h3 class="float-left mb-0 pb-0">Parts</h3>
+            <h3 class="float-left mb-0 pb-0">Labor</h3>
             <b-button
                 variant="success"
                 class="float-right"
@@ -19,32 +19,18 @@
         </div>
 
         <!-- Table -->
-        <b-table :fields="columns" :items="parts" class="mt-2 table-layout-fixed">
-            <template slot="quantity" slot-scope="data">
-                <div v-if="activeIndex == data.index">
-                    <input
-                        type="text"
-                        v-model.number="data.item.quantity"
-                        class="w-100 form-control"
-                        name="partQuantity"
-                        v-validate="'required|min_value:1|integer'"
-                    >
-
-                    <b-form-invalid-feedback>{{ errors.first('partQuantity') }}</b-form-invalid-feedback>
-                </div>
-                <div v-else>{{ data.item.quantity }}</div>
-            </template>
+        <b-table :fields="columns" :items="labor" class="mt-2 table-layout-fixed">
             <template slot="code" slot-scope="data">
                 <div v-if="activeIndex == data.index">
                     <input
                         type="text"
                         v-model="data.item.code"
                         class="w-100 form-control"
-                        name="partCode"
+                        name="laborCode"
                         v-validate="'required|max:32'"
                     >
 
-                    <b-form-invalid-feedback>{{ errors.first('partCode') }}</b-form-invalid-feedback>
+                    <b-form-invalid-feedback>{{ errors.first('laborCode') }}</b-form-invalid-feedback>
                 </div>
                 <div v-else class="text-truncate" :title="data.item.code">{{ data.item.code }}</div>
             </template>
@@ -54,11 +40,11 @@
                         type="text"
                         v-model.number="data.item.cost"
                         class="w-100 form-control"
-                        name="partCost"
+                        name="laborCost"
                         v-validate="'required|decimal:2'"
                     >
 
-                    <b-form-invalid-feedback>{{ errors.first('partCost') }}</b-form-invalid-feedback>
+                    <b-form-invalid-feedback>{{ errors.first('laborCost') }}</b-form-invalid-feedback>
                 </div>
                 <div v-else>{{ data.item.cost }}</div>
             </template>
@@ -87,32 +73,30 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { MaintenanceLine } from '../../entities/maintenance-line';
-import MaterialIcon from '@/core/components/material-icon.vue';
 import { MaintenanceLineType } from '../../entities/maintenance-line-type';
+import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
  * State of the table. Not exported since only this component will ever use it.
  */
-enum MaintenancePartsTableState {
+enum MaintenanceLaborTableState {
     Standby,
     Adding,
     Editing,
 }
 
 /**
- * Component for building parts list for a maintenance event. Allows users to add,
- * update, or delete part lines.
+ * Table for managing the labor lines of a maintenance record.
  */
 @Component({
-    name: 'maintenance-parts-table',
+    name: 'maintenance-labor-table',
     components: {
         MaterialIcon,
     },
 })
-export default class MaintenancePartsTable extends Vue {
+export default class MaintenanceLaborTable extends Vue {
     protected readonly columns = [
-        { key: 'quantity', label: 'Quantity', class: 'align-right w-20', thClass: 'required text-nowrap' },
-        { key: 'code', label: 'Description', class: 'align-left w-40', thClass: 'required text-nowrap' },
+        { key: 'code', label: 'Description', class: 'align-left w-60', thClass: 'required text-nowrap' },
         { key: 'cost', label: 'Cost', class: 'align-right w-20', thClass: 'required text-nowrap' },
         { key: 'actions', label: 'Actions', class: 'align-left w-20' },
     ];
@@ -121,9 +105,9 @@ export default class MaintenancePartsTable extends Vue {
     public value!: MaintenanceLine[];
 
     /**
-     * The part data being built
+     * The labor data being built
      */
-    protected parts: Partial<MaintenanceLine>[] = [];
+    protected labor: Partial<MaintenanceLine>[] = [];
 
     /**
      * The index of the active item being editted.
@@ -138,7 +122,7 @@ export default class MaintenancePartsTable extends Vue {
     /**
      * The current state of the table.
      */
-    protected state: MaintenancePartsTableState = MaintenancePartsTableState.Standby;
+    protected state: MaintenanceLaborTableState = MaintenanceLaborTableState.Standby;
 
     /**
      * When the control is created, set up the validator.
@@ -146,34 +130,27 @@ export default class MaintenancePartsTable extends Vue {
     public async created() {
         this.$validator.localize('en', {
             custom: {
-                partQuantity: {
-                    required: 'Part quantity is required.',
-                    integer: 'Part quantity must be an integer.',
-                    min_value: 'Part quantity must be greater than 0.',
+                laborCode: {
+                    required: 'Labor description is required.',
+                    max: 'Labor description must be 32 characters or less.',
                 },
-                partCode: {
-                    required: 'Part description is required.',
-                    max: 'Part description must be 32 characters or less.',
-                },
-                partCost: {
-                    required: 'Part cost is required.',
-                    decimal: 'Part cost must be 2 decimal places or less.',
+                laborCost: {
+                    required: 'Labor cost is required.',
+                    decimal: 'Labor cost must be 2 decimal places or less.',
                 },
             },
         });
 
-        this.parts = this.value;
+        this.labor = this.value;
     }
 
     /**
-     * User wants to add a new part to the list.
+     * User wants to add a new labor to the list.
      */
     protected async onAddClick() {
-        this.state = MaintenancePartsTableState.Adding;
-        const part = new MaintenanceLine({ type: MaintenanceLineType.Part });
-        this.parts.push(part);
-
-        this.activeIndex = this.parts.length - 1;
+        this.state = MaintenanceLaborTableState.Adding;
+        this.labor.push({ type: MaintenanceLineType.Labor, quantity: 1 });
+        this.activeIndex = this.labor.length - 1;
         this.$emit('focus');
     }
 
@@ -181,9 +158,9 @@ export default class MaintenancePartsTable extends Vue {
      * User wants to edit a row.
      */
     protected async onEditClick(index: number) {
-        this.state = MaintenancePartsTableState.Editing;
+        this.state = MaintenanceLaborTableState.Editing;
         this.activeIndex = index;
-        this.backup = Object.assign({}, this.parts[this.activeIndex]);
+        this.backup = Object.assign({}, this.labor[this.activeIndex]);
         this.$emit('focus');
     }
 
@@ -196,9 +173,9 @@ export default class MaintenancePartsTable extends Vue {
         }
 
         this.activeIndex = -1;
-        this.state = MaintenancePartsTableState.Standby;
+        this.state = MaintenanceLaborTableState.Standby;
         this.$emit('blur');
-        this.$emit('input', this.parts);
+        this.$emit('input', this.labor);
     }
 
     /**
@@ -206,29 +183,29 @@ export default class MaintenancePartsTable extends Vue {
      */
     protected async onEditCancel() {
         switch (this.state) {
-            case MaintenancePartsTableState.Adding:
-                this.parts.splice(this.parts.length - 1, 1);
+            case MaintenanceLaborTableState.Adding:
+                this.labor.splice(this.labor.length - 1, 1);
                 break;
 
-            case MaintenancePartsTableState.Editing:
-                this.parts[this.activeIndex].type = MaintenanceLineType.Part;
-                this.parts[this.activeIndex].quantity = this.backup.quantity;
-                this.parts[this.activeIndex].code = this.backup.code;
-                this.parts[this.activeIndex].cost = this.backup.cost;
+            case MaintenanceLaborTableState.Editing:
+                this.labor[this.activeIndex].type = MaintenanceLineType.Labor;
+                this.labor[this.activeIndex].quantity = this.backup.quantity;
+                this.labor[this.activeIndex].code = this.backup.code;
+                this.labor[this.activeIndex].cost = this.backup.cost;
                 break;
         }
 
         this.activeIndex = -1;
-        this.state = MaintenancePartsTableState.Standby;
+        this.state = MaintenanceLaborTableState.Standby;
         this.$emit('blur');
     }
 
     /**
-     * Delete a part from the list.
+     * Delete a labor item from the list.
      */
     protected async onDeleteClick(index: number) {
-        this.parts.splice(index, 1);
-        this.$emit('input', this.parts);
+        this.labor.splice(index, 1);
+        this.$emit('input', this.labor);
     }
 }
 </script>

@@ -10,11 +10,6 @@ export class MaintenanceLine {
     public id!: number;
 
     /**
-     * The line number
-     */
-    public lineNumber!: number;
-
-    /**
      * The type of line it is.
      */
     public type!: MaintenanceLineType;
