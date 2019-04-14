@@ -106,10 +106,10 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import AddFuelTripPopup from '@/vehicle-system/vehicle/components/popups/add-fuel-trip-popup.vue';
 import DeleteFuelTripConfirmationPopup from '@/vehicle-system/vehicle/components/popups/delete-fuel-trip-confirmation-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
-import StatCard from '@/vehicle-system/components/stat-card.vue';
+import StatCard from '@/vehicle-system/vehicle/components/cards/stat-card.vue';
 
 @Component({
-    name: 'vehicle-fuel-mileage-tab',
+    name: 'vehicle-fuel',
     components: {
         CardContainer,
         MaterialIcon,
@@ -118,7 +118,7 @@ import StatCard from '@/vehicle-system/components/stat-card.vue';
         StatCard,
     },
 })
-export default class VehicleFuelMileageTab extends VehicleMixin {
+export default class VehicleFuel extends VehicleMixin {
     /**
      * References to children components.
      */

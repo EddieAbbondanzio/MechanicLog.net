@@ -58,7 +58,7 @@
             slot="tool-bar"
             class="d-flex flex-row align-items-center justify-content-between w-100"
         >
-            <span class="text-muted">Garage > Vehicles > {{ vehicle.name }}</span>
+            <span class="text-muted">Vehicles > {{ vehicle.name }}</span>
         </div>
 
         <div class="container-fluid p-0 m-0 d-flex h-100 flex-column">
@@ -85,36 +85,21 @@
             <div class="row d-flex h-100">
                 <div class="col-12 h-100">
                     <div>
-                        <div
+                        <router-link
+                            :to="{ name: 'vehicle-information'}"
                             :class="{ 'vehicle-information-tab': activeTab != 1, 'vehicle-information-tab-active': activeTab == 1, 'p-2': true, 'mx-1': true, 'rounded': true  }"
-                            @click="onTabClick(1)"
-                        >Information</div>
-                        <div
+                        >Information</router-link>
+                        <router-link
+                            :to="{ name: 'vehicle-maintenance'}"
                             :class="{ 'vehicle-information-tab': activeTab != 2, 'vehicle-information-tab-active': activeTab == 2, 'p-2': true, 'mx-1': true, 'rounded': true  }"
-                            @click="onTabClick(2)"
-                        >Maintenance</div>
-                        <div
+                        >Maintenance</router-link>
+                        <router-link
+                            :to="{ name: 'vehicle-fuel'}"
                             :class="{ 'vehicle-information-tab': activeTab != 3, 'vehicle-information-tab-active': activeTab == 3, 'p-2': true, 'mx-1': true, 'rounded': true  }"
-                            @click="onTabClick(3)"
-                        >Fuel Economy</div>
+                        >Fuel Economy</router-link>
                     </div>
 
-                    <div class="py-3 d-flex flex-column flex-fill">
-                        <div v-if="activeTab == 1">
-                            <vehicle-information-tab
-                                :vehicle="vehicle"
-                                :purchaseInfo="purchaseInfo"
-                                @editDetails="onDetailsEdit"
-                                @editPurchaseInfo="onPurchaseInfoEdit"
-                            />
-                        </div>
-                        <div v-if="activeTab == 2">
-                            <vehicle-maintenance-tab :vehicle="vehicle"/>
-                        </div>
-                        <div v-if="activeTab == 3">
-                            <vehicle-fuel-mileage-tab :vehicle="vehicle"/>
-                        </div>
-                    </div>
+                    <router-view :vehicle="vehicle" class="py-4"></router-view>
                 </div>
             </div>
         </div>
@@ -132,9 +117,6 @@ import BackButton from '@/private/components/buttons/back-button.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
-import VehicleInformationTab from '@/vehicle-system/vehicle/components/tabs/vehicle-information-tab.vue';
-import VehicleMaintenanceTab from '@/vehicle-system/vehicle/components/tabs/vehicle-maintenance-tab.vue';
-import VehicleFuelMileageTab from '@/vehicle-system/vehicle/components/tabs/vehicle-fuel-mileage-tab.vue';
 import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { EventBus } from '@/core/event/event-bus';
@@ -143,20 +125,17 @@ import { EventBus } from '@/core/event/event-bus';
  * Maintenance history page.
  */
 @Component({
-    name: 'maintenance',
+    name: 'vehicle-master-page',
     components: {
         MaterialIcon,
         BackButton,
         CardContainer,
         ErrorPopup,
         PageContent,
-        VehicleInformationTab,
-        VehicleMaintenanceTab,
-        VehicleFuelMileageTab,
         LoadingBar,
     },
 })
-export default class VehicleInformation extends VehicleMixin {
+export default class VehicleMasterPage extends VehicleMixin {
     /**
      * Component references
      */
@@ -169,39 +148,49 @@ export default class VehicleInformation extends VehicleMixin {
      */
     public vehicle: Vehicle = null!;
 
-    public purchaseInfo: Nullable<VehiclePurchaseInfo> = null;
-
     public activeTab: number = 1;
 
     /**
      * On page load, pull in the vehicle.
      */
     public async created(): Promise<void> {
+        console.log('REEEE');
         EventBus.emit('loading');
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
         this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)) as Vehicle;
-        try {
-            this.purchaseInfo = await this.$vehiclePurchaseInfoStore.getVehiclePurchaseInfo(this.vehicle);
-        } catch {
-            this.purchaseInfo = new VehiclePurchaseInfo(this.vehicle.id);
+
+        // Hack for now.
+        switch (this.$route.name) {
+            case 'vehicle-information':
+                this.activeTab = 1;
+                break;
+            case 'vehicle-maintenance':
+                this.activeTab = 2;
+                break;
+            case 'vehicle-fuel':
+                this.activeTab = 3;
+                break;
         }
 
         EventBus.emit('loaded');
         this.$forceUpdate();
+
+        this.$watch('$route', this.onPageChange);
     }
 
-    public async onTabClick(index: number) {
-        this.activeTab = index;
-    }
-
-    public async onDetailsEdit(vehicle: Vehicle) {
-        this.vehicle = vehicle;
-        this.$forceUpdate();
-    }
-
-    public async onPurchaseInfoEdit(purchaseInfo: VehiclePurchaseInfo) {
-        this.purchaseInfo = purchaseInfo;
-        this.$forceUpdate();
+    public async onPageChange(index: number) {
+        // Hack for now.
+        switch (this.$route.name) {
+            case 'vehicle-information':
+                this.activeTab = 1;
+                break;
+            case 'vehicle-maintenance':
+                this.activeTab = 2;
+                break;
+            case 'vehicle-fuel':
+                this.activeTab = 3;
+                break;
+        }
     }
 }
 </script>

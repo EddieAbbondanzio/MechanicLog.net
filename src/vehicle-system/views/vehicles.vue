@@ -12,7 +12,7 @@
             class="d-flex flex-row align-items-center justify-content-between w-100"
         >
             <div class="text-muted">
-                <span>Garage > Vehicles</span>
+                <span>Vehicles</span>
             </div>
 
             <div>
@@ -44,7 +44,7 @@
                 :busy="isLoading"
                 hover
                 @row-clicked="onRowClick"
-                style="cursor: pointer;"
+                tbodyTrClass="cursor-pointer"
             >
                 <template slot="name" slot-scope="row">{{ row.value }}</template>
                 <template slot="year" slot-scope="row">{{ row.value }}</template>
@@ -146,8 +146,10 @@ export default class Vehicles extends VehicleMixin {
      */
     public async mounted(): Promise<void> {
         EventBus.emit('loading');
+        this.isLoading = true;
         this.vehicles = await this.$vehicleStore.getVehicles();
         this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;
+        this.isLoading = false;
         EventBus.emit('loaded');
     }
 

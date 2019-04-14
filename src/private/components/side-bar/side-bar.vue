@@ -40,7 +40,7 @@
         </div>
 
         <div class="border-bottom my-auto h-100 bg-light py-4 bg-light">
-            <router-link class="w-100" to="/garage/vehicles">
+            <router-link class="w-100" to="/vehicles">
                 <b-button variant="light" class="shadow-none w-100 rounded-0 text-left">
                     <material-icon icon="directions_car" color="dark" class="align-middle pr-2"/>
                     <h4 class="pb-0 mb-0 d-inline-block align-middle">Vehicles</h4>

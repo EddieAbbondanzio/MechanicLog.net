@@ -34,7 +34,14 @@
                     </b-btn>
                 </div>
 
-                <b-table :fields="columnNames" :items="maintenance" :busy="isBusy" hover>
+                <b-table
+                    :fields="columnNames"
+                    :items="maintenance"
+                    :busy="isBusy"
+                    hover
+                    tbodyTrClass="cursor-pointer"
+                    @row-clicked="onRowClick"
+                >
                     <template slot="odometer" slot-scope="row">{{ row.item.odometer | number }}</template>
                     <template slot="date" slot-scope="row">{{ row.item.date | date }}</template>
                     <template slot="description" slot-scope="row">{{ row.item.description }}</template>
@@ -74,14 +81,14 @@ import VehicleDetailsCard from '@/vehicle-system/vehicle/components/cards/vehicl
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
 import AddMaintenancePopup from '@/vehicle-system/vehicle/components/popups/add-maintenance-popup.vue';
-import { Maintenance } from '../../entities/maintenance';
 import DeleteMaintenancePopup from '@/vehicle-system/vehicle/components/popups/delete-maintenance-popup.vue';
+import { Maintenance } from '../vehicle/entities/maintenance';
 
 /**
  * Maintenance history page.
  */
 @Component({
-    name: 'maintenance',
+    name: 'vehicle-maintenance',
     components: {
         MaterialIcon,
         CardContainer,
@@ -91,7 +98,7 @@ import DeleteMaintenancePopup from '@/vehicle-system/vehicle/components/popups/d
         DeleteMaintenancePopup,
     },
 })
-export default class VehicleMaintenanceTab extends VehicleMixin {
+export default class VehicleMaintenance extends VehicleMixin {
     public readonly columnNames = [
         { key: 'odometer', label: 'Odometer', class: 'align-middle', sortable: true },
         { key: 'date', label: 'Date', class: 'align-middle', sortable: true },
@@ -150,6 +157,18 @@ export default class VehicleMaintenanceTab extends VehicleMixin {
         this.deleteId = -1;
         this.isBusy = false;
         EventBus.emit('loaded');
+    }
+
+    /**
+     * User wants to go to the information page of the maintenance.
+     */
+    public async onRowClick(item: any, index: number, event: any) {
+        // Allows the user to click the options button without trigger it.
+        if (this.deleteId !== -1) {
+            return;
+        }
+
+        this.$router.push({ name: 'maintenance', params: { maintenanceId: this.maintenance[index].id! } as any });
     }
 }
 </script>
