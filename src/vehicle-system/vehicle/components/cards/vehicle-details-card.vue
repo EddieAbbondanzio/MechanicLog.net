@@ -13,42 +13,42 @@
 </style>
 
 <template>
-    <card-container>
-        <a href="#" @click="onEditClick">
-            <material-icon
-                icon="edit"
-                color="muted"
-                size="md"
-                class="float-right vehicle-detail-edit p-1 rounded"
-            />
-        </a>
-
-        <h4>
-            Details
-            <br>
-            <small class="text-muted">{{ vehicle.odometer | number }} Miles</small>
-        </h4>
-
-        <div class="row">
-            <div class="col-2 text-muted">Year</div>
-            <div class="col-4">{{ vehicle.year }}</div>
-            <div class="col-2 text-muted">Color</div>
-            <div class="col-4">{{ vehicle.color }}</div>
+    <card-container style="position: relative;">
+        <div
+            class="bg-info d-flex align-items-center justify-content-center text-light"
+            style="position: absolute; left: 0px; top: 0px; bottom: 0px; width: 96px;"
+            title="Details"
+        >
+            <material-icon icon="info" color="light" size="lg"/>
         </div>
-        <div class="row">
-            <div class="col-2 text-muted">Make</div>
-            <div class="col-4">{{ vehicle.make.name }}</div>
-            <div class="col-2 text-muted">Plate</div>
-            <div class="col-4">{{ vehicle.licensePlate }}</div>
-        </div>
-        <div class="row">
-            <div class="col-2 text-muted">Model</div>
-            <div class="col-4">{{ vehicle.model.name }}</div>
-            <div class="col-2 text-muted">VIN</div>
-            <div class="col-4">{{ vehicle.vin }}</div>
-        </div>
+        <div style="margin-left: 96px;">
+            <h4>
+                Details
+                <br>
+                <small class="text-muted">{{ vehicle.odometer | number }} Miles</small>
+            </h4>
 
-        <edit-vehicle-popup :vehicle="vehicle" ref="editPopup" @edit="onEdit"/>
+            <div class="row">
+                <div class="col-2 text-muted">Year</div>
+                <div class="col-4">{{ vehicle.year }}</div>
+                <div class="col-2 text-muted">Color</div>
+                <div class="col-4">{{ vehicle.color }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 text-muted">Make</div>
+                <div class="col-4">{{ vehicle.make.name }}</div>
+                <div class="col-2 text-muted">Plate</div>
+                <div class="col-4">{{ vehicle.licensePlate }}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 text-muted">Model</div>
+                <div class="col-4">{{ vehicle.model.name }}</div>
+                <div class="col-2 text-muted">VIN</div>
+                <div class="col-4">{{ vehicle.vin }}</div>
+            </div>
+
+            <edit-vehicle-popup :vehicle="vehicle" ref="editPopup" @edit="onEdit"/>
+        </div>
     </card-container>
 </template>
 

@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <div class="d-flex flex-column" style="min-height: 100vh;">
+    <div>
         <title-bar/>
         <error-popup ref="errorPopup"/>
 

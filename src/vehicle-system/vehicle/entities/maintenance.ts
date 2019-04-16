@@ -1,6 +1,7 @@
 import { MaintenanceTag } from './maintenance-tag';
 import { MaintenanceLine } from './maintenance-line';
 import { MaintenanceCost } from './maintenance-cost';
+import { MaintenanceLineType } from './maintenance-line-type';
 
 export class Maintenance {
     /**
@@ -55,5 +56,17 @@ export class Maintenance {
         }
 
         Object.assign(this, opts);
+    }
+
+    public getParts(): MaintenanceLine[] {
+        return this.lines.filter((l) => l.type === MaintenanceLineType.Part);
+    }
+
+    public getLabor(): MaintenanceLine[] {
+        return this.lines.filter((l) => l.type === MaintenanceLineType.Labor);
+    }
+
+    public getOther(): MaintenanceLine[] {
+        return this.lines.filter((l) => l.type === MaintenanceLineType.Other);
     }
 }

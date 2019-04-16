@@ -68,6 +68,17 @@ export class MaintenanceStore extends StoreModule {
     }
 
     /**
+     * Get a specific maintenance record of a vehicle.
+     * @param vehicle The vehicle to get mainteanance for.
+     * @param id The ID of the maintenance record.
+     */
+    public async getMaintenanceForVehicleById(vehicle: Vehicle, id: number): Promise<Nullable<Maintenance>> {
+        const maintenance = await this.getMaintenanceForVehicle(vehicle);
+        const match = maintenance.find((m) => m.id === id);
+        return match != null ? match : null;
+    }
+
+    /**
      * Add a maintenance record to the vehicle.
      * @param vehicle The vehicle to add it to.
      * @param maintenance The maintenance record to add.

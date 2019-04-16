@@ -11,7 +11,7 @@
                 variant="success"
                 class="float-right"
                 @click="onAddClick"
-                v-if="activeIndex < 0"
+                v-if="activeIndex < 0 && !readonly"
             >
                 <material-icon icon="add" color="light" size="md" class="align-middle"/>
                 <span class="align-middle">Add</span>
@@ -60,7 +60,7 @@
 
                     <b-form-invalid-feedback>{{ errors.first('partCost') }}</b-form-invalid-feedback>
                 </div>
-                <div v-else>{{ data.item.cost }}</div>
+                <div v-else>{{ data.item.cost | currency }}</div>
             </template>
             <template slot="actions" slot-scope="data">
                 <div v-if="activeIndex < 0">
@@ -110,15 +110,20 @@ enum MaintenancePartsTableState {
     },
 })
 export default class MaintenancePartsTable extends Vue {
-    protected readonly columns = [
+    protected readonly columns: {}[] = [
         { key: 'quantity', label: 'Quantity', class: 'align-right w-20', thClass: 'required text-nowrap' },
         { key: 'code', label: 'Description', class: 'align-left w-40', thClass: 'required text-nowrap' },
         { key: 'cost', label: 'Cost', class: 'align-right w-20', thClass: 'required text-nowrap' },
-        { key: 'actions', label: 'Actions', class: 'align-left w-20' },
     ];
 
     @Prop()
     public value!: MaintenanceLine[];
+
+    /**
+     * If the table is in readonly mode.
+     */
+    @Prop()
+    public readonly!: boolean;
 
     /**
      * The part data being built
@@ -144,6 +149,10 @@ export default class MaintenancePartsTable extends Vue {
      * When the control is created, set up the validator.
      */
     public async created() {
+        if (!this.readonly) {
+            this.columns.push({ key: 'actions', label: 'Actions', class: 'align-left w-20' });
+        }
+
         this.$validator.localize('en', {
             custom: {
                 partQuantity: {

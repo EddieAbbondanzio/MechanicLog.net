@@ -16,42 +16,51 @@
     <card-container>
         <edit-vehicle-purchase-info-popup :purchaseInfo="purchaseInfo" ref="popup" @edit="onEdit"/>
 
-        <a href="#" @click="onEditClick">
-            <material-icon
-                icon="edit"
-                color="muted"
-                size="md"
-                class="float-right vehicle-purchase-info-edit p-1 rounded"
-            />
-        </a>
+        <div
+            class="bg-success d-flex align-items-center justify-content-center text-light"
+            style="position: absolute; left: 15px; top: 0px; bottom: 0px; width: 96px;"
+            title="Purchase Info"
+        >
+            <material-icon icon="attach_money" color="light" size="lg"/>
+        </div>
+        <div style="margin-left: 96px;">
+            <a href="#" @click="onEditClick">
+                <material-icon
+                    icon="edit"
+                    color="muted"
+                    size="md"
+                    class="float-right vehicle-purchase-info-edit p-1 rounded"
+                />
+            </a>
 
-        <h4>Purchase Info</h4>
+            <h4>Purchase Info</h4>
 
-        <div class="container-fluid mx-0 px-0">
-            <div class="row">
-                <div class="col-2 text-muted">Date</div>
-                <div
-                    class="col-5"
-                    v-if="purchaseInfo != null"
-                >{{ purchaseInfo.purchaseDate | date }}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 text-muted">Mileage</div>
-                <div
-                    class="col-5"
-                    v-if="purchaseInfo != null"
-                >{{ purchaseInfo.purchaseOdometer | number }}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 text-muted">Price</div>
-                <div
-                    class="col-5"
-                    v-if="purchaseInfo != null"
-                >{{ purchaseInfo.purchasePrice | currency }}</div>
-            </div>
-            <div class="row">
-                <div class="col-2 text-muted">Seller Name</div>
-                <div class="col-5" v-if="purchaseInfo != null">{{ purchaseInfo.sellerName }}</div>
+            <div class="container-fluid mx-0 px-0">
+                <div class="row">
+                    <div class="col-2 text-muted">Date</div>
+                    <div
+                        class="col-5"
+                        v-if="purchaseInfo != null"
+                    >{{ purchaseInfo.purchaseDate | date }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-muted">Mileage</div>
+                    <div
+                        class="col-5"
+                        v-if="purchaseInfo != null"
+                    >{{ purchaseInfo.purchaseOdometer | number }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-muted">Price</div>
+                    <div
+                        class="col-5"
+                        v-if="purchaseInfo != null"
+                    >{{ purchaseInfo.purchasePrice | currency }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-2 text-muted">Seller Name</div>
+                    <div class="col-5" v-if="purchaseInfo != null">{{ purchaseInfo.sellerName }}</div>
+                </div>
             </div>
         </div>
     </card-container>

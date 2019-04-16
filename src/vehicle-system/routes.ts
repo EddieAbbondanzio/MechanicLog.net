@@ -38,6 +38,14 @@ export const vehicleRoutes: RouteConfig = {
                     },
                 },
                 {
+                    path: 'maintenance/:maintenanceId',
+                    name: 'maintenance',
+                    component: () => import('@/vehicle-system/views/maintenance-information.vue'),
+                    meta: {
+                        authRequired: true,
+                    },
+                },
+                {
                     path: 'fuel',
                     name: 'vehicle-fuel',
                     component: () => import('@/vehicle-system/views/vehicle-fuel.vue'),
@@ -46,14 +54,6 @@ export const vehicleRoutes: RouteConfig = {
                     },
                 },
             ],
-        },
-        {
-            path: 'vehicles/:vehicleId/maintenance/:maintenanceId',
-            name: 'maintenance',
-            component: () => import('@/vehicle-system/views/maintenance.vue'),
-            meta: {
-                authRequired: true,
-            },
         },
     ],
 };

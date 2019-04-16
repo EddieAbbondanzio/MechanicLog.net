@@ -154,7 +154,6 @@ export default class VehicleMasterPage extends VehicleMixin {
      * On page load, pull in the vehicle.
      */
     public async created(): Promise<void> {
-        console.log('REEEE');
         EventBus.emit('loading');
         const vehicleId: number = Number.parseInt(this.$route.params.vehicleId, 10);
         this.vehicle = (await this.$vehicleStore.getVehicle(vehicleId)) as Vehicle;

@@ -114,6 +114,7 @@ export default class VehicleMaintenance extends VehicleMixin {
         errorPopup: ErrorPopup;
         deletePopup: DeleteMaintenancePopup;
     };
+
     /**
      * The vehicle being displayed
      */
