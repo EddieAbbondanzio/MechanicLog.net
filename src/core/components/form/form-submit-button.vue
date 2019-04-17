@@ -36,7 +36,7 @@ export default class FormSubmitButton extends Vue {
     /**
      * If the form has been submitted, and a loading icon needs to be shown.
      */
-    public isLoading!: boolean;
+    public isLoading: boolean = false;
 
     /**
      * Initialize the component.
@@ -54,6 +54,10 @@ export default class FormSubmitButton extends Vue {
 
         // Propogate the event up.
         this.$emit('click');
+    }
+
+    public trigger() {
+        this.isLoading = true;
     }
 
     /**

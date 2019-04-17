@@ -10,6 +10,7 @@
                 class="form-control"
                 id="email-textbox"
                 placeholder="Email@domain.com"
+                ref="emailTextbox"
                 name="email"
                 v-validate="'required|email'"
                 data-vv-validate-on="blur"
@@ -24,6 +25,7 @@
                 class="form-control mb-1"
                 id="password-textbox"
                 placeholder="********"
+                ref="passwordTextbox"
                 name="password"
                 v-validate="'required'"
                 data-vv-validate-on="blur"
@@ -35,9 +37,10 @@
         </div>
 
         <div class="form-group mt-5">
+            <loading-bar v-if="isLoading" class="mb-3"/>
             <form-submit-button text="Login" @click="onLoginButtonClicked" ref="submitButton"/>
 
-            <!-- <div class="form-check d-inline-block ml-3">
+            <div class="form-check d-inline-block ml-3">
                 <input
                     v-model="rememberMe"
                     type="checkbox"
@@ -45,7 +48,7 @@
                     id="remember-me-check-box"
                 >
                 <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
-            </div>-->
+            </div>
         </div>
     </form-container>
 </template>
@@ -61,6 +64,9 @@ import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { Nullable } from '@/core/common/monads/nullable';
 import AutoComplete from '@/core/components/inputs/auto-complete.vue';
 import { AuthenticationError } from '@/core/common/errors/authentication-error';
+import { EventBus } from '../../core/event/event-bus';
+import { CookieStorage } from '@/core/cookie-storage';
+import LoadingBar from '@/core/components/ux/loading-bar.vue';
 
 /**
  * Login form to allow a user to sign in.
@@ -72,34 +78,63 @@ import { AuthenticationError } from '@/core/common/errors/authentication-error';
         FormSubmitButton,
         AlertMessage,
         AutoComplete,
+        LoadingBar,
     },
 })
 export default class LoginForm extends UserMixin {
+    public $refs!: {
+        submitButton: FormSubmitButton;
+        emailTextbox: HTMLInputElement;
+        passwordTextbox: HTMLInputElement;
+    };
+
     /**
      * The email of the user.
      */
-    public email!: string;
+    public email: string = '';
 
     /**
      * The password of the user.
      */
-    public password!: string;
+    public password: string = '';
 
     /**
      * If the user wants to save their login for re-use
      * next time they visit the site.
      */
-    public rememberMe!: boolean;
+    public rememberMe: boolean = false;
+
+    public isLoading: boolean = false;
 
     public message: string = '';
 
     /**
      * Properties are assigned in created to prevent weird undefined errors.
      */
-    public created(): void {
+    public async mounted() {
         this.email = '';
         this.password = '';
         this.rememberMe = false;
+
+        if (CookieStorage.exists('auth')) {
+            this.isLoading = true;
+
+            try {
+                this.$refs.emailTextbox.disabled = true;
+                this.$refs.passwordTextbox.disabled = true;
+
+                this.$refs.submitButton.trigger();
+                const login = await this.$userStore.relogin(CookieStorage.get('auth'));
+                this.$emit('login', login);
+            } catch (error) {
+                CookieStorage.clear('auth');
+            } finally {
+                this.$refs.emailTextbox.disabled = false;
+                this.$refs.passwordTextbox.disabled = false;
+                this.$refs.submitButton.reset();
+                this.isLoading = false;
+            }
+        }
     }
 
     /**
@@ -107,15 +142,14 @@ export default class LoginForm extends UserMixin {
      * inputs first, then send off a request to the back end.
      */
     public async onLoginButtonClicked(event: any): Promise<void> {
-        const submitButton: FormSubmitButton = this.$refs.submitButton as FormSubmitButton;
-
         // Validate first.
         if (!(await this.$validator.validate())) {
-            submitButton.reset();
+            this.$refs.submitButton.reset();
             return;
         }
 
         try {
+            this.isLoading = true;
             const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
 
             // Propogate the event to the parent (page)
@@ -127,8 +161,9 @@ export default class LoginForm extends UserMixin {
                 this.message = 'An unknown error occured. Please try again later.';
             }
 
-            submitButton.reset();
+            this.$refs.submitButton.reset();
         }
+        this.isLoading = false;
     }
 }
 </script>

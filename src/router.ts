@@ -5,6 +5,7 @@ import { privateRoutes } from './private/routes';
 import { User } from './user-system/entities/user';
 import { userRoutes } from './user-system/routes';
 import { vehicleRoutes } from './vehicle-system/routes';
+import { CookieStorage } from './core/cookie-storage';
 
 Vue.use(Router);
 
@@ -16,7 +17,7 @@ const router: Router = new Router({
 });
 
 // Route guard for logged in users.
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     if (to.meta.disabled) {
         next({
             name: 'home',

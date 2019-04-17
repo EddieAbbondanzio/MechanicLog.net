@@ -1,6 +1,7 @@
 import { SubscriptionPlan } from './subscription-plan';
 import { SubscriptionStatus } from './subscription-status';
 import { DateUtils } from '@/core/common/utils/date-utils';
+import { Nullable } from '@/core/common/monads/nullable';
 
 export class Subscription {
     /**
@@ -27,7 +28,7 @@ export class Subscription {
      * The date the subscription expired on. If the subscription is
      * active then this will be null.
      */
-    public expirationDate!: Date;
+    public expirationDate!: Nullable<Date>;
 
     /**
      * The plan of the subscription.
@@ -42,7 +43,7 @@ export class Subscription {
      * @param expirationDate The date it expires on.
      * @param plan The plan of the subscription.
      */
-    constructor(status: SubscriptionStatus, creationDate: Date, renewalDate: Date, expirationDate: Date, plan: SubscriptionPlan) {
+    constructor(status: SubscriptionStatus, creationDate: Date, renewalDate: Date, expirationDate: Nullable<Date>, plan: SubscriptionPlan) {
         this.id = 0;
         this.status = status;
         this.creationDate = creationDate;
@@ -57,8 +58,13 @@ export class Subscription {
      */
     public static fromRaw(raw: any): Subscription {
         const plan = SubscriptionPlan.fromRaw(raw.plan);
-        console.log(raw);
-        const s = new Subscription(raw.status, DateUtils.parse(raw.creationDate), DateUtils.parse(raw.renewalDate), DateUtils.parse(raw.expirationDate), plan);
+        const s = new Subscription(
+            raw.status,
+            DateUtils.parse(raw.creationDate),
+            DateUtils.parse(raw.renewalDate),
+            raw.expirationDate != null ? DateUtils.parse(raw.expirationDate) : null,
+            plan
+        );
         s.id = raw.id;
 
         return s;

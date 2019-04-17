@@ -12,6 +12,8 @@ import { User } from '@/user-system/entities/user';
 import LoginForm from '@/user-system/components/login-form.vue';
 import popupContainer from '@/core/components/popup/popup-container.vue';
 import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
+import { UserMixin } from '../../user-system/user-mixin';
+import { CookieStorage } from '../../core/cookie-storage';
 
 /**
  * Login page to log in a user
@@ -22,7 +24,7 @@ import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
         popupContainer,
     },
 })
-export default class Login extends Vue {
+export default class Login extends UserMixin {
     /**
      * On a successful login, redirect to the dashboard.
      */

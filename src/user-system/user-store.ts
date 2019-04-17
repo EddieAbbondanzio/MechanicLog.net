@@ -13,6 +13,7 @@ import { ServiceType } from '@/core/services/service-type';
 import { AuthService } from './services/auth/auth-service';
 import { UserFeedback } from './entities/user-feedback';
 import { SubscriptionService } from '@/subscription-system/services/subscription-service';
+import { CookieStorage } from '@/core/cookie-storage';
 
 /**
  * Store for managing users.
@@ -59,6 +60,11 @@ export class UserStore extends StoreModule {
         User.CURRENT = user;
         user.subscription = await this._subscriptionService.getSubscription();
 
+        // Save their creds if they want
+        if (rememberMe) {
+            CookieStorage.set('auth', token, '90d');
+        }
+
         return user;
     }
 
@@ -83,6 +89,7 @@ export class UserStore extends StoreModule {
      */
     public async logout(): Promise<void> {
         User.CURRENT = null;
+        CookieStorage.clear('auth');
     }
 
     /**
