@@ -19,7 +19,7 @@ export default class SignUp extends Vue {
      * On a successful registration, redirect to the email confirmation page.
      */
     public onRegistered(e: any): void {
-        this.$router.push({ name: 'home' });
+        this.$router.push({ name: 'vehicles' });
     }
 }
 </script>
