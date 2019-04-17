@@ -17,4 +17,12 @@ export class DateUtils {
 
         return month + '/' + day + '/' + year;
     }
+
+    /**
+     * Parse a date from it's raw string format.
+     * @param dateStr The date string to parse.
+     */
+    public static parse(dateStr: string): Date {
+        return new Date(dateStr.replace(/-/g, '/').replace(/T.+/, ''));
+    }
 }

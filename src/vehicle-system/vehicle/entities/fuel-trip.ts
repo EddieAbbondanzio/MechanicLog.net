@@ -1,4 +1,5 @@
 import { Vehicle } from './vehicle';
+import { DateUtils } from '@/core/common/utils/date-utils';
 
 export class FuelTrip {
     /**
@@ -64,7 +65,7 @@ export class FuelTrip {
      * @param raw The raw incoming object.
      */
     public static fromRaw(raw: any): FuelTrip {
-        const trip = new FuelTrip(raw.vehicleId, new Date(raw.date), raw.pricePerUnit, raw.fuelUnits, raw.distanceTravelled);
+        const trip = new FuelTrip(raw.vehicleId, DateUtils.parse(raw.date), raw.pricePerUnit, raw.fuelUnits, raw.distanceTravelled);
         trip.id = raw.id;
         trip.fuelDistanceRatio = raw.fuelDistanceRatio;
         trip.cost = raw.cost;

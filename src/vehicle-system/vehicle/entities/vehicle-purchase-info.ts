@@ -1,4 +1,5 @@
 import { Nullable } from '@/core/common/monads/nullable';
+import { DateUtils } from '@/core/common/utils/date-utils';
 
 export class VehiclePurchaseInfo {
     /**
@@ -66,7 +67,7 @@ export class VehiclePurchaseInfo {
      * @param raw The raw object to parse.
      */
     public static fromRaw(raw: any): VehiclePurchaseInfo {
-        const vpi = new VehiclePurchaseInfo(raw.vehicleId, new Date(raw.purchaseDate), raw.purchaseOdometer, raw.purchasePrice, raw.sellerName || null);
+        const vpi = new VehiclePurchaseInfo(raw.vehicleId, DateUtils.parse(raw.purchaseDate), raw.purchaseOdometer, raw.purchasePrice, raw.sellerName || null);
         vpi.id = raw.id;
         return vpi;
     }

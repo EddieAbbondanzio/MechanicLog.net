@@ -1,5 +1,6 @@
 import { SubscriptionPlan } from './subscription-plan';
 import { SubscriptionStatus } from './subscription-status';
+import { DateUtils } from '@/core/common/utils/date-utils';
 
 export class Subscription {
     /**
@@ -56,7 +57,8 @@ export class Subscription {
      */
     public static fromRaw(raw: any): Subscription {
         const plan = SubscriptionPlan.fromRaw(raw.plan);
-        const s = new Subscription(raw.status, new Date(raw.creationDate), new Date(raw.renewalDate), new Date(raw.expirationDate), plan);
+        console.log(raw);
+        const s = new Subscription(raw.status, DateUtils.parse(raw.creationDate), DateUtils.parse(raw.renewalDate), DateUtils.parse(raw.expirationDate), plan);
         s.id = raw.id;
 
         return s;

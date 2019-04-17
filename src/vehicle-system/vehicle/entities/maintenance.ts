@@ -2,6 +2,7 @@ import { MaintenanceTag } from './maintenance-tag';
 import { MaintenanceLine } from './maintenance-line';
 import { MaintenanceCost } from './maintenance-cost';
 import { MaintenanceLineType } from './maintenance-line-type';
+import { DateUtils } from '@/core/common/utils/date-utils';
 
 export class Maintenance {
     /**
@@ -52,7 +53,7 @@ export class Maintenance {
     constructor(opts: Partial<Maintenance> = {}) {
         // Hack for now
         if (typeof opts.date === 'string') {
-            opts.date = new Date(opts.date);
+            opts.date = DateUtils.parse(opts.date);
         }
 
         Object.assign(this, opts);
