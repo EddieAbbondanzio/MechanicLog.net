@@ -21,6 +21,15 @@
 
                             <!-- Form -->
                             <form>
+                                <b-form-group>
+                                    <label for="email-textbox">Email</label>
+                                    <b-form-input
+                                        v-model="email"
+                                        :readonly="true"
+                                        title="The email we will respond to"
+                                    />
+                                </b-form-group>
+
                                 <!-- Type -->
                                 <b-form-group>
                                     <label for="type-dropdown" class="required">Type</label>
@@ -77,7 +86,8 @@
                         </div>
                         <div v-else>
                             <!-- Header -->
-                            <h2 class="text-center pb-5">Thanks for using MechanicLog!
+                            <h2 class="text-center pb-5">
+                                Thanks for using MechanicLog!
                                 <br>
                                 <small
                                     class="text-muted mt-2"
@@ -100,6 +110,7 @@ import { UserFeedback } from '@/user-system/entities/user-feedback';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
+import { User } from '@/user-system/entities/user';
 
 @Component({
     name: 'feedback',
@@ -119,6 +130,11 @@ export default class Feedback extends UserMixin {
     };
 
     /**
+     * The email of the user
+     */
+    public email: string = '';
+
+    /**
      * The type of error it is.
      */
     public type: UserFeedbackType = -1;
@@ -136,6 +152,8 @@ export default class Feedback extends UserMixin {
      * Prepare the component for use when generated.
      */
     public async created(): Promise<void> {
+        this.email = User.CURRENT!.email;
+
         this.$validator.localize('en', {
             custom: {
                 feedbackType: {
