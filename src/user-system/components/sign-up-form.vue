@@ -168,9 +168,29 @@ export default class SignUpForm extends UserMixin {
         // Custom error messages.
         this.$validator.localize('en', {
             custom: {
+                name: {
+                    required: 'Name is required.',
+                    max: 'Name must be 64 characters or less.',
+                },
+
+                username: {
+                    required: 'Username is required',
+                    alpha_num: 'Username must only contain letters and/or numbers.',
+                    min: 'Username must be 4 characters or more.',
+                    max: 'Username must be 32 characters or less.',
+                },
+                email: {
+                    required: 'Contact email is required.',
+                    email: 'Contact email must be a valid email address.',
+                    max: 'Contact email must be 64 characters or less.',
+                },
+                password: {
+                    required: 'Password is required.',
+                    min: 'Password must be 8 characters or more.',
+                },
                 confirmPassword: {
-                    required: 'The password confirmation field is required.',
-                    confirmed: 'Confirm password does not match password.',
+                    required: 'Password confirmation is required.',
+                    confirmed: 'Password confirmation does not match password.',
                 },
                 iAgree: {
                     required: 'The Terms of Use must be agreed to.',
