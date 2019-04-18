@@ -11,6 +11,8 @@
 
         <div class="d-flex flex-row align-self-stretch page-content">
             <side-bar class="d-flex flex-column align-self-stretch"/>
+
+            <!-- Content of the page -->
             <div class="bg-light align-self-stretch w-100" style="position:relative;">
                 <loading-bar v-if="isLoading()" style="position: absolute;"/>
                 <router-view></router-view>
