@@ -95,7 +95,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import SideBarButton from './side-bar-button.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { User } from '@/user-system/entities/user';
 
@@ -105,7 +104,6 @@ import { User } from '@/user-system/entities/user';
 @Component({
     name: 'side-bar',
     components: {
-        SideBarButton,
         MaterialIcon,
     },
 })

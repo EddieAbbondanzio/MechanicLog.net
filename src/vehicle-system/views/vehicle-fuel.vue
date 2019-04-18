@@ -106,7 +106,7 @@ import MaterialIcon from '@/core/components/material-icon.vue';
 import AddFuelTripPopup from '@/vehicle-system/vehicle/components/popups/add-fuel-trip-popup.vue';
 import DeleteFuelTripConfirmationPopup from '@/vehicle-system/vehicle/components/popups/delete-fuel-trip-confirmation-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
-import StatCard from '@/vehicle-system/vehicle/components/cards/stat-card.vue';
+import StatCard from '@/core/components/cards/stat-card.vue';
 
 @Component({
     name: 'vehicle-fuel',

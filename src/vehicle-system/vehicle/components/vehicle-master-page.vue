@@ -58,7 +58,11 @@
             slot="tool-bar"
             class="d-flex flex-row align-items-center justify-content-between w-100"
         >
-            <span class="text-muted">Vehicles > {{ vehicle.name }}</span>
+            <div>
+                <router-link :to="{ name: 'vehicles' }">Vehicles</router-link>
+                <span class="text-muted px-2">/</span>
+                <span class="text-muted">{{ vehicle.name }}</span>
+            </div>
         </div>
 
         <div class="container-fluid p-0 m-0 d-flex h-100 flex-column">
@@ -113,7 +117,6 @@ import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
-import BackButton from '@/private/components/buttons/back-button.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import PageContent from '@/private/components/layout/page-content.vue';
@@ -128,7 +131,6 @@ import { EventBus } from '@/core/event/event-bus';
     name: 'vehicle-master-page',
     components: {
         MaterialIcon,
-        BackButton,
         CardContainer,
         ErrorPopup,
         PageContent,

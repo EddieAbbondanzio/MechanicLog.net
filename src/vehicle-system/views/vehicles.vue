@@ -12,7 +12,7 @@
             class="d-flex flex-row align-items-center justify-content-between w-100"
         >
             <div class="text-muted">
-                <span>Vehicles</span>
+                <span class="text-muted">Vehicles</span>
             </div>
 
             <div>

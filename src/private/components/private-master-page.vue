@@ -23,8 +23,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import TitleBar from '../components/title-bar/title-bar.vue';
-import SideBar from '../components/side-bar/side-bar.vue';
+import TitleBar from '../components/layout/title-bar.vue';
+import SideBar from '@/private/components/layout/side-bar.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';

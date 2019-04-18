@@ -16,7 +16,7 @@ export const vehicleRoutes: RouteConfig = {
         {
             path: 'vehicles/:vehicleId/',
             name: 'vehicle',
-            component: () => import('@/vehicle-system/components/vehicle-master-page.vue'),
+            component: () => import('@/vehicle-system/vehicle/components/vehicle-master-page.vue'),
             meta: {
                 authRequired: true,
             },
