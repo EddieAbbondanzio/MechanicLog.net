@@ -1,18 +1,13 @@
 <style scoped>
-.row {
+.footer {
     background-color: #232323;
-    position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    height: 128px;
 }
 </style>
 
 <template>
-    <div class="row" style="height: 128px;">
-        <div class="col-12 text-center" style="line-height: 128px;">
-            <span class="text-light">© {{ year }} MechanicLog</span>
-        </div>
+    <div class="footer d-flex flex-column align-items-center justify-content-center">
+        <h5 class="text-light">© {{ year }} MechanicLog</h5>
     </div>
 </template>
 

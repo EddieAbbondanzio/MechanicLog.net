@@ -4,12 +4,14 @@
 }
 </style>
 
-
 <template>
-    <div class="mx-0 px-0" style="position: relative; min-height: 100vh;">
+    <div class="d-flex flex-column align-self-stretch">
         <public-title-bar/>
 
-        <router-view></router-view>
+        <!-- Actual Page Content -->
+        <div class="py-5">
+            <router-view></router-view>
+        </div>
 
         <public-page-footer/>
     </div>
