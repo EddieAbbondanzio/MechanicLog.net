@@ -1,24 +1,29 @@
+<style lang="scss" scoped>
+.icon {
+    height: 48px;
+}
+</style>
+
+
 <template>
     <div class="mx-0 px-0" style="position: relative; min-height: 100vh;">
-        <nav-bar />
+        <public-title-bar/>
 
         <router-view></router-view>
 
-        <!-- Egads thats gross. We need this to prevent overlap behind the footer -->
-        <div style="height: 128px;">&nbsp;</div>
-        <page-footer/>
+        <public-page-footer/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import NavBar from './nav-bar.vue';
-import PageFooter from './page-footer.vue';
+import PublicTitleBar from '@/public/components/layout/public-title-bar.vue';
+import PublicPageFooter from '@/public/components/layout/public-page-footer.vue';
 
 @Component({
     components: {
-        NavBar,
-        PageFooter,
+        PublicPageFooter,
+        PublicTitleBar,
     },
 })
 export default class PublicMasterPage extends Vue {}

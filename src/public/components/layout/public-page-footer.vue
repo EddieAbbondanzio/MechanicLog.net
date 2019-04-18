@@ -9,11 +9,11 @@
 </style>
 
 <template>
-  <div class="row" style="height: 128px;">
-    <div class="col-12 text-center" style="line-height: 128px;">
-      <span class="text-light">© {{ year }} MechanicLog</span>
+    <div class="row" style="height: 128px;">
+        <div class="col-12 text-center" style="line-height: 128px;">
+            <span class="text-light">© {{ year }} MechanicLog</span>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -23,9 +23,9 @@ import { Component, Vue } from 'vue-property-decorator';
  * Footer to put at the bottom of the page.
  */
 @Component({
-  name: 'page-foot',
+    name: 'page-foot',
 })
-export default class PageFooter extends Vue {
-  public year: number = new Date().getFullYear();
+export default class PublicPageFooter extends Vue {
+    public year: number = new Date().getFullYear();
 }
 </script>
