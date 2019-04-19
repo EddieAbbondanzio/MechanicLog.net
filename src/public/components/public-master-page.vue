@@ -9,9 +9,7 @@
         <public-title-bar/>
 
         <!-- Actual Page Content -->
-        <div class="py-5">
-            <router-view></router-view>
-        </div>
+        <router-view></router-view>
 
         <public-page-footer/>
     </div>

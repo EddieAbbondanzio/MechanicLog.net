@@ -1,25 +1,46 @@
 <style lang="scss" scoped>
+@import './public/bootstrap/_functions.scss';
+@import './public/bootstrap/_variables.scss';
+
 .icon {
     height: 48px;
     display: inline-block;
 }
+
+.buttons a {
+    color: lighten($gray-300, 2.5);
+    text-decoration: none !important;
+    font-weight: bold;
+    margin-left: map-get($map: $spacers, $key: 3);
+    margin-right: map-get($map: $spacers, $key: 3);
+
+    &:hover {
+        color: $gray-100;
+    }
+
+    &:active {
+        color: $white;
+    }
+}
 </style>
 
 <template>
-    <div class="px-4 py-2 bg-primary text-center clearfix position-relative" style="z-index: 100;">
-        <div class="d-inline-block mx-auto nav-logo float-left">
+    <div class="px-4 py-3 bg-primary d-flex flex-row justify-content-between align-items-center">
+        <div>
             <router-link to="/">
                 <img src="@/assets/logo.png" class="icon">
                 <h3 class="font-weight-bold text-white d-inline-block">MechanicLog</h3>
             </router-link>
         </div>
 
-        <div class="d-inline-block nav-buttons float-right">
-            <a
-                href="http://blog.mechaniclog.net"
-                class="text-light mx-2 nav-link d-inline-block"
-            >Blog</a>
+        <div class="buttons">
+            <a href="#">Features</a>
+            <a href="#">Pricing</a>
+            <a href="http://blog.mechaniclog.net">Blog</a>
+            <a href="#">Contact</a>
+        </div>
 
+        <div>
             <router-link to="/login">
                 <b-btn variant="outline-light" class="rounded mr-2" @click="$emit('login')">Login</b-btn>
             </router-link>
