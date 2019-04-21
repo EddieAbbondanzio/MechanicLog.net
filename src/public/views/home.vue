@@ -13,7 +13,7 @@
 
                     <div class="py-4">
                         <router-link to="/register">
-                            <b-btn variant="success" size="lg" class="mr-2">Get Started</b-btn>
+                            <b-btn variant="warning" size="lg" class="mr-2">Get Started</b-btn>
                         </router-link>
                         <b-btn variant="outline-light" size="lg" class="ml-2">
                             Learn More

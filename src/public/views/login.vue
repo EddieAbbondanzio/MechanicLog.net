@@ -1,19 +1,14 @@
 
 <template>
-    <div>
+    <div class="h-100 d-flex flex-column align-items-center justify-content-center bg-light">
         <login-form @login="onLogin" value="test"/>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { AuthService } from '@/user-system/services/auth/auth-service';
-import { User } from '@/user-system/entities/user';
 import LoginForm from '@/user-system/components/login-form.vue';
-import popupContainer from '@/core/components/popup/popup-container.vue';
-import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
 import { UserMixin } from '../../user-system/user-mixin';
-import { CookieStorage } from '../../core/cookie-storage';
 
 /**
  * Login page to log in a user
@@ -21,7 +16,6 @@ import { CookieStorage } from '../../core/cookie-storage';
 @Component({
     components: {
         LoginForm,
-        popupContainer,
     },
 })
 export default class Login extends UserMixin {

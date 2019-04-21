@@ -1,11 +1,15 @@
 <style lang="scss" scoped>
-.icon {
-    height: 48px;
+.page-container {
+    //Account for the footer
+    padding-bottom: 128px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 </style>
 
 <template>
-    <div class="d-flex flex-column align-self-stretch">
+    <div class="page-container bg-light">
         <public-title-bar/>
 
         <!-- Actual Page Content -->

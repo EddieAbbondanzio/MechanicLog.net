@@ -1,9 +1,23 @@
 @import './public/bootstrap/_functions';
 @import './public/bootstrap/_variables';
 
+html {
+    min-height: 100%;
+    display: flex;
+
+    & > body {
+        flex: 1;
+    }
+}
+
 body {
-    overflow-x: hidden;
+    // min-height: 100vh;
+    display: flex;
     font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif';
+
+    & > div {
+        flex: 1;
+    }
 }
 
 .icon-sm {

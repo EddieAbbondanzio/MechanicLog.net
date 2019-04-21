@@ -1,14 +1,18 @@
 <style scoped>
-.footer {
+footer {
     background-color: #232323;
     height: 128px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 }
 </style>
 
 <template>
-    <div class="footer d-flex flex-column align-items-center justify-content-center">
+    <footer class="d-flex flex-column align-items-center justify-content-center">
         <h5 class="text-light">© {{ year }} MechanicLog</h5>
-    </div>
+    </footer>
 </template>
 
 <script lang="ts">

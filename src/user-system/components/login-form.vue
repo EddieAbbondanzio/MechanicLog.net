@@ -1,5 +1,7 @@
 <template>
-    <form-container title="Login">
+    <card-container class="h-50 w-50">
+        <!-- <div style="width: 50%; display: inline-block"> -->
+        <!-- <form-container title="Login"> -->
         <b-alert variant="danger" :show="message.length > 0">{{ message }}</b-alert>
 
         <div class="form-group">
@@ -50,7 +52,9 @@
                 <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
             </div>
         </div>
-    </form-container>
+        <!-- </div> -->
+    </card-container>
+    <!-- </form-container> -->
 </template>
 
 <script lang="ts">
@@ -59,7 +63,6 @@ import { Component } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/user-mixin';
 import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
-import FormContainer from '@/core/components/form/form-container.vue';
 import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { Nullable } from '@/core/common/monads/nullable';
 import AutoComplete from '@/core/components/inputs/auto-complete.vue';
@@ -67,6 +70,7 @@ import { AuthenticationError } from '@/core/common/errors/authentication-error';
 import { EventBus } from '../../core/event/event-bus';
 import { CookieStorage } from '@/core/cookie-storage';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
+import CardContainer from '@/core/components/cards/card-container.vue';
 
 /**
  * Login form to allow a user to sign in.
@@ -74,7 +78,7 @@ import LoadingBar from '@/core/components/ux/loading-bar.vue';
 @Component({
     name: 'login-form',
     components: {
-        FormContainer,
+        CardContainer,
         FormSubmitButton,
         AlertMessage,
         AutoComplete,
