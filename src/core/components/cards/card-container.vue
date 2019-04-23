@@ -1,6 +1,10 @@
 <template>
-    <div class="border bg-white p-3 shadow">
-        <slot></slot>
+    <div class="border bg-white shadow">
+        <slot name="header"></slot>
+
+        <div class="p-3">
+            <slot></slot>
+        </div>
     </div>
 </template>
 

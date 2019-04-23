@@ -1,60 +1,71 @@
 <template>
-    <card-container class="h-50 w-50">
-        <!-- <div style="width: 50%; display: inline-block"> -->
-        <!-- <form-container title="Login"> -->
-        <b-alert variant="danger" :show="message.length > 0">{{ message }}</b-alert>
-
-        <div class="form-group">
-            <label for="email-textbox">Email</label>
-            <input
-                v-model="email"
-                type="email"
-                class="form-control"
-                id="email-textbox"
-                placeholder="Email@domain.com"
-                ref="emailTextbox"
-                name="email"
-                v-validate="'required|email'"
-                data-vv-validate-on="blur"
-            >
-            <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
-        </div>
-        <div class="form-group">
-            <label for="email-textbox">Password</label>
-            <input
-                v-model="password"
-                type="password"
-                class="form-control mb-1"
-                id="password-textbox"
-                placeholder="********"
-                ref="passwordTextbox"
-                name="password"
-                v-validate="'required'"
-                data-vv-validate-on="blur"
-                @keyup.enter="onLoginButtonClicked"
-            >
-            <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
-
-            <router-link class="info-link" to="/forgot" tabindex="-1">I forgot my password</router-link>
+    <card-container>
+        <!-- Header -->
+        <div class="p-3 pt-5 text-center" slot="header">
+            <material-icon
+                icon="person"
+                color="secondary"
+                size="xl"
+                class="border rounded-circle p-3 bg-light"
+            />
+            <h2 class="pt-2">Login</h2>
         </div>
 
-        <div class="form-group mt-5">
-            <loading-bar v-if="isLoading" class="mb-3"/>
-            <form-submit-button text="Login" @click="onLoginButtonClicked" ref="submitButton"/>
+        <!-- Content -->
+        <div class="p-3">
+            <b-alert variant="danger" :show="message.length > 0">{{ message }}</b-alert>
 
-            <div class="form-check d-inline-block ml-3">
+            <div class="form-group">
+                <label for="email-textbox">Email</label>
                 <input
-                    v-model="rememberMe"
-                    type="checkbox"
-                    class="form-check-input"
-                    id="remember-me-check-box"
+                    v-model="email"
+                    type="email"
+                    class="form-control"
+                    id="email-textbox"
+                    placeholder="Email@domain.com"
+                    ref="emailTextbox"
+                    :disabled="isLoading"
+                    name="email"
+                    v-validate="'required|email'"
+                    data-vv-validate-on="blur"
                 >
-                <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
+                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+            </div>
+            <div class="form-group">
+                <label for="email-textbox">Password</label>
+                <input
+                    v-model="password"
+                    type="password"
+                    class="form-control mb-1"
+                    id="password-textbox"
+                    placeholder="********"
+                    ref="passwordTextbox"
+                    :disabled="isLoading"
+                    name="password"
+                    v-validate="'required'"
+                    data-vv-validate-on="blur"
+                    @keyup.enter="onLoginButtonClicked"
+                >
+                <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
+
+                <router-link class="info-link" to="/forgot" tabindex="-1">I forgot my password</router-link>
+            </div>
+
+            <div class="form-group pt-3">
+                <div class="form-check mb-3">
+                    <input
+                        v-model="rememberMe"
+                        type="checkbox"
+                        class="form-check-input"
+                        id="remember-me-check-box"
+                    >
+                    <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
+                </div>
+
+                <form-submit-button text="Login" @click="onLoginButtonClicked" ref="submitButton"/>
             </div>
         </div>
-        <!-- </div> -->
     </card-container>
-    <!-- </form-container> -->
 </template>
 
 <script lang="ts">
@@ -71,6 +82,7 @@ import { EventBus } from '../../core/event/event-bus';
 import { CookieStorage } from '@/core/cookie-storage';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
  * Login form to allow a user to sign in.
@@ -83,6 +95,7 @@ import CardContainer from '@/core/components/cards/card-container.vue';
         AlertMessage,
         AutoComplete,
         LoadingBar,
+        MaterialIcon,
     },
 })
 export default class LoginForm extends UserMixin {
@@ -121,6 +134,7 @@ export default class LoginForm extends UserMixin {
         this.rememberMe = false;
 
         if (CookieStorage.exists('auth')) {
+            EventBus.emit('loading');
             this.isLoading = true;
 
             try {
@@ -137,6 +151,7 @@ export default class LoginForm extends UserMixin {
                 this.$refs.passwordTextbox.disabled = false;
                 this.$refs.submitButton.reset();
                 this.isLoading = false;
+                EventBus.emit('loaded');
             }
         }
     }
@@ -153,6 +168,7 @@ export default class LoginForm extends UserMixin {
         }
 
         try {
+            EventBus.emit('loading');
             this.isLoading = true;
             const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
 
@@ -168,6 +184,7 @@ export default class LoginForm extends UserMixin {
             this.$refs.submitButton.reset();
         }
         this.isLoading = false;
+        EventBus.emit('loaded');
     }
 }
 </script>

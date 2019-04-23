@@ -1,8 +1,12 @@
 
 <template>
-    <div class="h-100 d-flex flex-column align-items-center justify-content-center bg-light">
-        <login-form @login="onLogin" value="test"/>
-    </div>
+    <b-container fluid class="h-100 d-flex flex-column justify-content-center">
+        <b-row align-h="center">
+            <b-col sm="8" md="6" lg="4">
+                <login-form @login="onLogin" value="test"/>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script lang="ts">
