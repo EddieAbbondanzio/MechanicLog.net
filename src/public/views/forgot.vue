@@ -22,7 +22,7 @@ export default class Forgot extends Vue {
      * Event handler for when the form is submitted.
      */
     public async onFormSubmit(email: string): Promise<void> {
-        this.$router.push({ name: 'reset' });
+        this.$router.push({ name: 'reset', params: { email } });
     }
 }
 </script>

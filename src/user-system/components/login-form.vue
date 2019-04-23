@@ -16,7 +16,7 @@
             <b-alert variant="danger" :show="message.length > 0">{{ message }}</b-alert>
 
             <div class="form-group">
-                <label for="email-textbox">Email</label>
+                <label for="email-textbox" class="required">Email</label>
                 <input
                     v-model="email"
                     type="email"
@@ -25,14 +25,14 @@
                     placeholder="Email@domain.com"
                     ref="emailTextbox"
                     :disabled="isLoading"
-                    name="email"
+                    name="loginEmail"
                     v-validate="'required|email'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('loginEmail') }}</b-form-invalid-feedback>
             </div>
             <div class="form-group">
-                <label for="email-textbox">Password</label>
+                <label for="email-textbox" class="required">Password</label>
                 <input
                     v-model="password"
                     type="password"
@@ -41,12 +41,12 @@
                     placeholder="********"
                     ref="passwordTextbox"
                     :disabled="isLoading"
-                    name="password"
+                    name="loginPassword"
                     v-validate="'required'"
                     data-vv-validate-on="blur"
                     @keyup.enter="onLoginButtonClicked"
                 >
-                <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('loginPassword') }}</b-form-invalid-feedback>
 
                 <router-link class="info-link" to="/forgot" tabindex="-1">I forgot my password</router-link>
             </div>
@@ -127,6 +127,24 @@ export default class LoginForm extends UserMixin {
     public isLoading: boolean = false;
 
     public message: string = '';
+
+    /**
+     * Initialize the error messages of the validator.
+     */
+    public created() {
+        // Custom error messages.
+        this.$validator.localize('en', {
+            custom: {
+                loginEmail: {
+                    email: 'Email must be a valid email address.',
+                    required: 'Email address is required.',
+                },
+                loginPassword: {
+                    required: 'Password is required.',
+                },
+            },
+        });
+    }
 
     /**
      * Properties are assigned in created to prevent weird undefined errors.
