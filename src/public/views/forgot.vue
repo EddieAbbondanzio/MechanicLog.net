@@ -1,5 +1,11 @@
 <template>
-    <forgot-password-form @submit="onFormSubmit"/>
+    <b-container fluid class="h-100 d-flex flex-column py-5">
+        <b-row align-h="center">
+            <b-col sm="8" md="6" lg="4">
+                <forgot-password-form @submit="onFormSubmit"/>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script lang="ts">

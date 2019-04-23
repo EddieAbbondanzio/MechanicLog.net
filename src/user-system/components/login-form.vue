@@ -59,10 +59,17 @@
                         class="form-check-input"
                         id="remember-me-check-box"
                     >
-                    <label class="form-check-label" for="remember-me-check-box">Remember Me</label>
+                    <label
+                        class="form-check-label pl-1 align-middle"
+                        for="remember-me-check-box"
+                    >Remember Me</label>
                 </div>
 
-                <form-submit-button text="Login" @click="onLoginButtonClicked" ref="submitButton"/>
+                <b-btn
+                    @click="onLoginButtonClicked"
+                    variant="primary"
+                    :disabled="isLoading"
+                >{{ isLoading ? 'Logging in' : 'Login'}}</b-btn>
             </div>
         </div>
     </card-container>
@@ -74,13 +81,11 @@ import { Component } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/user-mixin';
 import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
-import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { Nullable } from '@/core/common/monads/nullable';
 import AutoComplete from '@/core/components/inputs/auto-complete.vue';
 import { AuthenticationError } from '@/core/common/errors/authentication-error';
 import { EventBus } from '../../core/event/event-bus';
 import { CookieStorage } from '@/core/cookie-storage';
-import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 
@@ -91,16 +96,14 @@ import MaterialIcon from '@/core/components/material-icon.vue';
     name: 'login-form',
     components: {
         CardContainer,
-        FormSubmitButton,
         AlertMessage,
         AutoComplete,
-        LoadingBar,
         MaterialIcon,
     },
 })
 export default class LoginForm extends UserMixin {
     public $refs!: {
-        submitButton: FormSubmitButton;
+        submitButton: HTMLButtonElement;
         emailTextbox: HTMLInputElement;
         passwordTextbox: HTMLInputElement;
     };
@@ -141,7 +144,6 @@ export default class LoginForm extends UserMixin {
                 this.$refs.emailTextbox.disabled = true;
                 this.$refs.passwordTextbox.disabled = true;
 
-                this.$refs.submitButton.trigger();
                 const login = await this.$userStore.relogin(CookieStorage.get('auth'));
                 this.$emit('login', login);
             } catch (error) {
@@ -149,7 +151,6 @@ export default class LoginForm extends UserMixin {
             } finally {
                 this.$refs.emailTextbox.disabled = false;
                 this.$refs.passwordTextbox.disabled = false;
-                this.$refs.submitButton.reset();
                 this.isLoading = false;
                 EventBus.emit('loaded');
             }
@@ -163,7 +164,6 @@ export default class LoginForm extends UserMixin {
     public async onLoginButtonClicked(event: any): Promise<void> {
         // Validate first.
         if (!(await this.$validator.validate())) {
-            this.$refs.submitButton.reset();
             return;
         }
 
@@ -180,8 +180,6 @@ export default class LoginForm extends UserMixin {
             } else {
                 this.message = 'An unknown error occured. Please try again later.';
             }
-
-            this.$refs.submitButton.reset();
         }
         this.isLoading = false;
         EventBus.emit('loaded');

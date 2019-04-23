@@ -1,113 +1,134 @@
 <template>
-    <form-container
-        title="Sign Up"
-        description="Sign up now to start your free 60 day trial with MechanicLog. No commitment or financial details needed."
-    >
+    <card-container>
+        <!-- Header -->
+        <div class="p-3 pt-5 text-center" slot="header">
+            <material-icon
+                icon="person_add"
+                color="secondary"
+                size="xl"
+                class="border rounded-circle p-3 bg-light"
+            />
+            <h2 class="pt-2">Sign Up</h2>
+        </div>
+
         <b-alert variant="success" :show="successMessage.length > 0">{{ successMessage }}</b-alert>
         <b-alert variant="danger" :show="errorMessage.length > 0">{{ errorMessage }}</b-alert>
 
-        <!-- Real Name -->
-        <div class="form-group">
-            <label class="required" for="name-textbox">Full Name</label>
-            <input
-                v-model="name"
-                type="text"
-                class="form-control"
-                id="name-textbox"
-                placeholder="John Smith"
-                name="name"
-                v-validate="'required|max:64'"
-                data-vv-validate-on="blur"
-            >
-            <b-form-invalid-feedback>{{ errors.first('name') }}</b-form-invalid-feedback>
-        </div>
-
-        <b-form-group>
-            <label class="required" for="username-textbox">Username</label>
-            <input
-                type="text"
-                class="form-control"
-                v-model="username"
-                id="username-textbox"
-                placeholder="HondaFan2000"
-                name="username"
-                v-validate="'required|alpha_num|min:4|max:32'"
-                data-vv-validate-on="blur"
-            >
-            <b-form-invalid-feedback>{{ errors.first('username') }}</b-form-invalid-feedback>
-        </b-form-group>
-
-        <!-- Email Address -->
-        <div class="form-group">
-            <label class="required" for="email-textbox">Email</label>
-            <input
-                v-model="email"
-                type="email"
-                class="form-control"
-                id="email-textbox"
-                placeholder="Email@domain.com"
-                name="email"
-                v-validate="'required|email|max:64'"
-                data-vv-validate-on="blur"
-            >
-            <small class="form-text text-muted">We promise to never share your email with anyone.</small>
-            <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
-        </div>
-        <div class="form-group">
-            <label class="required" for="password-textbox">Password</label>
-            <input
-                v-model="password"
-                ref="password"
-                type="password"
-                class="form-control mb-1"
-                id="password-textbox"
-                placeholder="********"
-                name="password"
-                v-validate="'required|min:8'"
-                data-vv-validate-on="blur"
-            >
-            <small class="form-text text-muted">Passwords must be at least 8 characters long.</small>
-            <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
-        </div>
-
-        <div class="form-group">
-            <label class="required" for="password-confirm-textbox">Confirm Password</label>
-            <input
-                v-model="confirmPassword"
-                type="password"
-                class="form-control mb-1"
-                id="password-confirm-textbox"
-                placeholder="********"
-                name="confirmPassword"
-                v-validate="'required|confirmed:password'"
-                data-vv-validate-on="blur"
-            >
-            <b-form-invalid-feedback>{{ errors.first('confirmPassword') }}</b-form-invalid-feedback>
-        </div>
-
-        <div class="pt-5">
-            <!-- Sign Up Button -->
-            <form-submit-button text="Sign Up" @click="onSignUpButtonClicked" ref="button"/>
-
-            <!-- I Agree checkbox -->
-            <div class="form-group form-check d-inline-block ml-3">
+        <div class="p-3">
+            <!-- Real Name -->
+            <div class="form-group">
+                <label class="required" for="name-textbox">Full Name</label>
                 <input
-                    v-model="iAgree"
-                    type="checkbox"
-                    class="form-check-input"
-                    id="i-agree-checkbox"
-                    name="iAgree"
-                    v-validate="'required'"
+                    v-model="name"
+                    type="text"
+                    class="form-control"
+                    id="name-textbox"
+                    placeholder="John Smith"
+                    :disabled="isLoading"
+                    name="name"
+                    v-validate="'required|max:64'"
                     data-vv-validate-on="blur"
                 >
-                <label
-                    class="form-check-label required"
-                    for="i-agree-checkbox"
-                >I agree to the Terms of Use</label>
-                <b-form-invalid-feedback>{{ errors.first('iAgree') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('name') }}</b-form-invalid-feedback>
+            </div>
+
+            <b-form-group>
+                <label class="required" for="username-textbox">Username</label>
+                <input
+                    type="text"
+                    class="form-control"
+                    v-model="username"
+                    id="username-textbox"
+                    placeholder="HondaFan2000"
+                    :disabled="isLoading"
+                    name="username"
+                    v-validate="'required|alpha_num|min:4|max:32'"
+                    data-vv-validate-on="blur"
+                >
+                <b-form-invalid-feedback>{{ errors.first('username') }}</b-form-invalid-feedback>
+            </b-form-group>
+
+            <!-- Email Address -->
+            <div class="form-group">
+                <label class="required" for="email-textbox">Email</label>
+                <input
+                    v-model="email"
+                    type="email"
+                    class="form-control"
+                    id="email-textbox"
+                    placeholder="Email@domain.com"
+                    :disabled="isLoading"
+                    name="email"
+                    v-validate="'required|email|max:64'"
+                    data-vv-validate-on="blur"
+                >
+                <small
+                    class="form-text text-muted"
+                >We promise to never share your email with anyone.</small>
+                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+            </div>
+            <div class="form-group">
+                <label class="required" for="password-textbox">Password</label>
+                <input
+                    v-model="password"
+                    ref="password"
+                    type="password"
+                    class="form-control mb-1"
+                    id="password-textbox"
+                    placeholder="********"
+                    :disabled="isLoading"
+                    name="password"
+                    v-validate="'required|min:8'"
+                    data-vv-validate-on="blur"
+                >
+                <small class="form-text text-muted">Passwords must be at least 8 characters long.</small>
+                <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
+            </div>
+
+            <div class="form-group">
+                <label class="required" for="password-confirm-textbox">Confirm Password</label>
+                <input
+                    v-model="confirmPassword"
+                    type="password"
+                    class="form-control mb-1"
+                    id="password-confirm-textbox"
+                    placeholder="********"
+                    :disabled="isLoading"
+                    name="confirmPassword"
+                    v-validate="'required|confirmed:password'"
+                    data-vv-validate-on="blur"
+                >
+                <b-form-invalid-feedback>{{ errors.first('confirmPassword') }}</b-form-invalid-feedback>
+            </div>
+
+            <div class="form-group pt-5">
+                <!-- I Agree checkbox -->
+                <div class="form-check mb-3">
+                    <input
+                        v-model="iAgree"
+                        type="checkbox"
+                        class="form-check-input"
+                        id="i-agree-checkbox"
+                        :disabled="isLoading"
+                        name="iAgree"
+                        v-validate="'required'"
+                        data-vv-validate-on="blur"
+                    >
+                    <label
+                        class="form-check-label required pl-1 align-middle"
+                        for="i-agree-checkbox"
+                    >I agree to the Terms of Use</label>
+                    <b-form-invalid-feedback>{{ errors.first('iAgree') }}</b-form-invalid-feedback>
+                </div>
+
+                <!-- Sign Up Button -->
+                <b-btn
+                    variant="primary"
+                    @click="onSignUpButtonClicked"
+                >{{ isLoading ? 'Loading' : 'Sign Up'}}</b-btn>
             </div>
         </div>
-    </form-container>
+    </card-container>
 </template>
 
 <script lang="ts">
@@ -116,8 +137,9 @@ import { Component } from 'vue-property-decorator';
 import { UserMixin } from '@/user-system/user-mixin';
 import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
-import FormContainer from '@/core/components/form/form-container.vue';
-import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
+import CardContainer from '@/core/components/cards/card-container.vue';
+import MaterialIcon from '@/core/components/material-icon.vue';
+import { EventBus } from '../../core/event/event-bus';
 
 /**
  * Sign up form to allow new users to register.
@@ -125,9 +147,9 @@ import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 @Component({
     name: 'sign-up-form',
     components: {
-        FormContainer,
-        FormSubmitButton,
         AlertMessage,
+        CardContainer,
+        MaterialIcon,
     },
 })
 export default class SignUpForm extends UserMixin {
@@ -141,17 +163,19 @@ export default class SignUpForm extends UserMixin {
      */
     public successMessage!: string;
 
-    public name!: string;
+    public name: string = '';
 
-    public email!: string;
+    public email: string = '';
 
-    public password!: string;
+    public password: string = '';
 
     public username: string = '';
 
-    public confirmPassword!: string;
+    public confirmPassword: string = '';
 
-    public iAgree!: boolean;
+    public iAgree: boolean = false;
+
+    public isLoading: boolean = false;
 
     /**
      * Properties are assigned in created to prevent weird undefined errors.
@@ -206,11 +230,12 @@ export default class SignUpForm extends UserMixin {
     public async onSignUpButtonClicked(event: any): Promise<void> {
         // Validate first.
         if (!(await this.$validator.validate())) {
-            (this.$refs.button as FormSubmitButton).reset();
             return;
         }
 
         try {
+            EventBus.emit('loading');
+            this.isLoading = true;
             const u = await this.$userStore.register({
                 email: this.email,
                 name: this.name,
@@ -226,10 +251,10 @@ export default class SignUpForm extends UserMixin {
             // Alert the user of what went wrong
             this.errorMessage = error.message;
             this.successMessage = '';
-            (this.$refs.button as FormSubmitButton).reset();
+        } finally {
+            this.isLoading = false;
+            EventBus.emit('loaded');
         }
-
-        this.$forceUpdate();
     }
 }
 </script>

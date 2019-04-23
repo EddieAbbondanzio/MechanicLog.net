@@ -1,38 +1,53 @@
 <template>
-    <form-container
-        title="Password Recovery"
-        description="Please enter the email address associated with your account, and we'll send you a password reset code."
-    >
-        <div class="form-group">
-            <label class="required" for="email-textbox">Email</label>
-            <input
-                v-model="email"
-                type="email"
-                class="form-control"
-                id="email-textbox"
-                placeholder="Email@domain.com"
-                name="email"
-                v-validate="'required|email'"
-                data-vv-validate-on="blur"
-            >
-            <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+    <card-container>
+        <!-- Header -->
+        <div class="p-3 pt-5 text-center" slot="header">
+            <material-icon
+                icon="lock"
+                color="secondary"
+                size="xl"
+                class="border rounded-circle p-3 bg-light"
+            />
+            <h2 class="pt-2">Password Recovery</h2>
         </div>
 
-        <alert-message :type="message.type" v-if="message.text.length > 0">{{ message.text }}</alert-message>
+        <div>
+            <div class="form-group">
+                <label class="required" for="email-textbox">Email</label>
+                <input
+                    v-model="email"
+                    type="email"
+                    class="form-control"
+                    id="email-textbox"
+                    placeholder="Email@domain.com"
+                    :disabled="isLoading"
+                    name="email"
+                    v-validate="'required|email'"
+                    data-vv-validate-on="blur"
+                >
+                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+            </div>
 
-        <div class="form-group mt-5">
-            <form-submit-button text="Email Me" @click="onSendEmailButtonClick" ref="submitButton"/>
+            <alert-message :type="message.type" v-if="message.text.length > 0">{{ message.text }}</alert-message>
+
+            <div class="form-group mt-5">
+                <b-btn
+                    variant="primary"
+                    @click="onSendEmailButtonClick"
+                >{{ isLoading ? 'Loading' : 'Send Me a Reset Code' }}</b-btn>
+            </div>
         </div>
-    </form-container>
+    </card-container>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import FormContainer from '@/core/components/form/form-container.vue';
 import AlertMessage from '@/core/components/alert-message.vue';
 import { UserMixin } from '@/user-system/user-mixin';
-import FormSubmitButton from '@/core/components/form/form-submit-button.vue';
 import { ThemeColor } from '@/core/components/theme-color';
+import CardContainer from '@/core/components/cards/card-container.vue';
+import { EventBus } from '../../core/event/event-bus';
+import MaterialIcon from '@/core/components/material-icon.vue';
 
 /**
  * Password recovery form that will have a reset code emailed
@@ -41,24 +56,26 @@ import { ThemeColor } from '@/core/components/theme-color';
 @Component({
     name: 'forgot-password-form',
     components: {
-        FormContainer,
-        FormSubmitButton,
         AlertMessage,
+        CardContainer,
+        MaterialIcon,
     },
 })
 export default class ForgotPasswordForm extends UserMixin {
     /**
      * The email address of the user.
      */
-    public email!: string;
+    public email: string = '';
 
     /**
      * The message being displayed to the user.
      */
     public message!: {
         text: string;
-        color: ThemeColor
+        color: ThemeColor;
     };
+
+    public isLoading: boolean = false;
 
     /**
      * Initialize the component.
@@ -77,19 +94,21 @@ export default class ForgotPasswordForm extends UserMixin {
     public async onSendEmailButtonClick(): Promise<void> {
         // If things aren't valid, stop.
         if (!(await this.$validator.validate())) {
-            (this.$refs.submitButton as FormSubmitButton).reset();
             return;
         }
 
         try {
+            EventBus.emit('loading');
+            this.isLoading = true;
+
             await this.$userStore.requestPasswordReset(this.email);
         } catch (error) {
             this.message.text = error.message;
-            (this.$refs.submitButton as FormSubmitButton).reset();
+        } finally {
+            EventBus.emit('loaded');
+            this.isLoading = false;
+            this.$emit('submit', this.email);
         }
-
-        // Notify the parent page
-        this.$emit('submit', this.email);
     }
 }
 </script>

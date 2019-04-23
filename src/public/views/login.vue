@@ -1,6 +1,6 @@
 
 <template>
-    <b-container fluid class="h-100 d-flex flex-column justify-content-center">
+    <b-container fluid class="h-100 d-flex flex-column py-5">
         <b-row align-h="center">
             <b-col sm="8" md="6" lg="4">
                 <login-form @login="onLogin" value="test"/>
