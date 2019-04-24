@@ -25,33 +25,49 @@
 </style>
 
 <template>
-    <div class="px-4 py-3 bg-primary d-flex flex-row justify-content-between align-items-center">
-        <div>
-            <router-link to="/">
-                <img src="@/assets/logo.png" class="icon">
-                <h3 class="font-weight-bold text-white d-inline-block">MechanicLog</h3>
-            </router-link>
-        </div>
+    <div>
+        <b-navbar toggleable variant="primary" type="dark" class="justify-content-between">
+            <!-- Logo -->
+            <b-navbar-brand>
+                <router-link to="/">
+                    <img src="@/assets/logo.png" class="icon">
+                    <h3 class="font-weight-bold text-white d-inline-block">MechanicLog</h3>
+                </router-link>
+            </b-navbar-brand>
 
-        <div class="buttons">
-            <a href="#">Features</a>
-            <a href="#">Pricing</a>
-            <a href="http://blog.mechaniclog.net">Blog</a>
-            <a href="#">Contact</a>
-        </div>
+            <!-- Drop Down -->
+            <div>
+                <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
+                <b-collapse id="nav-text-collapse" is-nav>
+                    <b-navbar-nav>
+                        <b-nav-item to="#">Features</b-nav-item>
+                        <b-nav-item to="#">Pricing</b-nav-item>
+                        <b-nav-item href="http://blog.mechaniclog.net">Blog</b-nav-item>
+                        <b-nav-item to="#">Contact</b-nav-item>
+                        <b-nav-item to="/login" class="d-sm-none">Login</b-nav-item>
+                        <b-nav-item to="/register" class="d-sm-none">Sign Up</b-nav-item>
+                    </b-navbar-nav>
+                </b-collapse>
+            </div>
 
-        <div>
-            <router-link to="/login">
-                <b-btn variant="outline-light" class="rounded mr-2" @click="$emit('login')">Login</b-btn>
-            </router-link>
-            <router-link to="/register">
-                <b-btn
-                    variant="outline-light"
-                    class="rounded ml-2"
-                    @click="$emit('sign-up')"
-                >Sign Up</b-btn>
-            </router-link>
-        </div>
+            <!-- Login / Sign Up Button. -->
+            <div class="d-none d-sm-block">
+                <router-link to="/login">
+                    <b-btn
+                        variant="outline-light"
+                        class="rounded mr-2"
+                        @click="$emit('login')"
+                    >Login</b-btn>
+                </router-link>
+                <router-link to="/register">
+                    <b-btn
+                        variant="outline-light"
+                        class="rounded ml-2"
+                        @click="$emit('sign-up')"
+                    >Sign Up</b-btn>
+                </router-link>
+            </div>
+        </b-navbar>
     </div>
 </template>
 
