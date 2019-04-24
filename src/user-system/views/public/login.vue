@@ -8,11 +8,11 @@
         </b-row>
     </b-container>
 </template>
-
+user-store
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LoginForm from '@/user-system/components/login-form.vue';
-import { UserMixin } from '../../user-system/user-mixin';
+import { UserMixin } from '@/user-system/user-mixin';
 
 /**
  * Login page to log in a user

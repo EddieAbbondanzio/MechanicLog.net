@@ -10,30 +10,5 @@ export const publicRoutes: RouteConfig = {
             name: 'home',
             component: () => import('./views/home.vue'),
         },
-        {
-            path: '/login',
-            name: 'login',
-            component: () => import('./views/login.vue'),
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: () => import('./views/sign-up.vue'),
-        },
-        {
-            path: '/forgot',
-            name: 'forgot',
-            component: () => import('./views/forgot.vue'),
-        },
-        {
-            path: '/reset',
-            name: 'reset',
-            component: () => import('./views/reset.vue'),
-        },
-        {
-            path: '/goodbye',
-            name: 'goodbye',
-            component: () => import('./views/goodbye.vue'),
-        },
     ],
 };

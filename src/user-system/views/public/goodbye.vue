@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { UserMixin } from '../../user-system/user-mixin';
-import { EventBus } from '../../core/event/event-bus';
+import { UserMixin } from '@/user-system/user-mixin';
+import { EventBus } from '@/core/event/event-bus';
 import CardContainer from '@/core/components/cards/card-container.vue';
 
 @Component({
