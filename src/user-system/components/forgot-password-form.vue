@@ -21,11 +21,11 @@
                     id="email-textbox"
                     placeholder="Email@domain.com"
                     :disabled="isLoading"
-                    name="email"
+                    name="forgotEmail"
                     v-validate="'required|email'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('forgotEmail') }}</b-form-invalid-feedback>
             </div>
 
             <alert-message :type="message.type" v-if="message.text.length > 0">{{ message.text }}</alert-message>
@@ -81,6 +81,15 @@ export default class ForgotPasswordForm extends UserMixin {
      * Initialize the component.
      */
     public created(): void {
+        this.$validator.localize('en', {
+            custom: {
+                forgotEmail: {
+                    email: 'Email must be a valid email address.',
+                    required: 'Email address is required.',
+                },
+            },
+        });
+
         this.email = '';
         this.message = {
             text: '',

@@ -24,11 +24,11 @@
                     id="email-textbox"
                     placeholder="Email@domain.com"
                     :disabled="true"
-                    name="email"
+                    name="resetEmail"
                     v-validate="'required|email'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('resetEmail') }}</b-form-invalid-feedback>
             </div>
 
             <!-- Reset Code -->
@@ -41,11 +41,11 @@
                     id="reset-code-textbox"
                     placeholder="ABC123"
                     :disabled="isLoading"
-                    name="resetcode"
+                    name="resetCode"
                     v-validate="'required|min:8'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('resetcode') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('resetCode') }}</b-form-invalid-feedback>
             </div>
 
             <!-- New Password -->
@@ -58,13 +58,13 @@
                     id="password-textbox"
                     placeholder="********"
                     :disabled="isLoading"
-                    name="password"
+                    name="resetPassword"
                     v-validate="'required|min:8'"
                     data-vv-validate-on="blur"
                     ref="password"
                 >
                 <small class="form-text text-muted">Passwords must be at least 8 characters long.</small>
-                <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('resetPassword') }}</b-form-invalid-feedback>
             </div>
 
             <!-- Confirm Password -->
@@ -77,11 +77,11 @@
                     id="password-confirm-textbox"
                     placeholder="********"
                     :disabled="isLoading"
-                    name="confirmPassword"
+                    name="resetConfirmPassword"
                     v-validate="'required|confirmed:password'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('confirmPassword') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('resetConfirmPassword') }}</b-form-invalid-feedback>
             </div>
 
             <div class="form-group mt-5">
@@ -137,6 +137,25 @@ export default class ResetPasswordForm extends UserMixin {
         text: string;
         color: ThemeColor;
     } = { text: '', color: 'danger' };
+
+    public created() {
+        this.$validator.localize('en', {
+            custom: {
+                resetCode: {
+                    required: 'Password reset code is required.',
+                    min: 'Password reset code is at least 8 characters long.',
+                },
+                resetPassword: {
+                    required: 'New password is required.',
+                    min: 'New password must be at least 8 characters long.',
+                },
+                resetConfirmPassword: {
+                    required: 'Password confirmation is required.',
+                    confirmed: 'Passwords do not match.',
+                },
+            },
+        });
+    }
 
     /**
      * Autopopulate the users email to amp up that wow factor to 11.

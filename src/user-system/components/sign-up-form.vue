@@ -25,11 +25,11 @@
                     id="name-textbox"
                     placeholder="John Smith"
                     :disabled="isLoading"
-                    name="name"
+                    name="signUpName"
                     v-validate="'required|max:64'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('name') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('signUpName') }}</b-form-invalid-feedback>
             </div>
 
             <b-form-group>
@@ -41,11 +41,11 @@
                     id="username-textbox"
                     placeholder="HondaFan2000"
                     :disabled="isLoading"
-                    name="username"
+                    name="signUpUsername"
                     v-validate="'required|alpha_num|min:4|max:32'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('username') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('signUpUsername') }}</b-form-invalid-feedback>
             </b-form-group>
 
             <!-- Email Address -->
@@ -58,14 +58,14 @@
                     id="email-textbox"
                     placeholder="Email@domain.com"
                     :disabled="isLoading"
-                    name="email"
+                    name="signUpEmail"
                     v-validate="'required|email|max:64'"
                     data-vv-validate-on="blur"
                 >
                 <small
                     class="form-text text-muted"
                 >We promise to never share your email with anyone.</small>
-                <b-form-invalid-feedback>{{ errors.first('email') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('signUpEmail') }}</b-form-invalid-feedback>
             </div>
             <div class="form-group">
                 <label class="required" for="password-textbox">Password</label>
@@ -77,12 +77,12 @@
                     id="password-textbox"
                     placeholder="********"
                     :disabled="isLoading"
-                    name="password"
+                    name="signUpPassword"
                     v-validate="'required|min:8'"
                     data-vv-validate-on="blur"
                 >
                 <small class="form-text text-muted">Passwords must be at least 8 characters long.</small>
-                <b-form-invalid-feedback>{{ errors.first('password') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('signUpPassword') }}</b-form-invalid-feedback>
             </div>
 
             <div class="form-group">
@@ -94,11 +94,11 @@
                     id="password-confirm-textbox"
                     placeholder="********"
                     :disabled="isLoading"
-                    name="confirmPassword"
+                    name="signUpConfirmPassword"
                     v-validate="'required|confirmed:password'"
                     data-vv-validate-on="blur"
                 >
-                <b-form-invalid-feedback>{{ errors.first('confirmPassword') }}</b-form-invalid-feedback>
+                <b-form-invalid-feedback>{{ errors.first('signUpConfirmPassword') }}</b-form-invalid-feedback>
             </div>
 
             <div class="form-group pt-5">
@@ -110,7 +110,7 @@
                         class="form-check-input"
                         id="i-agree-checkbox"
                         :disabled="isLoading"
-                        name="iAgree"
+                        name="signUpIAgree"
                         v-validate="'required'"
                         data-vv-validate-on="blur"
                     >
@@ -118,7 +118,7 @@
                         class="form-check-label required pl-1 align-middle"
                         for="i-agree-checkbox"
                     >I agree to the Terms of Use</label>
-                    <b-form-invalid-feedback>{{ errors.first('iAgree') }}</b-form-invalid-feedback>
+                    <b-form-invalid-feedback>{{ errors.first('signUpIAgree') }}</b-form-invalid-feedback>
                 </div>
 
                 <!-- Sign Up Button -->
@@ -192,31 +192,31 @@ export default class SignUpForm extends UserMixin {
         // Custom error messages.
         this.$validator.localize('en', {
             custom: {
-                name: {
+                signUpName: {
                     required: 'Name is required.',
                     max: 'Name must be 64 characters or less.',
                 },
 
-                username: {
+                signUpUsername: {
                     required: 'Username is required',
                     alpha_num: 'Username must only contain letters and/or numbers.',
                     min: 'Username must be 4 characters or more.',
                     max: 'Username must be 32 characters or less.',
                 },
-                email: {
+                signUpEmail: {
                     required: 'Contact email is required.',
                     email: 'Contact email must be a valid email address.',
                     max: 'Contact email must be 64 characters or less.',
                 },
-                password: {
+                signUpPassword: {
                     required: 'Password is required.',
                     min: 'Password must be 8 characters or more.',
                 },
-                confirmPassword: {
+                signUpConfirmPassword: {
                     required: 'Password confirmation is required.',
                     confirmed: 'Password confirmation does not match password.',
                 },
-                iAgree: {
+                signUpIAgree: {
                     required: 'The Terms of Use must be agreed to.',
                 },
             },
