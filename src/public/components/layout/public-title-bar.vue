@@ -40,10 +40,10 @@
                 <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
                 <b-collapse id="nav-text-collapse" is-nav>
                     <b-navbar-nav>
-                        <b-nav-item to="#">Features</b-nav-item>
-                        <b-nav-item to="#">Pricing</b-nav-item>
+                        <b-nav-item to="/features">Features</b-nav-item>
+                        <b-nav-item to="/pricing">Pricing</b-nav-item>
                         <b-nav-item href="http://blog.mechaniclog.net">Blog</b-nav-item>
-                        <b-nav-item to="#">Contact</b-nav-item>
+                        <b-nav-item to="/contact">Contact</b-nav-item>
                         <b-nav-item to="/login" class="d-sm-none">Login</b-nav-item>
                         <b-nav-item to="/register" class="d-sm-none">Sign Up</b-nav-item>
                     </b-navbar-nav>
@@ -60,11 +60,7 @@
                     >Login</b-btn>
                 </router-link>
                 <router-link to="/register">
-                    <b-btn
-                        variant="outline-light"
-                        class="rounded ml-2"
-                        @click="$emit('sign-up')"
-                    >Sign Up</b-btn>
+                    <b-btn variant="warning" class="rounded ml-2" @click="$emit('sign-up')">Sign Up</b-btn>
                 </router-link>
             </div>
         </b-navbar>

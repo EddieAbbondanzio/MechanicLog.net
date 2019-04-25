@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex flex-column">
-        <div class="d-flex flex-row justify-content-between bg-primary flex-full-width py-5">
+        <div class="d-flex flex-row justify-content-between bg-primary py-5">
             <div class="d-flex flex-column align-items-center justify-content-center">
                 <div class="w-75 text-center">
                     <h1

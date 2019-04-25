@@ -7,6 +7,7 @@ import { vehicleRoutes } from './vehicle-system/routes';
 import { CookieStorage } from './core/cookie-storage';
 import { privateUserRoutes } from './user-system/views/routes/private-routes';
 import { publicUserRoutes } from './user-system/views/routes/public-routes';
+import { supportRoutes } from './support/routes';
 
 Vue.use(Router);
 
@@ -14,7 +15,7 @@ Vue.use(Router);
  * Main router of the app.
  */
 const router: Router = new Router({
-    routes: [publicRoutes, privateRoutes, privateUserRoutes, publicUserRoutes, vehicleRoutes],
+    routes: [publicRoutes, privateRoutes, privateUserRoutes, publicUserRoutes, vehicleRoutes, supportRoutes],
 });
 
 // Route guard for logged in users.
