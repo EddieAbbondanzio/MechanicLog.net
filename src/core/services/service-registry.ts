@@ -14,6 +14,7 @@ import { VehiclePurchaseInfoService } from '@/vehicle-system/vehicle/services/ve
 import { FuelTripService } from '@/vehicle-system/vehicle/services/fuel-trip-service';
 import { MaintenanceTagService } from '@/vehicle-system/vehicle/services/maintenance-tag-service';
 import { MaintenanceService } from '@/vehicle-system/vehicle/services/maintenance-service';
+import { ContactService } from '@/support/services/contact-service';
 
 /**
  * Helper to locate, and register services for use later on.
@@ -40,6 +41,7 @@ export class ServiceRegistry {
         this.register(ServiceType.FuelTrip, new FuelTripService(Store.backendUrl));
         this.register(ServiceType.Maintenance, new MaintenanceService(Store.backendUrl));
         this.register(ServiceType.MaintenanceTag, new MaintenanceTagService(Store.backendUrl));
+        this.register(ServiceType.Contact, new ContactService(Store.backendUrl));
     }
 
     /**

@@ -16,4 +16,5 @@ export enum ServiceType {
     Subscription,
     SubscriptionPlan,
     FuelTrip,
+    Contact,
 }

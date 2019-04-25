@@ -10,6 +10,7 @@ import { SubscriptionStore } from '@/subscription-system/subscription-store';
 import { VehiclePurchaseInfoStore } from '@/vehicle-system/vehicle/store/vehicle-purchase-info-store';
 import { FuelTripStore } from '@/vehicle-system/vehicle/store/fuel-trip-store';
 import { MaintenanceStore } from '@/vehicle-system/vehicle/store/maintenance-store';
+import { ContactStore } from '@/support/contact-store';
 
 /**
  * State store for managing data from the backend.
@@ -38,6 +39,7 @@ export class Store {
         this.register(new VehiclePurchaseInfoStore());
         this.register(new FuelTripStore());
         this.register(new MaintenanceStore());
+        this.register(new ContactStore());
     }
 
     /**

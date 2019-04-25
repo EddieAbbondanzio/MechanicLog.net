@@ -12,4 +12,5 @@ export type StoreModuleNamespace =
     | 'vehiclePurchaseInfo'
     | 'vehicleSettings'
     | 'maintenance'
-    | 'fuelTrip';
+    | 'fuelTrip'
+    | 'contact';
