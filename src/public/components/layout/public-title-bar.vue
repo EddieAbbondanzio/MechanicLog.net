@@ -7,19 +7,11 @@
     display: inline-block;
 }
 
-.buttons a {
-    color: lighten($gray-300, 2.5);
-    text-decoration: none !important;
-    font-weight: bold;
-    margin-left: map-get($map: $spacers, $key: 3);
-    margin-right: map-get($map: $spacers, $key: 3);
-
-    &:hover {
-        color: $gray-100;
-    }
-
-    &:active {
-        color: $white;
+ul.navbar-nav {
+    li {
+        font-weight: bold;
+        margin-left: 8px;
+        margin-right: 8px;
     }
 }
 </style>
