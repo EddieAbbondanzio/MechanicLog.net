@@ -60,7 +60,7 @@
                     >Login</b-btn>
                 </router-link>
                 <router-link to="/register">
-                    <b-btn variant="warning" class="rounded ml-2" @click="$emit('sign-up')">Sign Up</b-btn>
+                    <b-btn variant="success" class="rounded ml-2" @click="$emit('sign-up')">Sign Up</b-btn>
                 </router-link>
             </div>
         </b-navbar>

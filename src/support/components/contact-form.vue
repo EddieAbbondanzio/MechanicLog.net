@@ -134,6 +134,26 @@ export default class ContactForm extends ContactMixin {
      */
     public submitted = false;
 
+    public created() {
+        // Custom error messages.
+        this.$validator.localize('en', {
+            custom: {
+                contactEmail: {
+                    email: 'Email must be a valid email address.',
+                    required: 'Email address is required.',
+                    max: 'Email must be 64 characters or less.',
+                },
+                contactSubject: {
+                    max: 'Subject must be 128 characters or less.',
+                },
+                contactBody: {
+                    required: 'Message is required.',
+                    max: 'Message must be 2048 characters or less.',
+                },
+            },
+        });
+    }
+
     /**
      * Send the request off the to the backend.
      */
