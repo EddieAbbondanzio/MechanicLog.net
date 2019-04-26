@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <card-container class="row px-0 mx-0 mt-3 w-100">
+        <card-container class="row px-0 mx-0 mt-3 w-100 p-3" :noPadding="true">
             <div class="col-12">
                 <add-fuel-trip-popup ref="addPopup" :vehicle="vehicle" @add="onAdd"/>
                 <delete-fuel-trip-confirmation-popup ref="deletePopup" @delete="onDelete"/>
@@ -63,7 +63,7 @@
                 </div>
 
                 <!-- Table -->
-                <b-table :items="fuelTrips" :fields="columnNames" :busy="isLoading">
+                <b-table :items="fuelTrips" :fields="columnNames" :busy="isLoading" class="w-100">
                     <template slot="date" slot-scope="row">{{ row.value }}</template>
                     <template slot="pricePerUnit" slot-scope="row">{{ row.value }}</template>
                     <template slot="fuelUnits" slot-scope="row">{{ row.value }}</template>
