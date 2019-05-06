@@ -30,30 +30,34 @@ ul.navbar-nav {
             <!-- Drop Down -->
             <div>
                 <b-navbar-toggle target="nav-text-collapse"></b-navbar-toggle>
-                <b-collapse id="nav-text-collapse" is-nav>
+                <b-collapse id="nav-text-collapse" is-nav style="display: inline-block!important;">
                     <b-navbar-nav>
-                        <b-nav-item to="/features">Features</b-nav-item>
-                        <b-nav-item to="/pricing">Pricing</b-nav-item>
+                        <!-- <b-nav-item to="/features">Features</b-nav-item> -->
+                        <!-- <b-nav-item to="/pricing">Pricing</b-nav-item> -->
                         <b-nav-item href="http://blog.mechaniclog.net">Blog</b-nav-item>
                         <b-nav-item to="/contact">Contact</b-nav-item>
                         <b-nav-item to="/login" class="d-sm-none">Login</b-nav-item>
                         <b-nav-item to="/register" class="d-sm-none">Sign Up</b-nav-item>
                     </b-navbar-nav>
                 </b-collapse>
-            </div>
 
-            <!-- Login / Sign Up Button. -->
-            <div class="d-none d-sm-block">
-                <router-link to="/login">
-                    <b-btn
-                        variant="outline-light"
-                        class="rounded mr-2"
-                        @click="$emit('login')"
-                    >Login</b-btn>
-                </router-link>
-                <router-link to="/register">
-                    <b-btn variant="success" class="rounded ml-2" @click="$emit('sign-up')">Sign Up</b-btn>
-                </router-link>
+                <!-- Login / Sign Up Button. -->
+                <div class="d-none d-sm-inline-block">
+                    <router-link to="/login">
+                        <b-btn
+                            variant="outline-light"
+                            class="rounded mx-2"
+                            @click="$emit('login')"
+                        >Login</b-btn>
+                    </router-link>
+                    <router-link to="/register">
+                        <b-btn
+                            variant="success"
+                            class="rounded mx-2"
+                            @click="$emit('sign-up')"
+                        >Sign Up</b-btn>
+                    </router-link>
+                </div>
             </div>
         </b-navbar>
     </div>

@@ -46,6 +46,11 @@
                 </div>
             </div>
         </div>
+        <!-- 
+        <div class="px-3 py-5">
+            <img src="@/assets/mechanic.jpg" class="w-35 d-inline-block">
+            <div class="w-65 d-inline-block">HI</div>
+        </div>-->
 
         <feature-showcase/>
 
@@ -61,12 +66,14 @@ import MembershipPlans from '@/public/components/membership-plans.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { CookieStorage } from '../../core/cookie-storage';
 import { UserMixin } from '../../user-system/user-mixin';
+import CardContainer from '@/core/components/cards/card-container.vue';
 
 @Component({
     components: {
         MembershipPlans,
         MaterialIcon,
         FeatureShowcase,
+        CardContainer,
     },
 })
 export default class Home extends UserMixin {}
