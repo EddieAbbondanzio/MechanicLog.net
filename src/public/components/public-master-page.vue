@@ -11,7 +11,7 @@
 <template>
     <div class="page-container bg-light">
         <public-title-bar/>
-        <loading-bar v-if="isLoading()" style="position: absolute; top: 80px;"/>
+        <loading-bar v-if="isLoading()" style="position: absolute; top: 74px;"/>
 
         <!-- Actual Page Content -->
         <router-view></router-view>
