@@ -62,21 +62,21 @@
         </div>
 
         <div class="border-bottom align-self-bottom d-flex flex-column py-4 account-links">
-            <router-link to="/feedback" class="w-100">
+            <router-link to="/user/feedback" class="w-100">
                 <b-button variant="white" class="shadow-none w-100 rounded-0">
                     <material-icon icon="feedback" color="dark" class="align-bottom pr-2"/>
                     <span class="align-middle">Feedback</span>
                 </b-button>
             </router-link>
 
-            <router-link to="/subscription">
+            <router-link to="/user/subscription">
                 <b-button variant="white" class="shadow-none w-100">
                     <material-icon icon="card_membership" color="dark" class="align-bottom pr-2"/>
                     <span class="align-middle">Subscription</span>
                 </b-button>
             </router-link>
 
-            <router-link to="/settings">
+            <router-link :to="{ name: 'user-settings' }">
                 <b-button variant="white" class="shadow-none w-100">
                     <material-icon icon="settings" color="dark" class="align-bottom pr-2"/>
                     <span class="align-middle">Settings</span>

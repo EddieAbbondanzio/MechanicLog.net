@@ -153,7 +153,7 @@ import { User } from '@/user-system/entities/user';
 import { Nullable } from '@/core/common/monads/nullable';
 import { UserMixin } from '@/user-system/user-mixin';
 import * as HttpStatusCodes from 'http-status-codes';
-import PageContent from '@/private/components/layout/page-content.vue';
+import PageContent from '@/core/components/layout/page-content.vue';
 import { EventBus } from '@/core/event/event-bus';
 
 /**
@@ -211,6 +211,8 @@ export default class Settings extends UserMixin {
      * Prepare the component for use when generated.
      */
     public async created(): Promise<void> {
+        alert('reeee');
+
         this.$validator.localize('en', {
             custom: {
                 name: {

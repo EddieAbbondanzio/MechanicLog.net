@@ -91,7 +91,7 @@ import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { SubscriptionMixin } from '@/subscription-system/subscription-mixin.ts';
 import { Subscription } from '@/subscription-system/entities/subscription';
 import { SubscriptionStatus } from '@/subscription-system/entities/subscription-status';
-import PageContent from '@/private/components/layout/page-content.vue';
+import PageContent from '@/core/components/layout/page-content.vue';
 
 /**
  * Settings page for updating the user.

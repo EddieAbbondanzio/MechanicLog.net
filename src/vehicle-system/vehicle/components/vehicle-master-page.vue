@@ -101,6 +101,10 @@
                             :to="{ name: 'vehicle-fuel'}"
                             :class="{ 'vehicle-information-tab': activeTab != 3, 'vehicle-information-tab-active': activeTab == 3, 'p-2': true, 'mx-1': true, 'rounded': true  }"
                         >Fuel Economy</router-link>
+                        <router-link
+                            :to="{ name: 'vehicle-settings'}"
+                            :class="{ 'vehicle-information-tab': activeTab != 4, 'vehicle-information-tab-active': activeTab == 4, 'p-2': true, 'mx-1': true, 'rounded': true  }"
+                        >Settings</router-link>
                     </div>
 
                     <router-view :vehicle="vehicle" class="py-4"></router-view>
@@ -119,7 +123,7 @@ import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
-import PageContent from '@/private/components/layout/page-content.vue';
+import PageContent from '@/core/components/layout/page-content.vue';
 import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { EventBus } from '@/core/event/event-bus';
@@ -171,6 +175,9 @@ export default class VehicleMasterPage extends VehicleMixin {
             case 'vehicle-fuel':
                 this.activeTab = 3;
                 break;
+            case 'vehicle-settings':
+                this.activeTab = 4;
+                break;
         }
 
         EventBus.emit('loaded');
@@ -190,6 +197,9 @@ export default class VehicleMasterPage extends VehicleMixin {
                 break;
             case 'vehicle-fuel':
                 this.activeTab = 3;
+                break;
+            case 'vehicle-settings':
+                this.activeTab = 4;
                 break;
         }
     }

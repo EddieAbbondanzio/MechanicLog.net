@@ -24,7 +24,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import PrivateTitleBar from '../components/layout/private-title-bar.vue';
-import SideBar from '@/private/components/layout/side-bar.vue';
+import SideBar from '@/core/components/layout/side-bar.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';

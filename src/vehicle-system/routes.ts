@@ -1,12 +1,12 @@
 import { RouteConfig } from 'vue-router';
-import PrivateMasterPage from '@/private/components/private-master-page.vue';
+import PrivateMasterPage from '@/core/components/private-master-page.vue';
 
 export const vehicleRoutes: RouteConfig = {
     path: '/',
     component: PrivateMasterPage,
     children: [
         {
-            path: 'vehicles',
+            path: '/vehicles',
             name: 'vehicles',
             component: () => import('@/vehicle-system/views/vehicles.vue'),
             meta: {
@@ -14,7 +14,7 @@ export const vehicleRoutes: RouteConfig = {
             },
         },
         {
-            path: 'vehicles/:vehicleId/',
+            path: '/vehicles/:vehicleId/',
             name: 'vehicle',
             component: () => import('@/vehicle-system/vehicle/components/vehicle-master-page.vue'),
             meta: {
@@ -49,6 +49,14 @@ export const vehicleRoutes: RouteConfig = {
                     path: 'fuel',
                     name: 'vehicle-fuel',
                     component: () => import('@/vehicle-system/views/vehicle-fuel.vue'),
+                    meta: {
+                        authRequired: true,
+                    },
+                },
+                {
+                    path: 'settings',
+                    name: 'vehicle-settings',
+                    component: () => import('@/vehicle-system/views/vehicle-settings.vue'),
                     meta: {
                         authRequired: true,
                     },

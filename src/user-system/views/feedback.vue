@@ -109,7 +109,7 @@ import { UserMixin } from '@/user-system/user-mixin';
 import { UserFeedback } from '@/user-system/entities/user-feedback';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
-import PageContent from '@/private/components/layout/page-content.vue';
+import PageContent from '@/core/components/layout/page-content.vue';
 import { User } from '@/user-system/entities/user';
 
 @Component({

@@ -6,7 +6,7 @@ export const supportRoutes: RouteConfig = {
     component: PublicMasterPage,
     children: [
         {
-            path: '/contact',
+            path: 'contact',
             name: 'contact',
             component: () => import('./views/contact.vue'),
         },

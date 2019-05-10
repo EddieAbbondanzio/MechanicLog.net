@@ -86,7 +86,7 @@ import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
 import ToolBar from '../components/tool-bar/tool-bar.vue';
-import PageContent from '@/private/components/layout/page-content.vue';
+import PageContent from '@/core/components/layout/page-content.vue';
 import { EventBus } from '@/core/event/event-bus';
 import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue';
 import { UnitSystem } from '@/vehicle-system/common/unit-system';
