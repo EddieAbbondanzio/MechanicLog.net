@@ -48,6 +48,16 @@
         background-color: $gray-300 !important;
     }
 }
+
+.vehicle-profile-picture-container {
+    overflow: hidden;
+    height: 120px;
+    width: 120px;
+
+    img {
+        height: 100%;
+    }
+}
 </style>
 
 <template>
@@ -74,7 +84,18 @@
                             class="rounded-circle border d-flex flex-row align-items-center justify-content-center bg-white"
                             style="height: 120px; width: 120px;"
                         >
-                            <material-icon icon="directions_car" color="secondary" size="xl"/>
+                            <material-icon
+                                icon="directions_car"
+                                color="secondary"
+                                size="xl"
+                                v-if="vehicleProfilePicture == null"
+                            />
+                            <div
+                                class="rounded-circle vehicle-profile-picture-container d-flex flex-row align-items-center justify-content-center"
+                                v-else
+                            >
+                                <img :src="vehicleProfilePicture.data">
+                            </div>
                         </div>
                     </div>
                     <div>
@@ -127,6 +148,8 @@ import PageContent from '@/core/components/layout/page-content.vue';
 import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { EventBus } from '@/core/event/event-bus';
+import { config } from '../../../../config';
+import { VehicleProfilePicture } from '../entities/vehicle-profile-picture';
 
 /**
  * Maintenance history page.
@@ -157,6 +180,11 @@ export default class VehicleMasterPage extends VehicleMixin {
     public activeTab: number = 1;
 
     /**
+     * The profile picture of the vehicle.
+     */
+    public vehicleProfilePicture: Nullable<VehicleProfilePicture> = null;
+
+    /**
      * On page load, pull in the vehicle.
      */
     public async created(): Promise<void> {
@@ -179,6 +207,8 @@ export default class VehicleMasterPage extends VehicleMixin {
                 this.activeTab = 4;
                 break;
         }
+
+        this.vehicleProfilePicture = await this.$vehicleProfilePictureStore.getVehicleProfilePicture(this.vehicle);
 
         EventBus.emit('loaded');
         this.$forceUpdate();

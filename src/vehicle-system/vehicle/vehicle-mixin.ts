@@ -7,6 +7,7 @@ import { VehicleModelStore } from './store/vehicle-model-store';
 import { VehiclePurchaseInfoStore } from './store/vehicle-purchase-info-store';
 import { FuelTripStore } from './store/fuel-trip-store';
 import { MaintenanceStore } from './store/maintenance-store';
+import { VehicleProfilePictureStore } from './store/vehicle-profile-picture-store';
 
 /**
  * Mixin for common vehicle properties
@@ -34,6 +35,11 @@ export class VehicleMixin extends Vue {
     protected $vehiclePurchaseInfoStore!: VehiclePurchaseInfoStore;
 
     /**
+     * The store for managing vehicle profile pictures.
+     */
+    protected $vehicleProfilePictureStore!: VehicleProfilePictureStore;
+
+    /**
      * Maintenance related info of vehicles.
      */
     protected $maintenanceStore!: MaintenanceStore;
@@ -53,5 +59,6 @@ export class VehicleMixin extends Vue {
         this.$vehiclePurchaseInfoStore = Store.resolve('vehiclePurchaseInfo');
         this.$fuelTripStore = Store.resolve('fuelTrip');
         this.$maintenanceStore = Store.resolve('maintenance');
+        this.$vehicleProfilePictureStore = Store.resolve('vehicleProfilePicture');
     }
 }

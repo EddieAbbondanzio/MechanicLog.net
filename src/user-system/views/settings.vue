@@ -211,8 +211,6 @@ export default class Settings extends UserMixin {
      * Prepare the component for use when generated.
      */
     public async created(): Promise<void> {
-        alert('reeee');
-
         this.$validator.localize('en', {
             custom: {
                 name: {

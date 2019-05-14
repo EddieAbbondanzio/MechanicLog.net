@@ -10,6 +10,7 @@ export type StoreModuleNamespace =
     | 'vehicleModel'
     | 'subscription'
     | 'vehiclePurchaseInfo'
+    | 'vehicleProfilePicture'
     | 'vehicleSettings'
     | 'maintenance'
     | 'fuelTrip'

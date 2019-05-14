@@ -11,6 +11,7 @@ import { VehiclePurchaseInfoStore } from '@/vehicle-system/vehicle/store/vehicle
 import { FuelTripStore } from '@/vehicle-system/vehicle/store/fuel-trip-store';
 import { MaintenanceStore } from '@/vehicle-system/vehicle/store/maintenance-store';
 import { ContactStore } from '@/support/contact-store';
+import { VehicleProfilePictureStore } from '@/vehicle-system/vehicle/store/vehicle-profile-picture-store';
 
 /**
  * State store for managing data from the backend.
@@ -40,6 +41,7 @@ export class Store {
         this.register(new FuelTripStore());
         this.register(new MaintenanceStore());
         this.register(new ContactStore());
+        this.register(new VehicleProfilePictureStore());
     }
 
     /**

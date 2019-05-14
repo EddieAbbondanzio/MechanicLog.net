@@ -9,6 +9,7 @@ export enum ServiceType {
     VehicleModel,
     VehiclePurchaseInfo,
     VehicleSettings,
+    VehicleProfilePicture,
     Mechanic,
     Maintenance,
     MaintenanceTag,

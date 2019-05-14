@@ -28,7 +28,7 @@
                                 <router-link to="/register">
                                     <b-btn variant="success" size="lg" class="mr-2">Get Started</b-btn>
                                 </router-link>
-                                <b-btn variant="outline-light" size="lg" class="ml-2">
+                                <b-btn variant="outline-light" size="lg" class="ml-2" hidden>
                                     Learn More
                                     <material-icon
                                         icon="arrow_forward"

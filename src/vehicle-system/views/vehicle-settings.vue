@@ -13,6 +13,7 @@
                     <input
                         type="file"
                         class="form-control-file"
+                        ref="profilePictureUploader"
                         name="vehicleProfilePicture"
                         v-validate.reject="'image|size:1000'"
                         @input="onProfilePictureUploaded"
@@ -34,6 +35,8 @@ import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-p
 import { VehicleMixin } from '../vehicle/vehicle-mixin';
 import { EventBus } from '@/core/event/event-bus';
 import { Nullable } from '@/core/common/monads/nullable';
+import { FileUtils } from '@/core/common/utils/file-utils';
+import { VehicleProfilePicture } from '../vehicle/entities/vehicle-profile-picture';
 
 @Component({
     name: 'vehicle-information',
@@ -42,15 +45,19 @@ import { Nullable } from '@/core/common/monads/nullable';
     },
 })
 export default class VehicleSettings extends VehicleMixin {
+    public $refs!: {
+        profilePictureUploader: HTMLInputElement;
+    };
+
     @Prop()
     public vehicle!: Vehicle;
 
     /**
-     * The uploaded profile picture.
+     * The profile picture of the vehicle.
      */
-    public profilePicture: Nullable<File> = null;
+    public profilePicture: Nullable<VehicleProfilePicture> = null;
 
-    public created() {
+    public async created() {
         this.$validator.localize('en', {
             custom: {
                 vehicleProfilePicture: {
@@ -59,16 +66,35 @@ export default class VehicleSettings extends VehicleMixin {
                 },
             },
         });
+
+        this.profilePicture = await this.$vehicleProfilePictureStore.getVehicleProfilePicture(this.vehicle);
     }
 
     /**
      * Do something fancy when the profile picture is uploaded.
      */
-    public async onProfilePictureUploaded(): Promise<void> {
+    public async onProfilePictureUploaded(event: any): Promise<void> {
         // If the file is bad, reject it!
-        // if (!(await this.$validator.validate('vehicleProfilePicture'))) {
-        //     this.profilePicture = null;
-        // }
+        if (!(await this.$validator.validate('vehicleProfilePicture'))) {
+            this.$refs.profilePictureUploader.value = '';
+            return;
+        }
+
+        const file: File = event.target.files[0];
+
+        let fileType = file.type.substr(-3);
+
+        // Gross catch to convert jpeg to jpg for now...
+        if (fileType === 'peg') {
+            fileType = 'jpg';
+        }
+
+        const fileData = await FileUtils.toBase64(file);
+
+        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture(this.vehicle.id, fileData, file.name, fileType);
+        await this.$vehicleProfilePictureStore.uploadVehicleProfilePicture(this.vehicle, profilePicture);
+
+        this.$forceUpdate();
     }
 }
 </script>
