@@ -149,6 +149,7 @@ export default class Vehicles extends VehicleMixin {
         this.isLoading = true;
         this.vehicles = await this.$vehicleStore.getVehicles();
         this.isAddDisabled = this.vehicles.length >= User.CURRENT!.subscription.plan.vehicleCount;
+
         this.isLoading = false;
         EventBus.emit('loaded');
     }

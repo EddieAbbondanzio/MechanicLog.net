@@ -3,9 +3,9 @@
 
 <template>
     <div>
-        <card-container class="p-3">
-            <div class="pb-3 clearfix">
-                <h2 class="float-left">Settings</h2>
+        <card-container>
+            <div class="clearfix border-bottom pb-3 mb-3">
+                <h2 class="float-left mb-0">Settings</h2>
             </div>
 
             <b-form>
@@ -21,6 +21,11 @@
                     <b-form-invalid-feedback
                         class="d-block"
                     >{{ errors.first('vehicleProfilePicture') }}</b-form-invalid-feedback>
+                </b-form-group>
+
+                <b-form-group v-if="profilePicture != null">
+                    {{ profilePicture.fileName }}
+                    <b-btn variant="danger" @click="onDeleteClick">Delete</b-btn>
                 </b-form-group>
             </b-form>
         </card-container>
@@ -74,6 +79,7 @@ export default class VehicleSettings extends VehicleMixin {
      * Do something fancy when the profile picture is uploaded.
      */
     public async onProfilePictureUploaded(event: any): Promise<void> {
+        EventBus.emit('loading');
         // If the file is bad, reject it!
         if (!(await this.$validator.validate('vehicleProfilePicture'))) {
             this.$refs.profilePictureUploader.value = '';
@@ -94,7 +100,19 @@ export default class VehicleSettings extends VehicleMixin {
         const profilePicture: VehicleProfilePicture = new VehicleProfilePicture(this.vehicle.id, fileData, file.name, fileType);
         await this.$vehicleProfilePictureStore.uploadVehicleProfilePicture(this.vehicle, profilePicture);
 
-        this.$forceUpdate();
+        EventBus.emit('vehicleProfilePictureUploaded', this.vehicle);
+        EventBus.emit('loaded');
+
+        // Update the screen and let the user delete the profile picture if they want.
+        this.profilePicture = profilePicture;
+    }
+
+    public async onDeleteClick() {
+        EventBus.emit('loading');
+        await this.$vehicleProfilePictureStore.deleteVehicleProfilePicture(this.vehicle);
+        this.profilePicture = null;
+        EventBus.emit('vehicleProfilePictureDeleted', this.vehicle);
+        EventBus.emit('loaded');
     }
 }
 </script>

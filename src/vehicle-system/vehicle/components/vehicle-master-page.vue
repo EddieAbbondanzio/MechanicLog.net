@@ -214,6 +214,20 @@ export default class VehicleMasterPage extends VehicleMixin {
         this.$forceUpdate();
 
         this.$watch('$route', this.onPageChange);
+
+        // When the profile picure is deleted, update it.
+        EventBus.on('vehicleProfilePictureDeleted', async (vehicle: Vehicle) => {
+            if (this.vehicle.id === vehicle.id) {
+                this.vehicleProfilePicture = null;
+            }
+        });
+
+        // When a profile picture is uploaded, show it.
+        EventBus.on('vehicleProfilePictureUploaded', async (vehicle: Vehicle) => {
+            if (this.vehicle.id === vehicle.id) {
+                this.vehicleProfilePicture = await this.$vehicleProfilePictureStore.getVehicleProfilePicture(this.vehicle);
+            }
+        });
     }
 
     public async onPageChange(index: number) {
