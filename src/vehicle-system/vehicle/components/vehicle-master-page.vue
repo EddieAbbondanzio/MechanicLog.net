@@ -48,16 +48,6 @@
         background-color: $gray-300 !important;
     }
 }
-
-.vehicle-profile-picture-container {
-    overflow: hidden;
-    height: 120px;
-    width: 120px;
-
-    img {
-        height: 100%;
-    }
-}
 </style>
 
 <template>
@@ -80,23 +70,7 @@
                 <div class="col-12 d-flex flex-row align-items-center">
                     <!-- Car Picture -->
                     <div class="d-inline-block pr-4">
-                        <div
-                            class="rounded-circle border d-flex flex-row align-items-center justify-content-center bg-white"
-                            style="height: 120px; width: 120px;"
-                        >
-                            <material-icon
-                                icon="directions_car"
-                                color="secondary"
-                                size="xl"
-                                v-if="vehicleProfilePicture == null"
-                            />
-                            <div
-                                class="rounded-circle vehicle-profile-picture-container d-flex flex-row align-items-center justify-content-center"
-                                v-else
-                            >
-                                <img :src="vehicleProfilePicture.data">
-                            </div>
-                        </div>
+                        <vehicle-picture :profilePicture="vehicleProfilePicture"/>
                     </div>
                     <div>
                         <h1 class="pb-0 mb-0">{{ vehicle.name }}</h1>
@@ -150,6 +124,7 @@ import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { EventBus } from '@/core/event/event-bus';
 import { config } from '../../../../config';
 import { VehicleProfilePicture } from '../entities/vehicle-profile-picture';
+import VehiclePicture from '@/vehicle-system/vehicle/components/vehicle-picture.vue';
 
 /**
  * Maintenance history page.
@@ -162,6 +137,7 @@ import { VehicleProfilePicture } from '../entities/vehicle-profile-picture';
         ErrorPopup,
         PageContent,
         LoadingBar,
+        VehiclePicture,
     },
 })
 export default class VehicleMasterPage extends VehicleMixin {
