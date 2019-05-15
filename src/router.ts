@@ -5,6 +5,7 @@ import { User } from './user-system/entities/user';
 import { vehicleRoutes } from './vehicle-system/routes';
 import { userRoutes } from './user-system/routes';
 import { supportRoutes } from './support/routes';
+import { EventBus } from './core/event/event-bus';
 
 Vue.use(Router);
 
@@ -18,6 +19,9 @@ const router: Router = new Router({
 
 // Route guard for logged in users.
 router.beforeEach(async (to, from, next) => {
+    // Cancel loading bar
+    EventBus.emit('loaded');
+
     if (to.meta.disabled) {
         next({
             name: 'home',

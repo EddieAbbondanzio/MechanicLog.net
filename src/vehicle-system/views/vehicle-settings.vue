@@ -24,8 +24,20 @@
                 </b-form-group>
 
                 <b-form-group v-if="profilePicture != null">
-                    {{ profilePicture.fileName }}
-                    <b-btn variant="danger" @click="onDeleteClick">Delete</b-btn>
+                    <div class="d-flex flex-row">
+                        <div>hi</div>
+
+                        <!-- File Name -->
+                        <div class="d-flex flex-column justify-content-center">
+                            <h5>{{ profilePicture.fileName }}</h5>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="pl-3 d-flex flex-column">
+                            <a href="#" class="text-primary">Upload Photo</a>
+                            <a href="#" class="text-danger" @click="onDeleteClick">Delete</a>
+                        </div>
+                    </div>
                 </b-form-group>
             </b-form>
         </card-container>
