@@ -98,7 +98,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import AlertMessage from '@/core/components/alert-message.vue';
 import { UserPasswordReset } from '@/user-system/services/auth/user-password-reset';
-import { UserMixin } from '@/user-system/user-mixin';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { ThemeColor } from '@/core/components/theme-color';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';

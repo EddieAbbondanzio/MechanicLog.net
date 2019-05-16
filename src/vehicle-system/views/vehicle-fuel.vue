@@ -99,12 +99,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CardContainer from '@/core/components/cards/card-container.vue';
-import { FuelTrip } from '@/vehicle-system/vehicle/entities/fuel-trip';
-import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
-import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { FuelTrip } from '@/vehicle-system/entities/fuel-trip';
+import { VehicleMixin } from '@/vehicle-system/mixins/vehicle-mixin';
+import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import AddFuelTripPopup from '@/vehicle-system/vehicle/components/popups/add-fuel-trip-popup.vue';
-import DeleteFuelTripConfirmationPopup from '@/vehicle-system/vehicle/components/popups/delete-fuel-trip-confirmation-popup.vue';
+import AddFuelTripPopup from '@/vehicle-system/components/popups/add-fuel-trip-popup.vue';
+import DeleteFuelTripConfirmationPopup from '@/vehicle-system/components/popups/delete-fuel-trip-confirmation-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
 import StatCard from '@/core/components/cards/stat-card.vue';
 

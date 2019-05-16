@@ -105,7 +105,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { UserFeedbackType } from '@/user-system/entities/user-feedback-type';
-import { UserMixin } from '@/user-system/user-mixin';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { UserFeedback } from '@/user-system/entities/user-feedback';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import LoadingBar from '@/core/components/ux/loading-bar.vue';

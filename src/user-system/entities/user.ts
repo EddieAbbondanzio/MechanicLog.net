@@ -16,6 +16,11 @@ export class User {
     public authToken: string;
 
     /**
+     * The unique ID of the user.
+     */
+    public readonly id: number;
+
+    /**
      * The full name of the user.
      */
     public name: string;
@@ -47,7 +52,8 @@ export class User {
      * @param email The email address of the user.
      * @param isVerified If the user is verified.
      */
-    constructor(options: { authToken: string; name: string; username: string; email: string; isVerified: boolean }) {
+    constructor(options: { id: number; authToken: string; name: string; username: string; email: string; isVerified: boolean }) {
+        this.id = options.id;
         this.authToken = options.authToken;
         this.name = options.name;
         this.email = options.email;
@@ -72,6 +78,6 @@ export class User {
      * @param raw The raw user object.
      */
     public static fromRaw(token: string, raw: any): User {
-        return new User({ authToken: token, name: raw.name, email: raw.email, username: raw.username, isVerified: raw.isVerified });
+        return new User({ authToken: token, id: raw.id, name: raw.name, email: raw.email, username: raw.username, isVerified: raw.isVerified });
     }
 }

@@ -65,7 +65,6 @@ import FeatureShowcase from '@/public/components/feature-showcase.vue';
 import MembershipPlans from '@/public/components/membership-plans.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { CookieStorage } from '../../core/cookie-storage';
-import { UserMixin } from '../../user-system/user-mixin';
 import CardContainer from '@/core/components/cards/card-container.vue';
 
 @Component({
@@ -76,5 +75,5 @@ import CardContainer from '@/core/components/cards/card-container.vue';
         CardContainer,
     },
 })
-export default class Home extends UserMixin {}
+export default class Home extends Vue {}
 </script>

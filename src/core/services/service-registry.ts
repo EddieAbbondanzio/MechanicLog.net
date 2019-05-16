@@ -3,19 +3,19 @@ import { Dictionary } from '../common/dictionary';
 import { ServiceType } from './service-type';
 import { AuthService } from '@/user-system/services/auth/auth-service';
 import { UserService } from '@/user-system/services/user/user-service';
-import { MechanicService } from '@/vehicle-system/mechanic/services/mechanic-service';
-import { VehicleService } from '@/vehicle-system/vehicle/services/vehicle-service';
+import { MechanicService } from '@/vehicle-system/services/mechanic-service';
+import { VehicleService } from '@/vehicle-system/services/vehicle-service';
 import { Store } from '../store/store';
-import { VehicleMakeService } from '@/vehicle-system/vehicle/services/vehicle-make-service';
-import { VehicleModelService } from '@/vehicle-system/vehicle/services/vehicle-model-service';
+import { VehicleMakeService } from '@/vehicle-system/services/vehicle-make-service';
+import { VehicleModelService } from '@/vehicle-system/services/vehicle-model-service';
 import { SubscriptionService } from '@/subscription-system/services/subscription-service';
 import { SubscriptionPlanService } from '@/subscription-system/services/subscription-plan-service';
-import { VehiclePurchaseInfoService } from '@/vehicle-system/vehicle/services/vehicle-purchase-info-service';
-import { FuelTripService } from '@/vehicle-system/vehicle/services/fuel-trip-service';
-import { MaintenanceTagService } from '@/vehicle-system/vehicle/services/maintenance-tag-service';
-import { MaintenanceService } from '@/vehicle-system/vehicle/services/maintenance-service';
+import { VehiclePurchaseInfoService } from '@/vehicle-system/services/vehicle-purchase-info-service';
+import { FuelTripService } from '@/vehicle-system/services/fuel-trip-service';
+import { MaintenanceTagService } from '@/vehicle-system/services/maintenance-tag-service';
+import { MaintenanceService } from '@/vehicle-system/services/maintenance-service';
 import { ContactService } from '@/support/services/contact-service';
-import { VehicleProfilePictureService } from '@/vehicle-system/vehicle/services/vehicle-profile-picture-service';
+import { VehicleProfilePictureService } from '@/vehicle-system/services/vehicle-profile-picture-service';
 
 /**
  * Helper to locate, and register services for use later on.

@@ -1,17 +1,17 @@
 import { StoreModule } from './store-module';
 import { Dictionary } from '../common/dictionary';
-import { UserStore } from '@/user-system/user-store';
-import { MechanicStore } from '@/vehicle-system/mechanic/mechanic-store';
-import { VehicleStore } from '@/vehicle-system/vehicle/store/vehicle-store';
+import { UserStore } from '@/user-system/store/user-store';
+import { MechanicStore } from '@/vehicle-system/store/mechanic-store';
+import { VehicleStore } from '@/vehicle-system/store/vehicle-store';
 import { config } from '../../../config';
-import { VehicleMakeStore } from '@/vehicle-system/vehicle/store/vehicle-make-store';
-import { VehicleModelStore } from '@/vehicle-system/vehicle/store/vehicle-model-store';
-import { SubscriptionStore } from '@/subscription-system/subscription-store';
-import { VehiclePurchaseInfoStore } from '@/vehicle-system/vehicle/store/vehicle-purchase-info-store';
-import { FuelTripStore } from '@/vehicle-system/vehicle/store/fuel-trip-store';
-import { MaintenanceStore } from '@/vehicle-system/vehicle/store/maintenance-store';
-import { ContactStore } from '@/support/contact-store';
-import { VehicleProfilePictureStore } from '@/vehicle-system/vehicle/store/vehicle-profile-picture-store';
+import { VehicleMakeStore } from '@/vehicle-system/store/vehicle-make-store';
+import { VehicleModelStore } from '@/vehicle-system/store/vehicle-model-store';
+import { SubscriptionStore } from '@/subscription-system/store/subscription-store';
+import { VehiclePurchaseInfoStore } from '@/vehicle-system/store/vehicle-purchase-info-store';
+import { FuelTripStore } from '@/vehicle-system/store/fuel-trip-store';
+import { MaintenanceStore } from '@/vehicle-system/store/maintenance-store';
+import { ContactStore } from '@/support/store/contact-store';
+import { VehicleProfilePictureStore } from '@/vehicle-system/store/vehicle-profile-picture-store';
 
 /**
  * State store for managing data from the backend.

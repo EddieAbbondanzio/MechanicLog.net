@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import AlertMessage from '@/core/components/alert-message.vue';
-import { UserMixin } from '@/user-system/user-mixin';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { ThemeColor } from '@/core/components/theme-color';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { EventBus } from '../../core/event/event-bus';

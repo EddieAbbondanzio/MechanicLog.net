@@ -91,7 +91,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { EventBus } from '../../core/event/event-bus';
-import { ContactMixin } from '@/support/contact-mixin.ts';
+import { ContactMixin } from '@/support/mixins/contact-mixin';
 import { ContactMessage } from '../entities/contact-message';
 import AlertMessage from '@/core/components/alert-message.vue';
 

@@ -151,7 +151,7 @@ import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
 import { Nullable } from '@/core/common/monads/nullable';
-import { UserMixin } from '@/user-system/user-mixin';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 import * as HttpStatusCodes from 'http-status-codes';
 import PageContent from '@/core/components/layout/page-content.vue';
 import { EventBus } from '@/core/event/event-bus';

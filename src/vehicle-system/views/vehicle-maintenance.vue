@@ -71,18 +71,18 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
-import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { VehicleMixin } from '@/vehicle-system/mixins/vehicle-mixin';
+import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import { Maybe } from '@/core/common/monads/maybe';
 import { Nullable } from '@/core/common/monads/nullable';
 import CardContainer from '@/core/components/cards/card-container.vue';
-import VehicleDetailsCard from '@/vehicle-system/vehicle/components/cards/vehicle-details-card.vue';
+import VehicleDetailsCard from '@/vehicle-system/components/cards/vehicle-details-card.vue';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import { EventBus } from '@/core/event/event-bus';
-import AddMaintenancePopup from '@/vehicle-system/vehicle/components/popups/add-maintenance-popup.vue';
-import DeleteMaintenancePopup from '@/vehicle-system/vehicle/components/popups/delete-maintenance-popup.vue';
-import { Maintenance } from '../vehicle/entities/maintenance';
+import AddMaintenancePopup from '@/vehicle-system/components/popups/add-maintenance-popup.vue';
+import DeleteMaintenancePopup from '@/vehicle-system/components/popups/delete-maintenance-popup.vue';
+import { Maintenance } from '../entities/maintenance/maintenance';
 
 /**
  * Maintenance history page.

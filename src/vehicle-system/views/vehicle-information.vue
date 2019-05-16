@@ -23,12 +23,12 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import VehicleDetailsCard from '@/vehicle-system/vehicle/components/cards/vehicle-details-card.vue';
-import VehiclePurchaseInfoCard from '@/vehicle-system/vehicle/components/cards/vehicle-purchase-info-card.vue';
+import VehicleDetailsCard from '@/vehicle-system/components/cards/vehicle-details-card.vue';
+import VehiclePurchaseInfoCard from '@/vehicle-system/components/cards/vehicle-purchase-info-card.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
-import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
-import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
-import { VehicleMixin } from '../vehicle/vehicle-mixin';
+import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
+import { VehiclePurchaseInfo } from '@/vehicle-system/entities/vehicle/vehicle-purchase-info';
+import { VehicleMixin } from '../mixins/vehicle-mixin';
 import { EventBus } from '@/core/event/event-bus';
 import { Nullable } from '@/core/common/monads/nullable';
 

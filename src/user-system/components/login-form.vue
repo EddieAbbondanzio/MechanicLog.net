@@ -78,7 +78,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import { UserMixin } from '@/user-system/user-mixin';
+import { UserMixin } from '@/user-system/mixins/user-mixin';
 import { User } from '@/user-system/entities/user';
 import AlertMessage from '@/core/components/alert-message.vue';
 import { Nullable } from '@/core/common/monads/nullable';

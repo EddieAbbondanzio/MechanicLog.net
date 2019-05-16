@@ -12,8 +12,6 @@ user-store
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LoginForm from '@/user-system/components/login-form.vue';
-import { UserMixin } from '@/user-system/user-mixin';
-
 /**
  * Login page to log in a user
  */
@@ -22,7 +20,7 @@ import { UserMixin } from '@/user-system/user-mixin';
         LoginForm,
     },
 })
-export default class Login extends UserMixin {
+export default class Login extends Vue {
     /**
      * On a successful login, redirect to the dashboard.
      */

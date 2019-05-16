@@ -78,17 +78,17 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
+import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import AddVehiclePopup from '@/vehicle-system/vehicle/components/popups/add-vehicle-popup.vue';
-import { VehicleMixin } from '@/vehicle-system/vehicle/vehicle-mixin';
+import AddVehiclePopup from '@/vehicle-system/components/popups/add-vehicle-popup.vue';
+import { VehicleMixin } from '@/vehicle-system/mixins/vehicle-mixin';
 import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
 import { User } from '@/user-system/entities/user';
 import ToolBar from '../components/tool-bar/tool-bar.vue';
 import PageContent from '@/core/components/layout/page-content.vue';
 import { EventBus } from '@/core/event/event-bus';
-import DeleteVehicleConfirmPopup from '@/vehicle-system/vehicle/components/popups/delete-vehicle-confirm-popup.vue';
+import DeleteVehicleConfirmPopup from '@/vehicle-system/components/popups/delete-vehicle-confirm-popup.vue';
 import { UnitSystem } from '@/vehicle-system/common/unit-system';
 
 /**

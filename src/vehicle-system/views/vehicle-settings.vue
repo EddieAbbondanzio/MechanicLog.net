@@ -47,13 +47,14 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import CardContainer from '@/core/components/cards/card-container.vue';
-import { Vehicle } from '@/vehicle-system/vehicle/entities/vehicle';
-import { VehiclePurchaseInfo } from '@/vehicle-system/vehicle/entities/vehicle-purchase-info';
-import { VehicleMixin } from '../vehicle/vehicle-mixin';
+import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
+import { VehiclePurchaseInfo } from '@/vehicle-system/entities/vehicle/vehicle-purchase-info';
+import { VehicleMixin } from '../mixins/vehicle-mixin';
 import { EventBus } from '@/core/event/event-bus';
 import { Nullable } from '@/core/common/monads/nullable';
 import { FileUtils } from '@/core/common/utils/file-utils';
-import { VehicleProfilePicture } from '../vehicle/entities/vehicle-profile-picture';
+import { VehicleProfilePicture } from '../entities/vehicle/vehicle-profile-picture';
+import { User } from '../../user-system/entities/user';
 
 @Component({
     name: 'vehicle-information',
@@ -109,7 +110,7 @@ export default class VehicleSettings extends VehicleMixin {
 
         const fileData = await FileUtils.toBase64(file);
 
-        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture(this.vehicle.id, fileData, file.name, fileType);
+        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture(User.CURRENT!.id, this.vehicle.id, fileData, file.name, fileType);
         await this.$vehicleProfilePictureStore.uploadVehicleProfilePicture(this.vehicle, profilePicture);
 
         EventBus.emit('vehicleProfilePictureUploaded', this.vehicle);

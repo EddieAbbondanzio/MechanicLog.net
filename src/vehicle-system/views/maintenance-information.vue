@@ -73,14 +73,14 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import CardContainer from '@/core/components/cards/card-container.vue';
-import { Maintenance } from '../vehicle/entities/maintenance';
-import { VehicleMixin } from '../vehicle/vehicle-mixin';
+import { Maintenance } from '@/vehicle-system/entities/maintenance/maintenance';
+import { VehicleMixin } from '@/vehicle-system/mixins/vehicle-mixin';
 import { EventBus } from '@/core/event/event-bus';
 import { Nullable } from '../../core/common/monads/nullable';
-import { Vehicle } from '../vehicle/entities/vehicle';
-import MaintenancePartsTable from '@/vehicle-system/vehicle/components/tables/maintenance-parts-table.vue';
-import MaintenanceLaborTable from '@/vehicle-system/vehicle/components/tables/maintenance-labor-table.vue';
-import MaintenanceOthersTable from '@/vehicle-system/vehicle/components/tables/maintenance-others-table.vue';
+import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
+import MaintenancePartsTable from '@/vehicle-system/components/tables/maintenance-parts-table.vue';
+import MaintenanceLaborTable from '@/vehicle-system/components/tables/maintenance-labor-table.vue';
+import MaintenanceOthersTable from '@/vehicle-system/components/tables/maintenance-others-table.vue';
 
 @Component({
     name: 'maintenance',
