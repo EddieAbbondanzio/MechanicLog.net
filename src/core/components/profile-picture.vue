@@ -79,7 +79,7 @@ export default class ProfilePicture extends Vue {
     /**
      * The material icon to show if the profile picture is empty.
      */
-    @Prop()
+    @Prop({ default: null })
     public icon!: Nullable<string>;
 
     /**

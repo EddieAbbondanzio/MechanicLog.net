@@ -70,7 +70,7 @@
                 <div class="col-12 d-flex flex-row align-items-center">
                     <!-- Car Picture -->
                     <div class="d-inline-block pr-4">
-                        <profile-picture :image="vehicleProfilePicture"/>
+                        <profile-picture :image="vehicleProfilePicture" icon="directions_car"/>
                     </div>
                     <div>
                         <h1 class="pb-0 mb-0">{{ vehicle.name }}</h1>

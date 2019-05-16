@@ -12,32 +12,43 @@
                 <b-form-group label="Vehicle Profile Picture">
                     <input
                         type="file"
-                        class="form-control-file"
+                        class="d-none"
                         ref="profilePictureUploader"
                         name="vehicleProfilePicture"
                         v-validate.reject="'image|size:1000'"
                         @input="onProfilePictureUploaded"
                     >
+                    <div class="d-flex flex-row">
+                        <div>
+                            <profile-picture
+                                :image="profilePicture"
+                                size="md"
+                                icon="directions_car"
+                            />
+                        </div>
+
+                        <!-- File Name -->
+                        <div class="d-flex flex-column justify-content-center px-3">
+                            <span
+                                v-if="profilePicture != null"
+                                class="text-muted pb-1"
+                            >{{ profilePicture.fileName }}</span>
+
+                            <!-- Buttons -->
+                            <div class="d-flex flex-row align-items-center">
+                                <b-btn
+                                    variant="muted"
+                                    class="mr-3"
+                                    @click="onUploadClick"
+                                >Upload Photo</b-btn>
+                                <b-btn variant="outline-danger" @click="onDeleteClick">Delete</b-btn>
+                            </div>
+                        </div>
+                    </div>
+
                     <b-form-invalid-feedback
                         class="d-block"
                     >{{ errors.first('vehicleProfilePicture') }}</b-form-invalid-feedback>
-                </b-form-group>
-
-                <b-form-group v-if="profilePicture != null">
-                    <div class="d-flex flex-row">
-                        <div>hi</div>
-
-                        <!-- File Name -->
-                        <div class="d-flex flex-column justify-content-center">
-                            <h5>{{ profilePicture.fileName }}</h5>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="pl-3 d-flex flex-column">
-                            <a href="#" class="text-primary">Upload Photo</a>
-                            <a href="#" class="text-danger" @click="onDeleteClick">Delete</a>
-                        </div>
-                    </div>
                 </b-form-group>
             </b-form>
         </card-container>
@@ -55,11 +66,13 @@ import { Nullable } from '@/core/common/monads/nullable';
 import { FileUtils } from '@/core/common/utils/file-utils';
 import { VehicleProfilePicture } from '../entities/vehicle/vehicle-profile-picture';
 import { User } from '../../user-system/entities/user';
+import ProfilePicture from '@/core/components/profile-picture.vue';
 
 @Component({
     name: 'vehicle-information',
     components: {
         CardContainer,
+        ProfilePicture,
     },
 })
 export default class VehicleSettings extends VehicleMixin {
@@ -86,6 +99,14 @@ export default class VehicleSettings extends VehicleMixin {
         });
 
         this.profilePicture = await this.$vehicleProfilePictureStore.getVehicleProfilePicture(this.vehicle);
+    }
+
+    /**
+     * User clicked on the upload button. Upload their profile picture
+     * of the vehicle.
+     */
+    public async onUploadClick() {
+        this.$refs.profilePictureUploader.click();
     }
 
     /**
