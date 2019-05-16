@@ -19,7 +19,13 @@ export class VehicleProfilePictureService extends Service {
     public async getVehicleProfilePicture(user: User, vehicle: Vehicle): Promise<Nullable<VehicleProfilePicture>> {
         const result = await this._httpClient.get(`/v1/vehicle/${vehicle.id}/profile-picture`, user.authToken);
 
-        return new VehicleProfilePicture(result.data.id, result.data.vehicleId, result.data.data, result.data.fileName, result.data.fileType);
+        return new VehicleProfilePicture({
+            id: result.data.id,
+            vehicleId: result.data.vehicleId,
+            data: result.data.data,
+            fileName: result.data.fileName,
+            fileType: result.data.fileType,
+        });
     }
 
     /**

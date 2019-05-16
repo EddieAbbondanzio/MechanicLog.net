@@ -70,7 +70,7 @@
                 <div class="col-12 d-flex flex-row align-items-center">
                     <!-- Car Picture -->
                     <div class="d-inline-block pr-4">
-                        <vehicle-picture :profilePicture="vehicleProfilePicture"/>
+                        <profile-picture :image="vehicleProfilePicture"/>
                     </div>
                     <div>
                         <h1 class="pb-0 mb-0">{{ vehicle.name }}</h1>
@@ -123,7 +123,7 @@ import { VehiclePurchaseInfo } from '@/vehicle-system/entities/vehicle/vehicle-p
 import LoadingBar from '@/core/components/ux/loading-bar.vue';
 import { EventBus } from '@/core/event/event-bus';
 import { VehicleProfilePicture } from '../entities/vehicle/vehicle-profile-picture';
-import VehiclePicture from '@/vehicle-system/components/vehicle-picture.vue';
+import ProfilePicture from '@/core/components/profile-picture.vue';
 
 /**
  * Maintenance history page.
@@ -136,7 +136,7 @@ import VehiclePicture from '@/vehicle-system/components/vehicle-picture.vue';
         ErrorPopup,
         PageContent,
         LoadingBar,
-        VehiclePicture,
+        ProfilePicture,
     },
 })
 export default class VehicleMasterPage extends VehicleMixin {

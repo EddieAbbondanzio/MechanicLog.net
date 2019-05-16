@@ -110,7 +110,12 @@ export default class VehicleSettings extends VehicleMixin {
 
         const fileData = await FileUtils.toBase64(file);
 
-        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture(User.CURRENT!.id, this.vehicle.id, fileData, file.name, fileType);
+        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture({
+            vehicleId: this.vehicle.id,
+            data: fileData,
+            fileName: file.name,
+            fileType: fileType,
+        });
         await this.$vehicleProfilePictureStore.uploadVehicleProfilePicture(this.vehicle, profilePicture);
 
         EventBus.emit('vehicleProfilePictureUploaded', this.vehicle);

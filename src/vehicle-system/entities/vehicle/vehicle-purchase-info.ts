@@ -1,7 +1,12 @@
 import { Nullable } from '@/core/common/monads/nullable';
 import { DateUtils } from '@/core/common/utils/date-utils';
+import { VehicleResource } from '@/vehicle-system/common/vehicle-resource';
 
-export class VehiclePurchaseInfo {
+/**
+ * Purchase information about the state of the vehicle when the user
+ * first bought it.
+ */
+export class VehiclePurchaseInfo implements VehicleResource {
     /**
      * The unique id of the purchase info
      */
@@ -54,12 +59,6 @@ export class VehiclePurchaseInfo {
         this.purchaseOdometer = purchaseMileage;
         this.purchasePrice = purchasePrice;
         this.sellerName = sellerName;
-    }
-
-    public clone(): VehiclePurchaseInfo {
-        const c = new VehiclePurchaseInfo(this.vehicleId, this.purchaseDate, this.purchaseOdometer, this.purchasePrice, this.sellerName);
-        c.id = this.id;
-        return c;
     }
 
     /**

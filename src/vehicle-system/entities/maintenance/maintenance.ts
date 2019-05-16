@@ -11,12 +11,6 @@ export class Maintenance {
     public id!: number;
 
     /**
-     * The mechanic that performed the work.
-     */
-    // @foreignKeyColumn(Mechanic)
-    // public mechanicId!: number;
-
-    /**
      * The date the maintenace was performed.
      */
     public date!: Date;

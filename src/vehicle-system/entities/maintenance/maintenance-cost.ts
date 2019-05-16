@@ -1,4 +1,4 @@
-import { MaintenanceCostCalculationMethod } from './maintenance-cost-calculation-method';
+import { MaintenanceCostCalculationMethod } from '../../common/maintenance-cost-calculation-method';
 
 /**
  * Entity to hold the cost data of a maintenance event.

@@ -186,7 +186,7 @@
 import PopupContainer from '@/core/components/popup/popup-container.vue';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import { MaintenanceCostCalculationMethod } from '@/vehicle-system/entities/maintenance/maintenance-cost-calculation-method';
+import { MaintenanceCostCalculationMethod } from '@/vehicle-system/common/maintenance-cost-calculation-method';
 import { Nullable } from '@/core/common/monads/nullable';
 import { MaintenanceLine } from '@/vehicle-system/entities/maintenance/maintenance-line';
 import { MaintenanceLineType } from '@/vehicle-system/common/maintenance-line-type';
