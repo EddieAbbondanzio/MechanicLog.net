@@ -38,8 +38,8 @@ export class MaintenanceStore extends StoreModule {
     constructor() {
         super();
 
-        this._maintenanceService = ServiceRegistry.resolve(ServiceType.Maintenance);
-        this._maintenanceTagService = ServiceRegistry.resolve(ServiceType.MaintenanceTag);
+        this._maintenanceService = ServiceRegistry.resolve('maintenance');
+        this._maintenanceTagService = ServiceRegistry.resolve('maintenanceTag');
         this._maintenanceCache = {};
         this._maintenanceTagCache = null;
     }

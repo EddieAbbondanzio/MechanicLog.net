@@ -8,6 +8,8 @@ import { EventBus } from '@/core/event/event-bus';
  * Service for retrieving fuel trips from the backend.
  */
 export class FuelTripService extends Service {
+    public readonly type = 'fuelTrip';
+
     /**
      * Get all the fuel trips of a vehicle.
      * @param user The owner.

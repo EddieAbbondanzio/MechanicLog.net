@@ -6,6 +6,8 @@ import { User } from '@/user-system/entities/user';
  * Service for retrieving vehicle makes from the backend.
  */
 export class VehicleMakeService extends Service {
+    public readonly type = 'vehicleMake';
+
     /**
      * Get all the makes from the backend.
      * @param user The active user.

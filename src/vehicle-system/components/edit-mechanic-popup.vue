@@ -168,8 +168,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import PopupContainer from '@/core/components/popup/popup-container.vue';
 import MaterialIcon from '@/core/components/material-icon.vue';
 import ProgressTracker from '@/core/components/ux/progress-tracker.vue';
-import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
-import { MechanicType } from '@/vehicle-system/mechanic/entities/mechanic-type';
+import { Mechanic } from '@/vehicle-system/entities/mechanic';
+import { MechanicType } from '@/vehicle-system/common/mechanic-type';
 
 /**
  * Popup to create a new mechanic for the user.

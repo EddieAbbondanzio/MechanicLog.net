@@ -44,8 +44,8 @@ export class SubscriptionStore extends StoreModule {
      */
     constructor() {
         super();
-        this._subscriptionService = ServiceRegistry.resolve(ServiceType.Subscription);
-        this._subscriptionPlanService = ServiceRegistry.resolve(ServiceType.SubscriptionPlan);
+        this._subscriptionService = ServiceRegistry.resolve('subscription');
+        this._subscriptionPlanService = ServiceRegistry.resolve('subscriptionPlan');
         this._subscriptionCache = null;
         this._planCache = null;
     }

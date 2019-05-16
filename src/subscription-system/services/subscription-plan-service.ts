@@ -6,6 +6,8 @@ import { Either } from '@/core/common/monads/either';
  * Subscription plan service client.
  */
 export class SubscriptionPlanService extends Service {
+    public readonly type = 'subscriptionPlan';
+
     /**
      * Get all of the subscriptions from the backend.
      */

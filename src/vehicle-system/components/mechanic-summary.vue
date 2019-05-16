@@ -111,11 +111,11 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import MaterialIcon from '@/core/components/material-icon.vue';
-import { Mechanic } from '@/vehicle-system/mechanic/entities/mechanic';
-import { MechanicType } from '@/vehicle-system/mechanic/entities/mechanic-type';
+import { Mechanic } from '@/vehicle-system/entities/mechanic';
+import { MechanicType } from '@/vehicle-system/common/mechanic-type';
 import EditMechanicPopup from '@/vehicle-system/mechanic/components/edit-mechanic-popup.vue';
 import DeleteMechanicConfirmPopup from '@/vehicle-system/mechanic/components/delete-mechanic-confirm-popup.vue';
-import { MechanicMixin } from '@/vehicle-system/mechanic/mechanic-mixin';
+import { MechanicMixin } from '@/vehicle-system/mixins/mechanic-mixin';
 
 /**
  * Summary of a individual mechanic.

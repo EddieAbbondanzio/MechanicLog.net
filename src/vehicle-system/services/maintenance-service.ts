@@ -7,6 +7,8 @@ import { User } from '@/user-system/entities/user';
  * Service for mananging maintenance records from the backend.
  */
 export class MaintenanceService extends Service {
+    public readonly type = 'maintenance';
+
     /**
      * Get the maintenance crecords of a vehcile.
      * @param vehicle THe vehicle to get htem for.

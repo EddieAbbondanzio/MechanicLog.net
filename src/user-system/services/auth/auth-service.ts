@@ -12,6 +12,8 @@ import { Maybe } from '@/core/common/monads/maybe';
  * Service to log in users with the back end.
  */
 export class AuthService extends Service {
+    public readonly type = 'auth';
+
     /**
      * Log in a user using their credentials.
      * @param email The email of the user

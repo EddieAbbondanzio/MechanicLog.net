@@ -17,7 +17,7 @@ export class VehiclePurchaseInfoStore extends StoreModule {
 
     constructor() {
         super();
-        this._vehiclePurchaseInfoService = ServiceRegistry.resolve(ServiceType.VehiclePurchaseInfo);
+        this._vehiclePurchaseInfoService = ServiceRegistry.resolve('vehiclePurchaseInfo');
         this._purchaseInfoCache = {};
     }
 

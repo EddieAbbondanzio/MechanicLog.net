@@ -29,7 +29,7 @@ export class MechanicStore extends StoreModule {
 
     constructor() {
         super();
-        this._mechanicService = ServiceRegistry.resolve(ServiceType.Mechanic);
+        this._mechanicService = ServiceRegistry.resolve('mechanic');
         this._mechanicCache = null;
     }
 

@@ -6,6 +6,8 @@ import { User } from '@/user-system/entities/user';
  * Service for getting maintenance tags from the backend.
  */
 export class MaintenanceTagService extends Service {
+    public readonly type = 'maintenanceTag';
+
     /**
      * Get all of the maintenance tags available.
      */

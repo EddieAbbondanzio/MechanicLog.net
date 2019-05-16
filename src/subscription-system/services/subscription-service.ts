@@ -9,6 +9,8 @@ import { User } from '@/user-system/entities/user';
  * Service for managing the user's subscription.
  */
 export class SubscriptionService extends Service {
+    public readonly type = 'subscription';
+
     /**
      * Get the subscription of the user.
      */

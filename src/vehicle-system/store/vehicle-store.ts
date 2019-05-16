@@ -35,7 +35,7 @@ export class VehicleStore extends StoreModule {
      */
     constructor() {
         super();
-        this._vehicleService = ServiceRegistry.resolve(ServiceType.Vehicle);
+        this._vehicleService = ServiceRegistry.resolve('vehicle');
         this._vehicleCache = null;
     }
 

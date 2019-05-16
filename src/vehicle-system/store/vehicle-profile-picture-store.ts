@@ -28,7 +28,7 @@ export class VehicleProfilePictureStore extends StoreModule {
 
     constructor() {
         super();
-        this._profilePictureService = ServiceRegistry.resolve(ServiceType.VehicleProfilePicture);
+        this._profilePictureService = ServiceRegistry.resolve('vehicleProfilePicture');
         this._cache = {};
     }
 

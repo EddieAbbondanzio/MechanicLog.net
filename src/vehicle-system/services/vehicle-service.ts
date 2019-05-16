@@ -9,6 +9,8 @@ import { UnitSystem } from '@/vehicle-system/common/unit-system';
  * Service for retrieving, and updating vehicles from the back end.
  */
 export class VehicleService extends Service {
+    public readonly type = 'vehicle';
+
     /**
      * Get a list of vehicles for a user.
      * @param user The user to get vehicles for.

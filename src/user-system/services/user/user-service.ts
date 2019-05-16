@@ -6,6 +6,8 @@ import { UserFeedback } from '@/user-system/entities/user-feedback';
  * Service for everything related to users.
  */
 export class UserService extends Service {
+    public readonly type = 'user';
+
     /**
      * Get the logged in user's info from their auth token.
      * @param authToken The auth token in use.

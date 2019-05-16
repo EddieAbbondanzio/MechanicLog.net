@@ -30,20 +30,20 @@ export class ServiceRegistry {
      * Initialize the registry for use.
      */
     public static initialize(): void {
-        this.register(ServiceType.Auth, new AuthService(Store.backendUrl));
-        this.register(ServiceType.User, new UserService(Store.backendUrl));
-        this.register(ServiceType.Mechanic, new MechanicService(Store.backendUrl));
-        this.register(ServiceType.Vehicle, new VehicleService(Store.backendUrl));
-        this.register(ServiceType.VehicleMake, new VehicleMakeService(Store.backendUrl));
-        this.register(ServiceType.VehicleModel, new VehicleModelService(Store.backendUrl));
-        this.register(ServiceType.VehiclePurchaseInfo, new VehiclePurchaseInfoService(Store.backendUrl));
-        this.register(ServiceType.VehicleProfilePicture, new VehicleProfilePictureService(Store.backendUrl));
-        this.register(ServiceType.Subscription, new SubscriptionService(Store.backendUrl));
-        this.register(ServiceType.SubscriptionPlan, new SubscriptionPlanService(Store.backendUrl));
-        this.register(ServiceType.FuelTrip, new FuelTripService(Store.backendUrl));
-        this.register(ServiceType.Maintenance, new MaintenanceService(Store.backendUrl));
-        this.register(ServiceType.MaintenanceTag, new MaintenanceTagService(Store.backendUrl));
-        this.register(ServiceType.Contact, new ContactService(Store.backendUrl));
+        this.register(new AuthService(Store.backendUrl));
+        this.register(new UserService(Store.backendUrl));
+        this.register(new MechanicService(Store.backendUrl));
+        this.register(new VehicleService(Store.backendUrl));
+        this.register(new VehicleMakeService(Store.backendUrl));
+        this.register(new VehicleModelService(Store.backendUrl));
+        this.register(new VehiclePurchaseInfoService(Store.backendUrl));
+        this.register(new VehicleProfilePictureService(Store.backendUrl));
+        this.register(new SubscriptionService(Store.backendUrl));
+        this.register(new SubscriptionPlanService(Store.backendUrl));
+        this.register(new FuelTripService(Store.backendUrl));
+        this.register(new MaintenanceService(Store.backendUrl));
+        this.register(new MaintenanceTagService(Store.backendUrl));
+        this.register(new ContactService(Store.backendUrl));
     }
 
     /**
@@ -71,7 +71,7 @@ export class ServiceRegistry {
      * @param type The symbol to register it under.
      * @param instance The instance to register.
      */
-    private static register<T extends Service>(type: ServiceType, instance: T): void {
-        this._store[type] = instance;
+    private static register<T extends Service>(instance: T): void {
+        this._store[instance.type] = instance;
     }
 }

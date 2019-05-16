@@ -41,9 +41,9 @@ export class UserStore extends StoreModule {
 
     constructor() {
         super();
-        this._userService = ServiceRegistry.resolve<UserService>(ServiceType.User);
-        this._authService = ServiceRegistry.resolve<AuthService>(ServiceType.Auth);
-        this._subscriptionService = ServiceRegistry.resolve<SubscriptionService>(ServiceType.Subscription);
+        this._userService = ServiceRegistry.resolve<UserService>('user');
+        this._authService = ServiceRegistry.resolve<AuthService>('auth');
+        this._subscriptionService = ServiceRegistry.resolve<SubscriptionService>('subscription');
     }
 
     /**

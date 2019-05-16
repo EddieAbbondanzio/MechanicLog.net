@@ -7,6 +7,8 @@ import { User } from '@/user-system/entities/user';
  * API consumer for the backend to get vehicle models.
  */
 export class VehicleModelService extends Service {
+    public readonly type = 'vehicleModel';
+
     /**
      * Get all the models for a vehicle make.
      * @param user The active user.

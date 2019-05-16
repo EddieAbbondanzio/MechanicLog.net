@@ -9,6 +9,8 @@ import { Nullable } from '@/core/common/monads/nullable';
  * from the backend.
  */
 export class VehicleProfilePictureService extends Service {
+    public readonly type = 'vehicleProfilePicture';
+
     /**
      * Get the profile picture of a user's vehicle.
      * @param user The active user.

@@ -5,11 +5,17 @@ import { ValidationError } from '../common/errors/validation-error';
 import { SubscriptionExpiredError } from '../common/errors/subscription-expired-error';
 import { AuthenticationError } from '../common/errors/authentication-error';
 import { NotFoundError } from '../common/errors/not-found-error';
+import { ServiceType } from './service-type';
 
 /**
  * Service abstraction for managing api end points.
  */
-export class Service {
+export abstract class Service {
+    /**
+     * The type of service it is.
+     */
+    public abstract readonly type: ServiceType;
+
     /**
      * The HTTP client for communicating with the API service.
      */

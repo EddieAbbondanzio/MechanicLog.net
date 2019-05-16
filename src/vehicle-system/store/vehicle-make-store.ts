@@ -23,7 +23,7 @@ export class VehicleMakeStore extends StoreModule {
 
     constructor() {
         super();
-        this._makeService = ServiceRegistry.resolve(ServiceType.VehicleMake);
+        this._makeService = ServiceRegistry.resolve('vehicleMake');
         this._makeCache = null;
     }
 

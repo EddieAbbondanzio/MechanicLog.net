@@ -18,7 +18,7 @@ export class ContactStore extends StoreModule {
 
     constructor() {
         super();
-        this._contactService = ServiceRegistry.resolve(ServiceType.Contact);
+        this._contactService = ServiceRegistry.resolve('contact');
     }
 
     /**

@@ -6,6 +6,8 @@ import { User } from '@/user-system/entities/user';
  * Service for retrieving, and updating vehicles from the backend.
  */
 export class MechanicService extends Service {
+    public readonly type = 'mechanic';
+
     /**
      * Get all mechanics for a user.
      * @param user The user to get mechanics for.

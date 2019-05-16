@@ -28,7 +28,7 @@ export class FuelTripStore extends StoreModule {
 
     constructor() {
         super();
-        this._service = ServiceRegistry.resolve(ServiceType.FuelTrip);
+        this._service = ServiceRegistry.resolve('fuelTrip');
         this._cache = {};
     }
 

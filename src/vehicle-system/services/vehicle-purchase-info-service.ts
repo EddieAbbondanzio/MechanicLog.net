@@ -8,6 +8,8 @@ import { User } from '@/user-system/entities/user';
  * Service for managing vehicle purchase info records from the back end.
  */
 export class VehiclePurchaseInfoService extends Service {
+    public readonly type = 'vehiclePurchaseInfo';
+
     /**
      * Get the purchase info of a specific vehicle.
      * @param vehicle The vehicle to get the purchase info of.
