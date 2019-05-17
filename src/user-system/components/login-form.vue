@@ -56,7 +56,7 @@
                     <input
                         v-model="rememberMe"
                         type="checkbox"
-                        class="form-check-input"
+                        class="form-check-input d-none"
                         id="remember-me-check-box"
                     >
                     <label
@@ -76,30 +76,30 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import { Component } from 'vue-property-decorator';
-import { UserMixin } from '@/user-system/mixins/user-mixin';
-import { User } from '@/user-system/entities/user';
-import AlertMessage from '@/core/components/alert-message.vue';
-import { Nullable } from '@/core/common/monads/nullable';
-import AutoComplete from '@/core/components/inputs/auto-complete.vue';
-import { AuthenticationError } from '@/core/common/errors/authentication-error';
-import { EventBus } from '../../core/event/event-bus';
-import { CookieStorage } from '@/core/cookie-storage';
-import CardContainer from '@/core/components/cards/card-container.vue';
-import MaterialIcon from '@/core/components/material-icon.vue';
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
+import { UserMixin } from "@/user-system/mixins/user-mixin";
+import { User } from "@/user-system/entities/user";
+import AlertMessage from "@/core/components/alert-message.vue";
+import { Nullable } from "@/core/common/monads/nullable";
+import AutoComplete from "@/core/components/inputs/auto-complete.vue";
+import { AuthenticationError } from "@/core/common/errors/authentication-error";
+import { EventBus } from "../../core/event/event-bus";
+import { CookieStorage } from "@/core/cookie-storage";
+import CardContainer from "@/core/components/cards/card-container.vue";
+import MaterialIcon from "@/core/components/material-icon.vue";
 
 /**
  * Login form to allow a user to sign in.
  */
 @Component({
-    name: 'login-form',
+    name: "login-form",
     components: {
         CardContainer,
         AlertMessage,
         AutoComplete,
-        MaterialIcon,
-    },
+        MaterialIcon
+    }
 })
 export default class LoginForm extends UserMixin {
     public $refs!: {
@@ -111,12 +111,12 @@ export default class LoginForm extends UserMixin {
     /**
      * The email of the user.
      */
-    public email: string = '';
+    public email: string = "";
 
     /**
      * The password of the user.
      */
-    public password: string = '';
+    public password: string = "";
 
     /**
      * If the user wants to save their login for re-use
@@ -126,23 +126,23 @@ export default class LoginForm extends UserMixin {
 
     public isLoading: boolean = false;
 
-    public message: string = '';
+    public message: string = "";
 
     /**
      * Initialize the error messages of the validator.
      */
     public created() {
         // Custom error messages.
-        this.$validator.localize('en', {
+        this.$validator.localize("en", {
             custom: {
                 loginEmail: {
-                    email: 'Email must be a valid email address.',
-                    required: 'Email address is required.',
+                    email: "Email must be a valid email address.",
+                    required: "Email address is required."
                 },
                 loginPassword: {
-                    required: 'Password is required.',
-                },
-            },
+                    required: "Password is required."
+                }
+            }
         });
     }
 
@@ -150,27 +150,29 @@ export default class LoginForm extends UserMixin {
      * Properties are assigned in created to prevent weird undefined errors.
      */
     public async mounted() {
-        this.email = '';
-        this.password = '';
+        this.email = "";
+        this.password = "";
         this.rememberMe = false;
 
-        if (CookieStorage.exists('auth')) {
-            EventBus.emit('loading');
+        if (CookieStorage.exists("auth")) {
+            EventBus.emit("loading");
             this.isLoading = true;
 
             try {
                 this.$refs.emailTextbox.disabled = true;
                 this.$refs.passwordTextbox.disabled = true;
 
-                const login = await this.$userStore.relogin(CookieStorage.get('auth'));
-                this.$emit('login', login);
+                const login = await this.$userStore.relogin(
+                    CookieStorage.get("auth")
+                );
+                this.$emit("login", login);
             } catch (error) {
-                CookieStorage.clear('auth');
+                CookieStorage.clear("auth");
             } finally {
                 this.$refs.emailTextbox.disabled = false;
                 this.$refs.passwordTextbox.disabled = false;
                 this.isLoading = false;
-                EventBus.emit('loaded');
+                EventBus.emit("loaded");
             }
         }
     }
@@ -186,21 +188,26 @@ export default class LoginForm extends UserMixin {
         }
 
         try {
-            EventBus.emit('loading');
+            EventBus.emit("loading");
             this.isLoading = true;
-            const u = await this.$userStore.login(this.email, this.password, this.rememberMe);
+            const u = await this.$userStore.login(
+                this.email,
+                this.password,
+                this.rememberMe
+            );
 
             // Propogate the event to the parent (page)
-            this.$emit('login', u);
+            this.$emit("login", u);
         } catch (error) {
             if (error instanceof AuthenticationError) {
-                this.message = 'Invalid email and/or password.';
+                this.message = "Invalid email and/or password.";
             } else {
-                this.message = 'An unknown error occured. Please try again later.';
+                this.message =
+                    "An unknown error occured. Please try again later.";
             }
         }
         this.isLoading = false;
-        EventBus.emit('loaded');
+        EventBus.emit("loaded");
     }
 }
 </script>

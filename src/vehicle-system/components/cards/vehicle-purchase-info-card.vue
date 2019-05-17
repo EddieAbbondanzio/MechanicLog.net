@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
-@import './public/bootstrap/_functions.scss';
-@import './public/bootstrap/_variables.scss';
+@import "./public/bootstrap/_functions.scss";
+@import "./public/bootstrap/_variables.scss";
 
 .vehicle-purchase-info-edit {
     &:hover {
@@ -67,30 +67,31 @@
 </template>
 
 <script lang="ts">
-import LoadingIcon from '@/core/components/ux/loading-icon.vue';
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import CardContainer from '@/core/components/cards/card-container.vue';
-import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
-import MaterialIcon from '@/core/components/material-icon.vue';
-import { VehicleMixin } from '@/vehicle-system/mixins/vehicle-mixin';
-import EditVehiclePopup from '@/vehicle-system/components/popups/edit-vehicle-popup.vue';
-import { VehiclePurchaseInfo } from '@/vehicle-system/entities/vehicle/vehicle-purchase-info';
-import { Nullable } from '@/core/common/monads/nullable';
-import { User } from '@/user-system/entities/user';
-import EditVehiclePurchaseInfoPopup from '@/vehicle-system/components/popups/edit-vehicle-purchase-info-popup.vue';
+import LoadingIcon from "@/core/components/ux/loading-icon.vue";
+import { Component, Vue, Prop } from "vue-property-decorator";
+import CardContainer from "@/core/components/cards/card-container.vue";
+import { Vehicle } from "@/vehicle-system/entities/vehicle/vehicle";
+import MaterialIcon from "@/core/components/material-icon.vue";
+import { VehicleMixin } from "@/vehicle-system/mixins/vehicle-mixin";
+import EditVehiclePopup from "@/vehicle-system/components/popups/edit-vehicle-popup.vue";
+import { VehiclePurchaseInfo } from "@/vehicle-system/entities/vehicle/vehicle-purchase-info";
+import { Nullable } from "@/core/common/monads/nullable";
+import { User } from "@/user-system/entities/user";
+import EditVehiclePurchaseInfoPopup from "@/vehicle-system/components/popups/edit-vehicle-purchase-info-popup.vue";
+import { EventBus } from "../../../core/event/event-bus";
 
 /**
  * Card that shows off the purchase information
  */
 @Component({
-    name: 'vehicle-purchase-info-card',
+    name: "vehicle-purchase-info-card",
     components: {
         CardContainer,
         MaterialIcon,
         EditVehiclePopup,
         EditVehiclePurchaseInfoPopup,
-        LoadingIcon,
-    },
+        LoadingIcon
+    }
 })
 export default class VehiclePurchaseInfoCard extends VehicleMixin {
     public $refs!: {
@@ -114,17 +115,25 @@ export default class VehiclePurchaseInfoCard extends VehicleMixin {
     }
 
     public async onEdit(purchaseInfo: VehiclePurchaseInfo): Promise<void> {
+        EventBus.emit("loading");
+
         if (this.purchaseInfo == null) {
-            throw new Error('No vehicle purchase info');
+            throw new Error("No vehicle purchase info");
         }
 
         if (purchaseInfo.id === 0) {
-            await this.$vehiclePurchaseInfoStore.addVehiclePurchaseInfo(this.vehicle, purchaseInfo);
-            this.$emit('edit', purchaseInfo);
+            await this.$vehiclePurchaseInfoStore.addVehiclePurchaseInfo(
+                this.vehicle,
+                purchaseInfo
+            );
         } else {
-            await this.$vehiclePurchaseInfoStore.updateVehiclePurchaseInfo(purchaseInfo);
-            this.$emit('edit', purchaseInfo);
+            await this.$vehiclePurchaseInfoStore.updateVehiclePurchaseInfo(
+                purchaseInfo
+            );
         }
+
+        this.$emit("edit", purchaseInfo);
+        EventBus.emit("loaded");
     }
 }
 </script>

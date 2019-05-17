@@ -31,7 +31,7 @@
                         <div class="d-flex flex-column justify-content-center px-3">
                             <span
                                 v-if="profilePicture != null"
-                                class="text-muted pb-1"
+                                class="text-dark pb-1"
                             >{{ profilePicture.fileName }}</span>
 
                             <!-- Buttons -->
@@ -56,24 +56,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import CardContainer from '@/core/components/cards/card-container.vue';
-import { Vehicle } from '@/vehicle-system/entities/vehicle/vehicle';
-import { VehiclePurchaseInfo } from '@/vehicle-system/entities/vehicle/vehicle-purchase-info';
-import { VehicleMixin } from '../mixins/vehicle-mixin';
-import { EventBus } from '@/core/event/event-bus';
-import { Nullable } from '@/core/common/monads/nullable';
-import { FileUtils } from '@/core/common/utils/file-utils';
-import { VehicleProfilePicture } from '../entities/vehicle/vehicle-profile-picture';
-import { User } from '../../user-system/entities/user';
-import ProfilePicture from '@/core/components/profile-picture.vue';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import CardContainer from "@/core/components/cards/card-container.vue";
+import { Vehicle } from "@/vehicle-system/entities/vehicle/vehicle";
+import { VehiclePurchaseInfo } from "@/vehicle-system/entities/vehicle/vehicle-purchase-info";
+import { VehicleMixin } from "../mixins/vehicle-mixin";
+import { EventBus } from "@/core/event/event-bus";
+import { Nullable } from "@/core/common/monads/nullable";
+import { FileUtils } from "@/core/common/utils/file-utils";
+import { VehicleProfilePicture } from "../entities/vehicle/vehicle-profile-picture";
+import { User } from "../../user-system/entities/user";
+import ProfilePicture from "@/core/components/profile-picture.vue";
 
 @Component({
-    name: 'vehicle-information',
+    name: "vehicle-information",
     components: {
         CardContainer,
-        ProfilePicture,
-    },
+        ProfilePicture
+    }
 })
 export default class VehicleSettings extends VehicleMixin {
     public $refs!: {
@@ -89,16 +89,18 @@ export default class VehicleSettings extends VehicleMixin {
     public profilePicture: Nullable<VehicleProfilePicture> = null;
 
     public async created() {
-        this.$validator.localize('en', {
+        this.$validator.localize("en", {
             custom: {
                 vehicleProfilePicture: {
-                    image: 'Vehicle profile picture must be an image.',
-                    size: 'Vehicle profile picture must be 1MB or less.',
-                },
-            },
+                    image: "Vehicle profile picture must be an image.",
+                    size: "Vehicle profile picture must be 1MB or less."
+                }
+            }
         });
 
-        this.profilePicture = await this.$vehicleProfilePictureStore.getVehicleProfilePicture(this.vehicle);
+        this.profilePicture = await this.$vehicleProfilePictureStore.getVehicleProfilePicture(
+            this.vehicle
+        );
     }
 
     /**
@@ -113,10 +115,10 @@ export default class VehicleSettings extends VehicleMixin {
      * Do something fancy when the profile picture is uploaded.
      */
     public async onProfilePictureUploaded(event: any): Promise<void> {
-        EventBus.emit('loading');
+        EventBus.emit("loading");
         // If the file is bad, reject it!
-        if (!(await this.$validator.validate('vehicleProfilePicture'))) {
-            this.$refs.profilePictureUploader.value = '';
+        if (!(await this.$validator.validate("vehicleProfilePicture"))) {
+            this.$refs.profilePictureUploader.value = "";
             return;
         }
 
@@ -125,33 +127,40 @@ export default class VehicleSettings extends VehicleMixin {
         let fileType = file.type.substr(-3);
 
         // Gross catch to convert jpeg to jpg for now...
-        if (fileType === 'peg') {
-            fileType = 'jpg';
+        if (fileType === "peg") {
+            fileType = "jpg";
         }
 
         const fileData = await FileUtils.toBase64(file);
 
-        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture({
-            vehicleId: this.vehicle.id,
-            data: fileData,
-            fileName: file.name,
-            fileType: fileType,
-        });
-        await this.$vehicleProfilePictureStore.uploadVehicleProfilePicture(this.vehicle, profilePicture);
+        const profilePicture: VehicleProfilePicture = new VehicleProfilePicture(
+            {
+                vehicleId: this.vehicle.id,
+                data: fileData,
+                fileName: file.name,
+                fileType: fileType
+            }
+        );
+        await this.$vehicleProfilePictureStore.uploadVehicleProfilePicture(
+            this.vehicle,
+            profilePicture
+        );
 
-        EventBus.emit('vehicleProfilePictureUploaded', this.vehicle);
-        EventBus.emit('loaded');
+        EventBus.emit("vehicleProfilePictureUploaded", this.vehicle);
+        EventBus.emit("loaded");
 
         // Update the screen and let the user delete the profile picture if they want.
         this.profilePicture = profilePicture;
     }
 
     public async onDeleteClick() {
-        EventBus.emit('loading');
-        await this.$vehicleProfilePictureStore.deleteVehicleProfilePicture(this.vehicle);
+        EventBus.emit("loading");
+        await this.$vehicleProfilePictureStore.deleteVehicleProfilePicture(
+            this.vehicle
+        );
         this.profilePicture = null;
-        EventBus.emit('vehicleProfilePictureDeleted', this.vehicle);
-        EventBus.emit('loaded');
+        EventBus.emit("vehicleProfilePictureDeleted", this.vehicle);
+        EventBus.emit("loaded");
     }
 }
 </script>

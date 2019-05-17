@@ -22,24 +22,24 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import PrivateTitleBar from '../components/layout/private-title-bar.vue';
-import SideBar from '@/core/components/layout/side-bar.vue';
-import LoadingBar from '@/core/components/ux/loading-bar.vue';
-import ErrorPopup from '@/core/components/popup/popups/error-popup.vue';
-import { EventBus } from '@/core/event/event-bus';
+import { Component, Vue, Prop } from "vue-property-decorator";
+import PrivateTitleBar from "../components/layout/private-title-bar.vue";
+import SideBar from "@/core/components/layout/side-bar.vue";
+import LoadingBar from "@/core/components/ux/loading-bar.vue";
+import ErrorPopup from "@/core/components/popup/popups/error-popup.vue";
+import { EventBus } from "@/core/event/event-bus";
 
 /**
  * Master page for private pages of the site.
  */
 @Component({
-    name: 'private-master-page',
+    name: "private-master-page",
     components: {
         SideBar,
         PrivateTitleBar,
         LoadingBar,
-        ErrorPopup,
-    },
+        ErrorPopup
+    }
 })
 export default class PrivateMasterPage extends Vue {
     public $refs!: {
@@ -52,9 +52,9 @@ export default class PrivateMasterPage extends Vue {
      * Prepare by subscribing to the event bus.
      */
     public created(): void {
-        EventBus.on('error', this.onError);
-        EventBus.on('loading', this.onLoading);
-        EventBus.on('loaded', this.onLoaded);
+        EventBus.on("error", this.onError);
+        EventBus.on("loading", this.onLoading);
+        EventBus.on("loaded", this.onLoaded);
     }
 
     public async onError(error: string): Promise<void> {
