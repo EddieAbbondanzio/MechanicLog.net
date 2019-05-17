@@ -52,11 +52,11 @@
             </div>
 
             <div class="form-group pt-3">
-                <div class="form-check mb-3">
+                <div class="form-check mb-3 d-none">
                     <input
                         v-model="rememberMe"
                         type="checkbox"
-                        class="form-check-input d-none"
+                        class="form-check-input"
                         id="remember-me-check-box"
                     >
                     <label
