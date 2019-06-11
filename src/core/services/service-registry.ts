@@ -16,6 +16,7 @@ import { MaintenanceTagService } from '@/vehicle-system/services/maintenance-tag
 import { MaintenanceService } from '@/vehicle-system/services/maintenance-service';
 import { ContactService } from '@/support/services/contact-service';
 import { VehicleProfilePictureService } from '@/vehicle-system/services/vehicle-profile-picture-service';
+import { UserProfilePictureService } from '@/user-system/services/user/user-profile-picture-service';
 
 /**
  * Helper to locate, and register services for use later on.
@@ -44,6 +45,7 @@ export class ServiceRegistry {
         this.register(new MaintenanceService(Store.backendUrl));
         this.register(new MaintenanceTagService(Store.backendUrl));
         this.register(new ContactService(Store.backendUrl));
+        this.register(new UserProfilePictureService(Store.backendUrl));
     }
 
     /**

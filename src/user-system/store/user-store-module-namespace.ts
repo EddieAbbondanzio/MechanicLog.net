@@ -1,1 +1,1 @@
-export type UserStoreModuleNamespace = 'user';
+export type UserStoreModuleNamespace = 'user' | 'userProfilePicture';

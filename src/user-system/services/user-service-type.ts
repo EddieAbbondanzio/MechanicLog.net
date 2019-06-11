@@ -1,1 +1,1 @@
-export type UserServiceType = 'user' | 'auth';
+export type UserServiceType = "user" | "auth" | "userProfilePicture";

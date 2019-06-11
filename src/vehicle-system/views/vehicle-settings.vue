@@ -37,7 +37,7 @@
                             <!-- Buttons -->
                             <div class="d-flex flex-row align-items-center">
                                 <b-btn
-                                    variant="muted"
+                                    variant="light"
                                     class="mr-3"
                                     @click="onUploadClick"
                                 >Upload Photo</b-btn>

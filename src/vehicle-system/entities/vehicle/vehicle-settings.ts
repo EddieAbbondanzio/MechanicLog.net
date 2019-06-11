@@ -1,9 +1,10 @@
-import { UnitSystem } from '@/vehicle-system/common/unit-system';
+import { UnitSystem } from "@/vehicle-system/common/unit-system";
+import { VehicleResource } from "@/vehicle-system/common/vehicle-resource";
 
 /**
  * Settings for a vehicle.
  */
-export class VehicleSettings {
+export class VehicleSettings implements VehicleResource {
     /**
      * The unique id of the settings.
      */

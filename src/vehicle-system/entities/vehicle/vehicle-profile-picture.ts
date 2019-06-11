@@ -1,6 +1,6 @@
-import { VehicleResource } from '../../common/vehicle-resource';
-import { UserResource } from '@/user-system/common/user-resource';
-import { Picture } from '@/core/common/picture';
+import { VehicleResource } from "../../common/vehicle-resource";
+import { UserResource } from "@/user-system/common/user-resource";
+import { Picture } from "@/core/common/picture";
 
 /**
  * Profile picture of a user's vehicle.
@@ -28,11 +28,18 @@ export class VehicleProfilePicture implements Picture, VehicleResource {
     /**
      * Create a new vehicle profile picture.
      */
-    constructor(params: { id?: number; vehicleId?: number; data: string; fileName: string; fileType: string }) {
+    constructor(params: {
+        id?: number;
+        vehicleId?: number;
+        data: string;
+        fileName: string;
+        fileType: string;
+    }) {
         this.id = params.id != null ? params.id : 0;
         this.vehicleId = params.vehicleId != null ? params.vehicleId : 0;
         this.data = params.data;
-        (this.fileName = params.fileName), (this.fileType = params.fileType);
+        this.fileName = params.fileName;
+        this.fileType = params.fileType;
     }
 
     public toJSON(): {} {
@@ -40,7 +47,7 @@ export class VehicleProfilePicture implements Picture, VehicleResource {
             vehicleId: this.vehicleId,
             data: this.data,
             fileName: this.fileName,
-            fileType: this.fileType,
+            fileType: this.fileType
         };
     }
 }
